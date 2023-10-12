@@ -28,8 +28,8 @@
     , neovim-flake
     , retiolum
     , treefmt-nix
-    , flake-compat
     , systems
+    , ...
     }:
     let
       # Small tool to iterate over each systems

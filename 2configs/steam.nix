@@ -1,4 +1,4 @@
-{ config, pkgs, lib, selfpkgs, ... }:
+{ config, pkgs, selfpkgs, ... }:
 let
   ovrasStarter = pkgs.writeShellScriptBin "ovras-start" ''
     unset LD_LIBRARY_PATH

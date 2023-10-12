@@ -4,7 +4,7 @@ let
 in
 {
   nixpkgs.overlays = [
-    (final: prev: {
+    (_final: prev: {
       hydra_unstable = prev.hydra_unstable.overrideAttrs (old: {
         patches = (old.patches or [ ]) ++ [
           (prev.fetchpatch {
