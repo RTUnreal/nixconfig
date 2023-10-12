@@ -1,21 +1,28 @@
 { config, pkgs, lib, ... }:
 let
   domain = "buildbot.rtinf.net";
-  client-id = "";
-  client-secret = "";
-
+  cfg = config.services.buildbot-master;
 in
 {
   services = {
     buildbot-master = {
       enable = true;
       buildbotUrl = "https://${domain}/";
+      # TODO: Rewrite when new config structure is added
       extraConfig = ''
         from buildbot_gitea.auth import GiteaAuth
+
+        with open('${cfg.buildbotDir}/secrets/client_id', 'r') as f:
+          oauth_client_id = f.read().strip()
+
+        with open('${cfg.buildbotDir}/secrets/client_secret', 'r') as f:
+          oauth_client_secret = f.read().strip()
+
         c['www']['auth'] = GiteaAuth(
             endpoint="https://devel.rtinf.net",
-            client_id='${client-id}',
-            client_secret='${client-secret}')
+            client_id=oauth_client_id,
+            client_secret=oauth_client_secret)
+
       '';
       packages = with pkgs; [
         cacert
@@ -54,5 +61,6 @@ in
       proxyWebsockets = true;
     };
     forceSSL = true;
+    enableACME = true;
   };
 }
