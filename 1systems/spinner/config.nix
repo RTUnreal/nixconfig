@@ -1,16 +1,16 @@
-{ selfpkgs
-, config
-, lib
-, pkgs
-, nixpkgs-unstable ? import <nixosUnstable> {
-    config = config.nixpkgs.config;
-  }
-, ...
-}:
-let
-  nixosUnstable = nixpkgs-unstable;
-in
 {
+  selfpkgs,
+  config,
+  lib,
+  pkgs,
+  nixpkgs-unstable ?
+    import <nixosUnstable> {
+      config = config.nixpkgs.config;
+    },
+  ...
+}: let
+  nixosUnstable = nixpkgs-unstable;
+in {
   imports = [
     ./hardware-configuration.nix
     ./retiolum-cfg.nix
@@ -22,14 +22,14 @@ in
     ../../2configs/nvidia-prime.nix
     ../../2configs/wacom.nix
     ../../2configs/steam.nix
-    (import ../../2configs/vscode { inherit nixosUnstable; })
+    (import ../../2configs/vscode {inherit nixosUnstable;})
   ];
 
   hardware.enableRedistributableFirmware = true;
 
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sdb";
-  boot.supportedFilesystems = [ "ntfs" ];
+  boot.supportedFilesystems = ["ntfs"];
 
   networking.hostName = "spinner";
 
@@ -67,20 +67,21 @@ in
     zoom-us
     anydesk
   ];
-  nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-    "steam"
-    "steam-original"
-    "steam-run"
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "steam"
+      "steam-original"
+      "steam-run"
 
-    "discord"
-    "zoom"
-    "anydesk"
+      "discord"
+      "zoom"
+      "anydesk"
 
-    "nvidia-x11"
-    "nvidia-settings"
+      "nvidia-x11"
+      "nvidia-settings"
 
-    "vscode-extension-ms-vscode-cpptools"
-  ];
+      "vscode-extension-ms-vscode-cpptools"
+    ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

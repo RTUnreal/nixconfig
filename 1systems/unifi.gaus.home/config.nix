@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   imports = [
     ./../../2configs/base.nix
     ./../../2configs/base-server.nix
@@ -16,7 +15,7 @@
 
     useDHCP = false;
     interfaces.enp1s0.useDHCP = true;
-    firewall.allowedTCPPorts = [ 22 ];
+    firewall.allowedTCPPorts = [22];
   };
 
   # Set your time zone.

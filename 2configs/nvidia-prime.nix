@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-let
+{pkgs, ...}: let
   nvidia-offload = pkgs.writeShellScriptBin "nvidia-offload" ''
     export __NV_PRIME_RENDER_OFFLOAD=1
     export __NV_PRIME_RENDER_OFFLOAD_PROVIDER=NVIDIA-G0
@@ -7,9 +6,8 @@ let
     export __VK_LAYER_NV_optimus=NVIDIA_only
     exec "$@"
   '';
-in
-{
-  services.xserver.videoDrivers = [ "nvidia" ];
+in {
+  services.xserver.videoDrivers = ["nvidia"];
 
   hardware.nvidia = {
     modesetting.enable = true;
@@ -22,5 +20,5 @@ in
     };
   };
 
-  environment.systemPackages = [ nvidia-offload ];
+  environment.systemPackages = [nvidia-offload];
 }

@@ -1,6 +1,10 @@
-{ config, pkgs, lib, ... }:
-with lib;
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
+with lib; let
   cfg = config.rtinf.neovim;
 
   # https://discourse.nixos.org/t/neovim-lua-configuration/22470/5
@@ -8,8 +12,7 @@ let
     name = "neovim-conf";
     src = ./conf;
   };
-in
-{
+in {
   options.rtinf.neovim = {
     enable = mkEnableOption (mdDoc "the neovim config");
     enableIDEFeatures = mkEnableOption (mdDoc "the IDE features");
@@ -33,32 +36,34 @@ in
             vim-fugitive
             undotree
             purescript-vim
-            (nvim-treesitter.withPlugins (p: [
-              p.bash
-              p.c
-              p.cmake
-              p.dhall
-              p.html
-              p.javascript
-              p.jsdoc
-              p.json
-              p.lua
-              p.markdown
-              p.nix
-              p.php
-              p.phpdoc
-              p.python
-              p.rust
-              p.sql
-              p.toml
-              p.typescript
-            ] ++ optionals cfg.enableExtendedFeatures [
-              p.bibtex
-              p.hlsl
-              p.latex
-            ]))
+            (nvim-treesitter.withPlugins (p:
+              [
+                p.bash
+                p.c
+                p.cmake
+                p.dhall
+                p.html
+                p.javascript
+                p.jsdoc
+                p.json
+                p.lua
+                p.markdown
+                p.nix
+                p.php
+                p.phpdoc
+                p.python
+                p.rust
+                p.sql
+                p.toml
+                p.typescript
+              ]
+              ++ optionals cfg.enableExtendedFeatures [
+                p.bibtex
+                p.hlsl
+                p.latex
+              ]))
           ];
-          opt = [ ];
+          opt = [];
         };
       };
       viAlias = true;

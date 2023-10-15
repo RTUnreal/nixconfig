@@ -1,9 +1,12 @@
-{ config, pkgs, lib, ... }:
-let
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: let
   cfg = config.services.gitea;
   domain = config.networking.fqdn;
-in
-{
+in {
   users.users.git = {
     description = "Gitea Service";
     home = cfg.stateDir;
@@ -11,7 +14,7 @@ in
     group = "git";
     isSystemUser = true;
   };
-  users.groups.git = { };
+  users.groups.git = {};
 
   services.gitea = {
     enable = true;
@@ -43,6 +46,6 @@ in
     forceSSL = true;
     enableACME = true;
   };
-  environment.systemPackages = [ cfg.package ];
-  networking.firewall.allowedTCPPorts = [ 80 443 ];
+  environment.systemPackages = [cfg.package];
+  networking.firewall.allowedTCPPorts = [80 443];
 }

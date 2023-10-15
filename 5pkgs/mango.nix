@@ -1,8 +1,9 @@
 # I hate this
-{ stdenv
-, fetchurl
-, makeWrapper
-, cacert
+{
+  stdenv,
+  fetchurl,
+  makeWrapper,
+  cacert,
 }:
 stdenv.mkDerivation rec {
   pname = "mango";
@@ -13,7 +14,7 @@ stdenv.mkDerivation rec {
     executable = true;
   };
   dontUnpack = true;
-  nativeBuildInputs = [ makeWrapper ];
+  nativeBuildInputs = [makeWrapper];
   buildPhase = ''
     mkdir -p $out/bin
     # don't wan't to duplicate unchanged/static binary

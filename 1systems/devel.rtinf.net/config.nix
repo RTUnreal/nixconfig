@@ -1,17 +1,14 @@
-{ ... }:
-
-{
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./../../2configs/base.nix
-      ./../../2configs/base-server.nix
-      ./../../2configs/devel/forge.nix
-      # TODO: Remove when buildbot is standing
-      ./../../2configs/devel/ci.nix
-      ./../../2configs/devel/buildbot.nix
-    ];
+{...}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./../../2configs/base.nix
+    ./../../2configs/base-server.nix
+    ./../../2configs/devel/forge.nix
+    # TODO: Remove when buildbot is standing
+    ./../../2configs/devel/ci.nix
+    ./../../2configs/devel/buildbot.nix
+  ];
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
@@ -32,7 +29,6 @@
   };
   security.acme.acceptTerms = true;
   security.acme.defaults.email = "unreal@rtinf.net";
-
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you

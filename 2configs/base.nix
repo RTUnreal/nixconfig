@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   imports = [
     ./../3modules/neovim
   ];
@@ -8,7 +6,7 @@
   users.users.trr = {
     isNormalUser = true;
     description = "Alexander Gaus";
-    extraGroups = [ "wheel" ];
+    extraGroups = ["wheel"];
     uid = 1000;
   };
 
@@ -61,5 +59,5 @@
 
   #system.copySystemConfiguration = true;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 }

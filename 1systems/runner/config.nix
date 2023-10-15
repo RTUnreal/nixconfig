@@ -1,19 +1,19 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
-{ selfpkgs
-, config
-, pkgs
-, lib
-, nixpkgs-unstable ? import <nixosUnstable> {
-    config = config.nixpkgs.config;
-  }
-, ...
-}:
-let
-  nixosUnstable = nixpkgs-unstable;
-in
 {
+  selfpkgs,
+  config,
+  pkgs,
+  lib,
+  nixpkgs-unstable ?
+    import <nixosUnstable> {
+      config = config.nixpkgs.config;
+    },
+  ...
+}: let
+  nixosUnstable = nixpkgs-unstable;
+in {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -25,7 +25,7 @@ in
     ./../../2configs/wacom.nix
     ./../../2configs/mpv.nix
     ./../../2configs/steam.nix
-    (import ./../../2configs/vscode { inherit nixosUnstable; })
+    (import ./../../2configs/vscode {inherit nixosUnstable;})
     ./retiolum-cfg.nix
   ];
 
@@ -34,7 +34,7 @@ in
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.extraModulePackages = with config.boot.kernelPackages; [ rtl88x2bu ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [rtl88x2bu];
 
   networking.hostName = "runner";
 

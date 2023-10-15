@@ -1,5 +1,8 @@
-{ config, lib, ... }:
 {
+  config,
+  lib,
+  ...
+}: {
   users.users = lib.mkIf (!config.boot.isContainer) {
     trr.password = "";
   };
@@ -12,5 +15,5 @@
   };
 
   services.mailhog.enable = true;
-  networking.firewall.allowedTCPPorts = [ config.services.mailhog.uiPort ];
+  networking.firewall.allowedTCPPorts = [config.services.mailhog.uiPort];
 }

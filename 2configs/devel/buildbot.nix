@@ -1,9 +1,11 @@
-{ config, pkgs, ... }:
-let
+{
+  config,
+  pkgs,
+  ...
+}: let
   domain = "buildbot.rtinf.net";
   cfg = config.services.buildbot-master;
-in
-{
+in {
   services = {
     buildbot-master = {
       enable = true;

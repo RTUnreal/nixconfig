@@ -1,5 +1,4 @@
-{ ... }:
-{
+{...}: {
   networking.retiolum.ipv4 = "10.243.20.18";
   networking.retiolum.ipv6 = "42:0:3c46:7109:4c9a:3c86:73e0:a786";
   networking.retiolum.nodename = "rtspinner";

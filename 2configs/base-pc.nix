@@ -1,6 +1,4 @@
-{ pkgs, ... }:
-
-{
+{pkgs, ...}: {
   services = {
     # Enable the X11 windowing system.
     xserver = {
@@ -29,12 +27,12 @@
   };
 
   fonts.fonts = with pkgs; [
-    (nerdfonts.override { fonts = [ "SourceCodePro" ]; })
+    (nerdfonts.override {fonts = ["SourceCodePro"];})
   ];
 
   networking.networkmanager.enable = true;
 
-  users.users.trr.extraGroups = [ "networkmanager" ];
+  users.users.trr.extraGroups = ["networkmanager"];
 
   # Enable sound.
   sound.enable = true;
@@ -51,20 +49,35 @@
       # TODO: generate from system
       knownHosts = {
         safetest = {
-          hostNames = [ "safe.user-sites.de" ];
+          hostNames = ["safe.user-sites.de"];
           publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAd9bT8/AMtPQheRlPWK4sJwEci3fHsZE1+eIGXkdBY/";
         };
       };
-      extraConfig =
-        let
-          mapHosts = map ({ name, host, ... }@args: ''
+      extraConfig = let
+        mapHosts = map ({
+            name,
+            host,
+            ...
+          } @ args: ''
             Host ${name}
             Hostname ${host}
-            IdentityFile ${if args ? identity_file then args.identity_file else "~/.ssh/id_rsa"}
-            User ${if args ? user then args.user else "trr"}
-            ${if args ? extraConfig then args.extraConfig else ""}
+            IdentityFile ${
+              if args ? identity_file
+              then args.identity_file
+              else "~/.ssh/id_rsa"
+            }
+            User ${
+              if args ? user
+              then args.user
+              else "trr"
+            }
+            ${
+              if args ? extraConfig
+              then args.extraConfig
+              else ""
+            }
           '');
-        in
+      in
         builtins.concatStringsSep "\n" (mapHosts [
           {
             name = "safetest";

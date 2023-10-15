@@ -1,20 +1,21 @@
-{ config, pkgs, ... }:
-
 {
-  imports =
-    [
-      # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./../../2configs/base.nix
-      ./../../2configs/base-server.nix
-      ./../../2configs/safe
-      ./../../2configs/mango.nix
-    ];
+  config,
+  pkgs,
+  ...
+}: {
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./../../2configs/base.nix
+    ./../../2configs/base-server.nix
+    ./../../2configs/safe
+    ./../../2configs/mango.nix
+  ];
 
   # Use the GRUB 2 boot loader.
   boot.loader.grub = {
     enable = true;
-    devices = [ "/dev/sda" ];
+    devices = ["/dev/sda"];
   };
 
   networking = {
@@ -23,7 +24,7 @@
 
     useDHCP = false;
     interfaces.enp1s0.useDHCP = true;
-    firewall.allowedTCPPorts = [ 22 80 443 ];
+    firewall.allowedTCPPorts = [22 80 443];
   };
 
   # Set your time zone.

@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+{pkgs, ...}: {
   services.xserver = {
     # Enable the Plasma 5 Desktop Environment.
     displayManager.sddm.enable = true;

@@ -1,15 +1,13 @@
-{ ... }:
-{
-  imports =
-    [
-      ../../2configs/base.nix
-      ../../2configs/base-server.nix
-    ];
+{...}: {
+  imports = [
+    ../../2configs/base.nix
+    ../../2configs/base-server.nix
+  ];
 
   # Use the GRUB 2 boot loader.
   boot.loader.grub = {
     enable = true;
-    devices = [ "/dev/sda" ];
+    devices = ["/dev/sda"];
   };
 
   networking = {
@@ -18,7 +16,7 @@
 
     useDHCP = false;
     interfaces.eth0.useDHCP = true;
-    firewall.allowedTCPPorts = [ 22 80 443 ];
+    firewall.allowedTCPPorts = [22 80 443];
   };
 
   services = {
@@ -37,17 +35,17 @@
     };
     opensearch.enable = true;
     /*
-      matrix-synapse = {
-      enable = true;
-      settings = {
-        server_name = "matrix.rtinf.net";
-        listeners = [
-          {
-            port = 8008
-          }
-        ];
-      };
-      };
+    matrix-synapse = {
+    enable = true;
+    settings = {
+      server_name = "matrix.rtinf.net";
+      listeners = [
+        {
+          port = 8008
+        }
+      ];
+    };
+    };
     */
   };
   security.acme = {
