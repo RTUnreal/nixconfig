@@ -2,8 +2,8 @@ _:
 {
   projectRootFile = "flake.nix";
   programs = {
-    nixpkgs-fmt.enable = true;
+    alejandra.enable = true;
     deadnix.enable = true;
   };
-  settings.formatter.nixpkgs-fmt.excludes = [ "2configs/vscode/extensions.nix" ];
+  settings.formatter.alejandra.excludes = [ "2configs/vscode/extensions.nix" ];
 }
