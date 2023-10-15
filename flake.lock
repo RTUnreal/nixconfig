@@ -928,6 +928,7 @@
       "original": {
         "owner": "notashelf",
         "repo": "neovim-flake",
+        "rev": "fc8206e7a61d7eb02006f9010e62ebdb3336d0d2",
         "type": "github"
       }
     },

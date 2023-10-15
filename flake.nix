@@ -13,7 +13,7 @@
     };
     treefmt-nix.url = "github:numtide/treefmt-nix";
     neovim-flake = {
-      url = "github:notashelf/neovim-flake";
+      url = "github:notashelf/neovim-flake/fc8206e7a61d7eb02006f9010e62ebdb3336d0d2";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-gaming.url = "github:fufexan/nix-gaming";
