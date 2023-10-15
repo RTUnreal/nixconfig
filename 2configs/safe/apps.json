@@ -22,10 +22,10 @@
   },
   {
     "name": "mail",
-    "version": "3.4.1",
-    "url": "https://github.com/nextcloud-releases/mail/releases/download/v3.4.1/mail-v3.4.1.tar.gz",
+    "version": "3.4.2",
+    "url": "https://github.com/nextcloud-releases/mail/releases/download/v3.4.2/mail-v3.4.2.tar.gz",
     "description": "💌 A mail app for Nextcloud",
-    "sha256": "0p9iv172ivypyr6ccsmkfnb7b77nyghqbva24g8ymphw95pirwag"
+    "sha256": "17lgzj3anz859i403c389c7rg5r72j7a2v6iflmvk78yj0p63942"
   },
   {
     "name": "news",
