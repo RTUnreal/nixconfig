@@ -16,13 +16,14 @@
       hostName = "safe.user-sites.de";
       package = pkgs."nextcloud${builtins.toString version}";
       enableBrokenCiphersForSSE = false;
+      datadir = "/data/nextcloud";
       config = {
         dbtype = "pgsql";
         dbuser = "nextcloud";
         dbhost = "/run/postgresql"; # nextcloud will add /.s.PGSQL.5432 by itself
         dbname = "nextcloud";
         adminuser = "root";
-        adminpassFile = "/var/lib/nextcloud/config/adminpw";
+        adminpassFile = "/data/nextcloud/config/adminpw";
       };
       extraApps = let
         mapListToNCApps = list:
