@@ -6,7 +6,7 @@
   ...
 }:
 with lib; let
-  cfg = config.services.factorio;
+  cfg = config.rtinf.factorio;
   name = "Factorio";
   stateDir = "/var/lib/${cfg.stateDirName}";
   mkSavePath = name: "${stateDir}/saves/${name}.zip";
@@ -19,14 +19,20 @@ with lib; let
   serverSettings =
     {
       name = cfg.game-name;
-      description = cfg.description;
+      inherit
+        (cfg)
+        description
+        username
+        password
+        token
+        ;
       visibility = {
-        public = cfg.public;
-        lan = cfg.lan;
+        inherit
+          (cfg)
+          public
+          lan
+          ;
       };
-      username = cfg.username;
-      password = cfg.password;
-      token = cfg.token;
       game_password = cfg.game-password;
       require_user_verification = cfg.requireUserVerification;
       max_upload_in_kilobytes_per_second = 0;
@@ -42,12 +48,13 @@ with lib; let
       non_blocking_saving = cfg.nonBlockingSaving;
     }
     // cfg.extraSettings;
-  serverSettingsFile = pkgs.writeText "server-settings.json" (builtins.toJSON (filterAttrsRecursive (n: v: v != null) serverSettings));
+  serverSettingsFile = pkgs.writeText "server-settings.json" (builtins.toJSON (filterAttrsRecursive (_: v: v != null) serverSettings));
   serverAdminsFile = pkgs.writeText "server-adminlist.json" (builtins.toJSON cfg.admins);
   modDir = pkgs.factorio-utils.mkModDirDrv cfg.mods cfg.mods-dat;
+  hasDynamicPassword = cfg.gamePasswordFile != null;
 in {
   options = {
-    services.factorio = {
+    rtinf.factorio = {
       enable = mkEnableOption (lib.mdDoc name);
       port = mkOption {
         type = types.port;
@@ -222,6 +229,13 @@ in {
           Game password.
         '';
       };
+      gamePasswordFile = mkOption {
+        type = types.nullOr types.path;
+        default = null;
+        description = lib.mdDoc ''
+          Game password file to read from at startup.
+        '';
+      };
       requireUserVerification = mkOption {
         type = types.bool;
         default = true;
@@ -255,14 +269,18 @@ in {
       wantedBy = ["multi-user.target"];
       after = ["network.target"];
 
-      preStart = toString [
-        "test -e ${stateDir}/saves/${cfg.saveName}.zip"
-        "||"
-        "${cfg.package}/bin/factorio"
-        "--config=${cfg.configFile}"
-        "--create=${mkSavePath cfg.saveName}"
-        (optionalString (cfg.mods != []) "--mod-directory=${modDir}")
-      ];
+      preStart =
+        toString [
+          "test -e ${stateDir}/saves/${cfg.saveName}.zip"
+          "||"
+          "${cfg.package}/bin/factorio"
+          "--config=${cfg.configFile}"
+          "--create=${mkSavePath cfg.saveName}"
+          (optionalString (cfg.mods != []) "--mod-directory=${modDir}")
+        ]
+        + optionalString hasDynamicPassword ''
+          ${lib.getExe pkgs.jq} --arg 'pw' "$(cat ${cfg.gamePasswordFile})" '.["game-password"] |= $pw' < ${serverSettingsFile} > ${stateDir}/server-settings.json
+        '';
 
       serviceConfig = {
         Restart = "always";
@@ -276,7 +294,11 @@ in {
           "--port=${toString cfg.port}"
           "--bind=${cfg.bind}"
           (optionalString (!cfg.loadLatestSave) "--start-server=${mkSavePath cfg.saveName}")
-          "--server-settings=${serverSettingsFile}"
+          "--server-settings=${
+            if hasDynamicPassword
+            then "${stateDir}/server-settings.json"
+            else serverSettingsFile
+          }"
           (optionalString cfg.loadLatestSave "--start-server-load-latest")
           (optionalString (cfg.mods != []) "--mod-directory=${modDir}")
           (optionalString (cfg.admins != []) "--server-adminlist=${serverAdminsFile}")
