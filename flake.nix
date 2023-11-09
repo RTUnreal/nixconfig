@@ -154,6 +154,29 @@
             ./1systems/safe.user-sites.de/config.nix
           ];
         };
+        konfactory = nixpkgs.lib.nixosSystem rec {
+          system = "x86_64-linux";
+          specialArgs = {
+            nixpkgs-unstable = unfreePkgs {
+              inherit system;
+              allowedUnfree = [
+                "factorio-headless"
+              ];
+            };
+          };
+          modules = [
+            {
+              _module.args.nixinate = {
+                host = "konfactory.rtinf.net";
+                sshUser = "root";
+                buildOn = "remote";
+                substituteOnTarget = true;
+                hermetic = true;
+              };
+            }
+            ./1systems/konfactory.rtinf.net/config.nix
+          ];
+        };
 
         /*
         comms = nixpkgs.lib.nixosSystem rec {
