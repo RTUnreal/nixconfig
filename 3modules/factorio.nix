@@ -51,7 +51,8 @@ with lib; let
   serverSettingsFile = pkgs.writeText "server-settings.json" (builtins.toJSON (filterAttrsRecursive (_: v: v != null) serverSettings));
   serverAdminsFile = pkgs.writeText "server-adminlist.json" (builtins.toJSON cfg.admins);
   modDir = pkgs.factorio-utils.mkModDirDrv cfg.mods cfg.mods-dat;
-  hasDynamicPassword = cfg.gamePasswordFile != null;
+  available = builtins.filter (n: cfg.${n} != null) ["gamePasswordFile"];
+  hasDynamicServerSettings = available != [];
 in {
   options = {
     rtinf.factorio = {
@@ -269,7 +270,13 @@ in {
       wantedBy = ["multi-user.target"];
       after = ["network.target"];
 
-      preStart =
+      preStart = let
+        mapped = {
+          gamePasswordFile = "game-password";
+        };
+        argslist = builtins.concatStringsSep "" (map (n: "--arg '${n}' \"$(cat \"${cfg.${n}}\")\"") available);
+        jqlist = builtins.concatStringsSep "" (map (n: "\"${mapped.${n}}\" : ${builtins.concatStringsSep "" ["$" n]},") available);
+      in
         toString [
           "test -e ${stateDir}/saves/${cfg.saveName}.zip"
           "||"
@@ -278,8 +285,9 @@ in {
           "--create=${mkSavePath cfg.saveName}"
           (optionalString (cfg.mods != []) "--mod-directory=${modDir}")
         ]
-        + optionalString hasDynamicPassword ''
-          ${lib.getExe pkgs.jq} --arg 'pw' "$(cat ${cfg.gamePasswordFile})" '.["game-password"] |= $pw' < ${serverSettingsFile} > ${stateDir}/server-settings.json
+        + optionalString hasDynamicServerSettings ''
+
+          ${lib.getExe pkgs.jq} ${argslist} '. + { ${jqlist} }' < ${serverSettingsFile} > ${stateDir}/server-settings.json
         '';
 
       serviceConfig = {
@@ -295,7 +303,7 @@ in {
           "--bind=${cfg.bind}"
           (optionalString (!cfg.loadLatestSave) "--start-server=${mkSavePath cfg.saveName}")
           "--server-settings=${
-            if hasDynamicPassword
+            if hasDynamicServerSettings
             then "${stateDir}/server-settings.json"
             else serverSettingsFile
           }"
