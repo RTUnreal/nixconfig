@@ -47,6 +47,7 @@
         crates.enable = true;
       };
       ts.enable = true;
+      ts.lsp.enable = true;
       go.enable = true;
       #zig.enable = isMaximal;
       python.enable = true;
