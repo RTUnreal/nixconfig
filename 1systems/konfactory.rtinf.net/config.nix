@@ -4,6 +4,7 @@
 {
   config,
   lib,
+  pkgs,
   nixpkgs-unstable ?
     import <nixosUnstable> {
       config =
@@ -40,6 +41,33 @@
     openFirewall = true;
     gamePasswordFile = "/var/lib/factorio/game-password";
     package = nixpkgs-unstable.factorio-headless;
+    saveName = "factorissimo";
+    mods = let
+      modDrv = pkgs.factorio-utils.modDrv {
+        allRecommendedMods = true;
+        allOptionalMods = true;
+      };
+
+      mods = rec {
+        Factorissimo2-Playthrough = modDrv {
+          src = pkgs.requireFile {
+            name = "Factorissimo2-Playthrough_1.2.1.zip";
+            url = "https://mods.factorio.com/download/Factorissimo2-Playthrough/64ce38aa59d3cfa58acd391a?username={username}&token={token}";
+            sha256 = "1dgrnzczh0vypayiv976hrpdzg9ixafmra90dbnar2lm8kzaxva7";
+          };
+          deps = [Factorissimo2];
+        };
+        Factorissimo2 = modDrv {
+          src = pkgs.requireFile {
+            name = "Factorissimo2_2.5.3.zip";
+            url = "https://mods.factorio.com/download/Factorissimo2/616ea82bda84c78d82cde184?username={username}&token={token}";
+            sha256 = "0knsghvsj02ziymml8p97w0y4vi8i7d926imny6lwr43myjw57ck";
+          };
+        };
+      };
+    in [
+      mods.Factorissimo2-Playthrough
+    ];
   };
 
   time.timeZone = "Europe/Berlin";
