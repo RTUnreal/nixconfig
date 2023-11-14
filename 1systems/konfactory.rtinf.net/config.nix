@@ -42,6 +42,8 @@
     gamePasswordFile = "/var/lib/factorio/game-password";
     package = nixpkgs-unstable.factorio-headless;
     saveName = "factorissimo";
+    usernameFile = "/var/lib/factorio/username";
+    passwordFile = "/var/lib/factorio/password";
     mods = let
       modDrv = pkgs.factorio-utils.modDrv {
         allRecommendedMods = true;

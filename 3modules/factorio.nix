@@ -51,8 +51,8 @@ with lib; let
   serverSettingsFile = pkgs.writeText "server-settings.json" (builtins.toJSON (filterAttrsRecursive (_: v: v != null) serverSettings));
   serverAdminsFile = pkgs.writeText "server-adminlist.json" (builtins.toJSON cfg.admins);
   modDir = pkgs.factorio-utils.mkModDirDrv cfg.mods cfg.mods-dat;
-  available = builtins.filter (n: cfg.${n} != null) ["gamePasswordFile"];
-  hasDynamicServerSettings = available != [];
+  availableFiles = builtins.filter (n: cfg.${n} != null) ["gamePasswordFile" "passwordFile" "usernameFile"];
+  hasDynamicServerSettings = availableFiles != [];
 in {
   options = {
     rtinf.factorio = {
@@ -200,6 +200,13 @@ in {
           Your factorio.com login credentials. Required for games with visibility public.
         '';
       };
+      usernameFile = mkOption {
+        type = types.nullOr types.path;
+        default = null;
+        description = lib.mdDoc ''
+          Your factorio.com login credentials. Required for games with visibility public.
+        '';
+      };
       package = mkOption {
         type = types.package;
         default = pkgs.factorio-headless;
@@ -211,6 +218,13 @@ in {
       };
       password = mkOption {
         type = types.nullOr types.str;
+        default = null;
+        description = lib.mdDoc ''
+          Your factorio.com login credentials. Required for games with visibility public.
+        '';
+      };
+      passwordFile = mkOption {
+        type = types.nullOr types.path;
         default = null;
         description = lib.mdDoc ''
           Your factorio.com login credentials. Required for games with visibility public.
@@ -271,11 +285,13 @@ in {
       after = ["network.target"];
 
       preStart = let
-        mapped = {
+        mappedSettings = {
           gamePasswordFile = "game-password";
+          passwordFile = "password";
+          usernameFile = "username";
         };
-        argslist = builtins.concatStringsSep "" (map (n: "--arg '${n}' \"$(cat \"${cfg.${n}}\")\"") available);
-        jqlist = builtins.concatStringsSep "" (map (n: "\"${mapped.${n}}\" : ${builtins.concatStringsSep "" ["$" n]},") available);
+        argslist = builtins.concatStringsSep " " (map (n: "--arg '${n}' \"$(cat \"${cfg.${n}}\")\"") availableFiles);
+        jqlist = builtins.concatStringsSep "," (map (n: "\"${mappedSettings.${n}}\" : ${builtins.concatStringsSep "" ["$" n]}") availableFiles);
       in
         toString [
           "test -e ${stateDir}/saves/${cfg.saveName}.zip"
