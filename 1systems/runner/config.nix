@@ -34,7 +34,7 @@ in {
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.extraModulePackages = with config.boot.kernelPackages; [rtl88x2bu];
+  boot.extraModulePackages = with config.boot.kernelPackages; [rtl88x2bu v4l2loopback];
 
   networking.hostName = "runner";
 
