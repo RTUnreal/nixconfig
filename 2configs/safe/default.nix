@@ -9,7 +9,7 @@
       forceSSL = true;
     };
     nextcloud = let
-      version = 26;
+      version = 27;
     in {
       enable = true;
       https = true;
