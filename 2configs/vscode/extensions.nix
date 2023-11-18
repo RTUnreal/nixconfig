@@ -8,8 +8,8 @@
   {
     name = "vscode-intelephense-client";
     publisher = "bmewburn";
-    version = "1.9.5";
-    sha256 = "1b3jbi65sa837cg5jl8si48lis8kimms28xwa1as8akrx91r599a";
+    version = "1.10.1";
+    sha256 = "0svfi6ckz94kk7icq1wq2hh5rqpgrk06n6r3pfcibq93kiv3g52m";
   }
   {
     name = "better-toml";
@@ -44,8 +44,8 @@
   {
     name = "elixir-ls";
     publisher = "JakeBecker";
-    version = "0.17.4";
-    sha256 = "1hzl2ib17ds8s3das3zrz941fyckflppx9wffdw2n4s4kqly6234";
+    version = "0.17.9";
+    sha256 = "1pimk0vrxbqbhkn29nfxwa06gcx0wwcmh0nh4lkcll953znlfsv0";
   }
   {
     name = "nix-ide";
@@ -86,14 +86,14 @@
   {
     name = "vscode-language-pack-de";
     publisher = "MS-CEINTL";
-    version = "1.84.2023102509";
-    sha256 = "128yr97rn8fpnns570gjlaq08i6083y4q439mxprvwwxr47wfzgi";
+    version = "1.84.2023111509";
+    sha256 = "0h67zbwnfsmmlf8vwn696y6yr0454jcpqfln6yz6l16kp6s6y8c8";
   }
   {
     name = "jupyter";
     publisher = "ms-toolsai";
-    version = "2023.10.1003011100";
-    sha256 = "09ggh7n0gliz26i53jf5ifxb501xyzpn403pbbry1z1xx32nx7p0";
+    version = "2023.11.1003211000";
+    sha256 = "0wmz7lla148s14izl1bfpdcn7nf5lpzca89gqrjsirvm6m3jclma";
   }
   {
     name = "jupyter-keymap";
@@ -110,8 +110,8 @@
   {
     name = "cpptools";
     publisher = "ms-vscode";
-    version = "1.18.0";
-    sha256 = "0p5qvamr2yfc3hk1msb1cv14q90jbhvic4pj5j6dr1g4vj3wndad";
+    version = "1.19.0";
+    sha256 = "0zxhvknh3jmy8njmra3ns7xv5ffadjj3gfzxbw1dgqazx07dfwwz";
   }
   {
     name = "test-adapter-converter";
@@ -128,8 +128,8 @@
   {
     name = "rust-analyzer";
     publisher = "rust-lang";
-    version = "0.4.1714";
-    sha256 = "0gdxz70nkd3vqpxxy3dvr2nngsa7ki1i1s0nmj3cablhc367gr52";
+    version = "0.4.1737";
+    sha256 = "0agb6gswmwm4x95hb3lhij6swz199jikdh1fbqkzsbiszhaisnf3";
   }
   {
     name = "even-better-toml";
