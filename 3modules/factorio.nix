@@ -48,11 +48,10 @@ with lib; let
       non_blocking_saving = cfg.nonBlockingSaving;
     }
     // cfg.extraSettings;
-  serverSettingsFile = pkgs.writeText "server-settings.json" (builtins.toJSON (filterAttrsRecursive (_: v: v != null) serverSettings));
+  serverSettingsString = builtins.toJSON (filterAttrsRecursive (n: v: v != null) serverSettings);
+  serverSettingsFile = pkgs.writeText "server-settings.json" serverSettingsString;
   serverAdminsFile = pkgs.writeText "server-adminlist.json" (builtins.toJSON cfg.admins);
   modDir = pkgs.factorio-utils.mkModDirDrv cfg.mods cfg.mods-dat;
-  availableFiles = builtins.filter (n: cfg.${n} != null) ["gamePasswordFile" "passwordFile" "usernameFile"];
-  hasDynamicServerSettings = availableFiles != [];
 in {
   options = {
     rtinf.factorio = {
@@ -127,6 +126,16 @@ in {
           customizations.
         '';
       };
+      extraSettingsFile = mkOption {
+        type = types.nullOr types.path;
+        default = null;
+        description = lib.mdDoc ''
+          File, which is dynamically applied to server-settings.json before
+          startup.
+
+          This option should be used for credentials.
+        '';
+      };
       stateDirName = mkOption {
         type = types.str;
         default = "factorio";
@@ -198,13 +207,8 @@ in {
         default = null;
         description = lib.mdDoc ''
           Your factorio.com login credentials. Required for games with visibility public.
-        '';
-      };
-      usernameFile = mkOption {
-        type = types.nullOr types.path;
-        default = null;
-        description = lib.mdDoc ''
-          Your factorio.com login credentials. Required for games with visibility public.
+
+          This option is unsecure. Use extraSettingsFile instead.
         '';
       };
       package = mkOption {
@@ -221,13 +225,8 @@ in {
         default = null;
         description = lib.mdDoc ''
           Your factorio.com login credentials. Required for games with visibility public.
-        '';
-      };
-      passwordFile = mkOption {
-        type = types.nullOr types.path;
-        default = null;
-        description = lib.mdDoc ''
-          Your factorio.com login credentials. Required for games with visibility public.
+
+          This option is unsecure. Use extraSettingsFile instead.
         '';
       };
       token = mkOption {
@@ -242,13 +241,8 @@ in {
         default = null;
         description = lib.mdDoc ''
           Game password.
-        '';
-      };
-      gamePasswordFile = mkOption {
-        type = types.nullOr types.path;
-        default = null;
-        description = lib.mdDoc ''
-          Game password file to read from at startup.
+
+          This option is unsecure. Use extraSettingsFile instead.
         '';
       };
       requireUserVerification = mkOption {
@@ -284,27 +278,18 @@ in {
       wantedBy = ["multi-user.target"];
       after = ["network.target"];
 
-      preStart = let
-        mappedSettings = {
-          gamePasswordFile = "game-password";
-          passwordFile = "password";
-          usernameFile = "username";
-        };
-        argslist = builtins.concatStringsSep " " (map (n: "--arg '${n}' \"$(cat \"${cfg.${n}}\")\"") availableFiles);
-        jqlist = builtins.concatStringsSep "," (map (n: "\"${mappedSettings.${n}}\" : ${builtins.concatStringsSep "" ["$" n]}") availableFiles);
-      in
-        toString [
+      preStart =
+        (toString [
           "test -e ${stateDir}/saves/${cfg.saveName}.zip"
           "||"
           "${cfg.package}/bin/factorio"
           "--config=${cfg.configFile}"
           "--create=${mkSavePath cfg.saveName}"
           (optionalString (cfg.mods != []) "--mod-directory=${modDir}")
-        ]
-        + optionalString hasDynamicServerSettings ''
-
-          ${lib.getExe pkgs.jq} ${argslist} '. + { ${jqlist} }' < ${serverSettingsFile} > ${stateDir}/server-settings.json
-        '';
+        ])
+        + (optionalString (cfg.extraSettingsFile != null) ("\necho ${lib.strings.escapeShellArg serverSettingsString}"
+          + " \"$(cat ${cfg.extraSettingsFile})\" | ${lib.getExe pkgs.jq} -s add"
+          + " > ${stateDir}/server-settings.json"));
 
       serviceConfig = {
         Restart = "always";
@@ -319,7 +304,7 @@ in {
           "--bind=${cfg.bind}"
           (optionalString (!cfg.loadLatestSave) "--start-server=${mkSavePath cfg.saveName}")
           "--server-settings=${
-            if hasDynamicServerSettings
+            if (cfg.extraSettingsFile != null)
             then "${stateDir}/server-settings.json"
             else serverSettingsFile
           }"

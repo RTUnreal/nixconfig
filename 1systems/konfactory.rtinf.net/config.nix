@@ -39,7 +39,7 @@
   rtinf.factorio = {
     enable = true;
     openFirewall = true;
-    gamePasswordFile = "/var/lib/factorio/game-password";
+    extraSettingsFile = "/var/lib/factorio/settings.json";
     package = nixpkgs-unstable.factorio-headless;
     saveName = "factorissimo";
     mods = let
