@@ -14,11 +14,13 @@
     treefmt-nix.url = "github:numtide/treefmt-nix";
     neovim-flake.url = "github:notashelf/neovim-flake";
     nix-gaming.url = "github:fufexan/nix-gaming";
+    hyprland.url = "github:hyprwm/Hyprland";
   };
 
   outputs = {
     self,
     nix-gaming,
+    hyprland,
     nixpkgs,
     nixinate,
     nixpkgs-unstable,
@@ -96,6 +98,7 @@
         spinner = nixpkgs.lib.nixosSystem rec {
           system = "x86_64-linux";
           specialArgs = {
+            inherit hyprland;
             nixpkgs-unstable = unfreePkgs {
               inherit system;
               allowedUnfree = [
