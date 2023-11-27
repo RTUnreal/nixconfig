@@ -5,6 +5,7 @@
   config,
   lib,
   pkgs,
+  nixUnstPath,
   nixpkgs-unstable ?
     import <nixosUnstable> {
       config =
@@ -18,11 +19,16 @@
     },
   ...
 }: {
+  disabledModules = [
+    "services/games/factorio.nix"
+  ];
+
   imports = [
     ./hardware-configuration.nix
     ../../2configs/base.nix
     ../../2configs/base-server.nix
     ../../3modules/factorio.nix
+    "${nixUnstPath}/nixos/modules/services/games/factorio.nix"
   ];
 
   # Use the GRUB 2 boot loader.
@@ -36,7 +42,7 @@
 
   users.users.root.openssh.authorizedKeys.keys = config.users.users.trr.openssh.authorizedKeys.keys;
 
-  rtinf.factorio = {
+  services.factorio = {
     enable = true;
     openFirewall = true;
     extraSettingsFile = "/var/lib/factorio/settings.json";
