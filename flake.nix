@@ -169,7 +169,8 @@
             };
           };
           modules = [
-            {
+            /*
+              {
               _module.args.nixinate = {
                 host = "konfactory.rtinf.net";
                 sshUser = "root";
@@ -178,6 +179,7 @@
                 hermetic = true;
               };
             }
+            */
             ./1systems/konfactory.rtinf.net/config.nix
           ];
         };
