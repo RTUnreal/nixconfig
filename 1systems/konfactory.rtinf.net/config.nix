@@ -27,7 +27,6 @@
     ./hardware-configuration.nix
     ../../2configs/base.nix
     ../../2configs/base-server.nix
-    ../../3modules/factorio.nix
     "${nixUnstPath}/nixos/modules/services/games/factorio.nix"
   ];
 
