@@ -15,7 +15,6 @@
       https = true;
       hostName = "safe.user-sites.de";
       package = pkgs."nextcloud${builtins.toString version}";
-      enableBrokenCiphersForSSE = false;
       datadir = "/data/nextcloud";
       config = {
         dbtype = "pgsql";
@@ -41,7 +40,8 @@
       ensureUsers = [
         {
           name = "nextcloud";
-          ensurePermissions."DATABASE nextcloud" = "ALL PRIVILEGES";
+          #ensurePermissions."DATABASE nextcloud" = "ALL PRIVILEGES";
+          ensureDBOwnership = true;
         }
       ];
     };

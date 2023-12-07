@@ -37,7 +37,7 @@ in {
       boot.kernelParams = ["${cfg.cpuType}_iommu=on"];
 
       environment.systemPackages = with pkgs; [
-        virtmanager
+        virt-manager
         qemu
         OVMF
       ];

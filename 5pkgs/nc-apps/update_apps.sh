@@ -37,7 +37,7 @@ while getopts ':n:' OPTION; do
 		NCVERSION="$OPTARG"
 		;;
 	?)
-		echo "Usage: $(basename $0) [-n version] current_file"
+		echo "Usage: $(basename "$0") [-n version] current_file"
 		exit 1
 		;;
 	esac
@@ -48,7 +48,7 @@ NCVERSION="${NCVERSION:-27}"
 # Try to be a good citizen and clean up after ourselves if we'res killed.
 trap clean_up SIGINT
 
-if [ ! -r $1 ]; then
+if [ ! -r "$1" ]; then
 	fail "cannot read: $1"
 fi
 
@@ -64,12 +64,16 @@ jq \
 	"$(jq \
 		-r \
 		'[.[].name]|reduce .[] as $a (""; .+",\""+$a+"\"")|ltrimstr(",")|"["+.+"]"' \
-		<$1)" \
+		<"$1")" \
 	'
     def versionCompatible(rPVS):
       rPVS |
       capture("^>=(?<a>[0-9]+) <=(?<b>[0-9]+)$") |
       (.a | tonumber | . <= $ps) and (.b | tonumber | $ps <= .);
+    def license(l):
+      {
+        "agpl": "agpl3Plus"
+      }[l];
 
     .[] |
     select(
@@ -91,6 +95,7 @@ jq \
     { name: .id
     , version: .package.version
     , url: .package.download
+    , license: license(.package.licenses[0])
     , description
     }
   ' \
