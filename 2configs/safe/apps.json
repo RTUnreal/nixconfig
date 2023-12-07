@@ -9,11 +9,11 @@
   },
   {
     "name": "calendar",
-    "version": "4.5.3",
-    "url": "https://github.com/nextcloud-releases/calendar/releases/download/v4.5.3/calendar-v4.5.3.tar.gz",
+    "version": "4.6.0",
+    "url": "https://github.com/nextcloud-releases/calendar/releases/download/v4.6.0/calendar-v4.6.0.tar.gz",
     "license": "agpl3Plus",
     "description": "A Calendar app for Nextcloud",
-    "sha256": "1iq8np72pjw2bn4zmbp2rmrh12n4z62rwrz2bb94xjza1fws7b2v"
+    "sha256": "0d6mfqwq44z9kn8nh3zmfzr05zi2rwnw3nhd9wc12dy6npynkcpm"
   },
   {
     "name": "contacts",
@@ -25,11 +25,11 @@
   },
   {
     "name": "mail",
-    "version": "3.4.4",
-    "url": "https://github.com/nextcloud-releases/mail/releases/download/v3.4.4/mail-v3.4.4.tar.gz",
+    "version": "3.4.6",
+    "url": "https://github.com/nextcloud-releases/mail/releases/download/v3.4.6/mail-v3.4.6.tar.gz",
     "license": "agpl3Plus",
     "description": "💌 A mail app for Nextcloud",
-    "sha256": "0ascail3vfkv3mm5s4s3ma74d6qxai76kdqxknmljnw56xb19qfv"
+    "sha256": "027zirrjafs6xdsq7qcb4f789345y2sdx6l3b60564cp04nrzblp"
   },
   {
     "name": "news",
