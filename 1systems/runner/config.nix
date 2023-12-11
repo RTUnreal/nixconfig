@@ -75,7 +75,8 @@ in {
     tdesktop
     xournalpp
     inkscape
-    nixosUnstable.blender-hip
+    # TODO: Revert when fixed in nixpkgs
+    #nixosUnstable.blender-hip
     krita
     nixosUnstable.texstudio
     texlive.combined.scheme-full
