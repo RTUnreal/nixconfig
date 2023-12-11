@@ -41,11 +41,11 @@
   },
   {
     "name": "notes",
-    "version": "4.8.1",
-    "url": "https://github.com/nextcloud-releases/notes/releases/download/v4.8.1/notes.tar.gz",
+    "version": "4.9.0",
+    "url": "https://github.com/nextcloud-releases/notes/releases/download/v4.9.0/notes-v4.9.0.tar.gz",
     "license": "agpl3Plus",
     "description": "Distraction-free notes and writing",
-    "sha256": "1g4ibrymsfd2bcvmyfyrl23z2kh4bgkwrgyacvdx1glk44di6sgc"
+    "sha256": "19p5qg94ch72y4lym6s8f6x3dly5v3mm97dx29swnkqplflas3zz"
   },
   {
     "name": "tasks",
