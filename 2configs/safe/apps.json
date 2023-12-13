@@ -1,11 +1,11 @@
 [
   {
     "name": "audioplayer",
-    "version": "3.4.0",
-    "url": "https://github.com/Rello/audioplayer/releases/download/3.4.0/audioplayer-3.4.0.tar.gz",
+    "version": "3.4.1",
+    "url": "https://github.com/Rello/audioplayer/releases/download/3.4.1/audioplayer-3.4.1.tar.gz",
     "license": "agpl3Plus",
     "description": "play / stream / organize",
-    "sha256": "1cwznd4dz6dicif1brs85b87zf6hc4jydm896bwk3msrg45wia8v"
+    "sha256": "0dj8pm5qhfb6kp0k3cs9samkmdknhsdffacbjmvjvhrhin5q02bj"
   },
   {
     "name": "calendar",
@@ -17,19 +17,19 @@
   },
   {
     "name": "contacts",
-    "version": "5.4.2",
-    "url": "https://github.com/nextcloud-releases/contacts/releases/download/v5.4.2/contacts-v5.4.2.tar.gz",
+    "version": "5.5.0",
+    "url": "https://github.com/nextcloud-releases/contacts/releases/download/v5.5.0/contacts-v5.5.0.tar.gz",
     "license": "agpl3Plus",
     "description": "A contacts app for Nextcloud",
-    "sha256": "1pz2px5amk3byn4pq86cyyjv4hrqhsjz61xfm7cl7z8qfckqfhi2"
+    "sha256": "0pbl4fmpg1jxwjj141gqnmwzgm3ji1z686kr11rmldfkjvhjss2x"
   },
   {
     "name": "mail",
-    "version": "3.4.6",
-    "url": "https://github.com/nextcloud-releases/mail/releases/download/v3.4.6/mail-v3.4.6.tar.gz",
+    "version": "3.5.0",
+    "url": "https://github.com/nextcloud-releases/mail/releases/download/v3.5.0/mail-v3.5.0.tar.gz",
     "license": "agpl3Plus",
     "description": "💌 A mail app for Nextcloud",
-    "sha256": "027zirrjafs6xdsq7qcb4f789345y2sdx6l3b60564cp04nrzblp"
+    "sha256": "0ycyj5ydnvnf5cjnxkpxd489rymlag8df67n5lawp43cvgg2jn2d"
   },
   {
     "name": "news",
