@@ -9,11 +9,11 @@
   },
   {
     "name": "calendar",
-    "version": "4.6.0",
-    "url": "https://github.com/nextcloud-releases/calendar/releases/download/v4.6.0/calendar-v4.6.0.tar.gz",
+    "version": "4.6.1",
+    "url": "https://github.com/nextcloud-releases/calendar/releases/download/v4.6.1/calendar-v4.6.1.tar.gz",
     "license": "agpl3Plus",
     "description": "A Calendar app for Nextcloud",
-    "sha256": "0d6mfqwq44z9kn8nh3zmfzr05zi2rwnw3nhd9wc12dy6npynkcpm"
+    "sha256": "0sj3f2daz6l5mckparpnp5pywmy1mxv973l7nbqsp3s6qixkj8xc"
   },
   {
     "name": "contacts",
@@ -41,11 +41,11 @@
   },
   {
     "name": "notes",
-    "version": "4.9.1",
-    "url": "https://github.com/nextcloud-releases/notes/releases/download/v4.9.1/notes-v4.9.1.tar.gz",
+    "version": "4.9.2",
+    "url": "https://github.com/nextcloud-releases/notes/releases/download/v4.9.2/notes.tar.gz",
     "license": "agpl3Plus",
     "description": "Distraction-free notes and writing",
-    "sha256": "08r42p8dbh5c5y4b7pbklkhjr7jxmxc4xbxy8mq3srjafcvyjfvj"
+    "sha256": "02893azzq507frb3x7h13ypx09yn9rx740hgfw7q1a2il2ixww5f"
   },
   {
     "name": "tasks",
