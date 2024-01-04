@@ -124,6 +124,28 @@
             ./1systems/spinner/config.nix
           ];
         };
+        worker = nixpkgs.lib.nixosSystem rec {
+          system = "x86_64-linux";
+          specialArgs = {
+            inherit hyprland;
+            nixpkgs-unstable = unfreePkgs {
+              inherit system;
+              allowedUnfree = [
+                "zoom"
+                "anydesk"
+
+                "vscode-extension-ms-vscode-cpptools"
+              ];
+            };
+            selfpkgs = self.packages.${system};
+          };
+          modules = [
+            pinned-nixpkgs
+            retiolum.nixosModules.retiolum
+            self.nixosModules.virtualization
+            ./1systems/worker/config.nix
+          ];
+        };
         devel = nixpkgs.lib.nixosSystem rec {
           system = "x86_64-linux";
           specialArgs = {
