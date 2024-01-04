@@ -15,6 +15,7 @@
     neovim-flake.url = "github:notashelf/neovim-flake";
     nix-gaming.url = "github:fufexan/nix-gaming";
     hyprland.url = "github:hyprwm/Hyprland";
+    nixos-hardware.url = "github:NixOS/nixos-hardware";
   };
 
   outputs = {
@@ -28,6 +29,7 @@
     retiolum,
     treefmt-nix,
     systems,
+    nixos-hardware,
     ...
   }: let
     # Small tool to iterate over each systems
@@ -142,6 +144,7 @@
           modules = [
             pinned-nixpkgs
             retiolum.nixosModules.retiolum
+            nixos-hardware.nixosModules.framework-13-7040-amd
             self.nixosModules.virtualization
             ./1systems/worker/config.nix
           ];

@@ -29,6 +29,9 @@ in {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  services.fwupd.enable = true;
+  hardware.framework.amd-7040.preventWakeOnAC = true;
+
   networking.hostName = "worker";
 
   time.timeZone = "Europe/Berlin";

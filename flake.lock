@@ -1060,6 +1060,21 @@
         "type": "github"
       }
     },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1704266875,
+        "narHash": "sha256-luA5SGmeIRZlgLfSLUuR3eacS63q2bJ0Yywqak5lj3E=",
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "rev": "8e34f33464d77bea2d5cf7dc1066647b1ad2b324",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1703438236,
@@ -1827,6 +1842,7 @@
         "neovim-flake": "neovim-flake",
         "nix-gaming": "nix-gaming",
         "nixinate": "nixinate",
+        "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_7",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "retiolum": "retiolum",
