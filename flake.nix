@@ -270,6 +270,7 @@
       }
       // pkgs.lib.optionalAttrs (pkgs.system == "x86_64-linux") {
         inherit (nix-gaming.packages.${pkgs.system}) proton-ge;
+        slime-vr = pkgs.callPackage ./5pkgs/slimevr {};
       });
     devShells =
       eachSystem
