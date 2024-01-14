@@ -32,9 +32,20 @@ in {
   hardware.enableRedistributableFirmware = true;
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.extraModulePackages = with config.boot.kernelPackages; [rtl88x2bu v4l2loopback];
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    extraModulePackages = with config.boot.kernelPackages; [
+      /*
+      rtl88x2bu
+      */
+      v4l2loopback
+    ];
+    kernelModules = ["rtw88_8822bu"];
+    kernelPackages = pkgs.linuxKernel.packages.linux_6_6;
+  };
 
   networking.hostName = "runner";
 
