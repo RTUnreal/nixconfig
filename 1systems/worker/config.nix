@@ -26,11 +26,15 @@ in {
 
   hardware.enableRedistributableFirmware = true;
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+    };
+    kernelPackages = pkgs.linuxKernel.packages.linux_6_7;
+  };
 
   services.fwupd.enable = true;
-  hardware.framework.amd-7040.preventWakeOnAC = true;
 
   networking.hostName = "worker";
 
