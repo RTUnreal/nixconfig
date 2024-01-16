@@ -6,7 +6,7 @@
 
       # Configure keymap in X11
       layout = "de,us";
-      xkbOptions = "eurosign:e,caps:escape_shifted_capslock";
+      xkbOptions = "eurosign:e,caps:escape_shifted_capslock,grp:win_space_toggle";
     };
 
     # Enable CUPS to print documents.
