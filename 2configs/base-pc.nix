@@ -61,21 +61,9 @@
           } @ args: ''
             Host ${name}
             Hostname ${host}
-            IdentityFile ${
-              if args ? identity_file
-              then args.identity_file
-              else "~/.ssh/id_rsa"
-            }
-            User ${
-              if args ? user
-              then args.user
-              else "trr"
-            }
-            ${
-              if args ? extraConfig
-              then args.extraConfig
-              else ""
-            }
+            IdentityFile ${args.identity_file or "~/.ssh/id_rsa"}
+            User ${args.user or "trr"}
+            ${args.extraConfig or ""}
           '');
       in
         builtins.concatStringsSep "\n" (mapHosts [
