@@ -193,16 +193,13 @@
     };
 
     vim.presence = {
-      presence-nvim = {
+      neocord = {
         enable = true;
         auto_update = true;
-        image_text = "The Superior Text Editor";
+        logo_tooltip = "The Superior Text Editor";
         client_id = "793271441293967371";
-        main_image = "neovim";
+        main_image = "logo";
         show_time = true;
-        rich_presence = {
-          editing_text = "Editing %s";
-        };
       };
     };
   };
