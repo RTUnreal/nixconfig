@@ -25,11 +25,11 @@
   },
   {
     "name": "mail",
-    "version": "3.5.4",
-    "url": "https://github.com/nextcloud-releases/mail/releases/download/v3.5.4/mail-v3.5.4.tar.gz",
+    "version": "3.5.5",
+    "url": "https://github.com/nextcloud-releases/mail/releases/download/v3.5.5/mail-v3.5.5.tar.gz",
     "license": "agpl3Plus",
     "description": "💌 A mail app for Nextcloud",
-    "sha256": "0brhaqw1sdh3fj5vdj4h8rkgg92ghwy0gyz51n120rppd8fhsch6"
+    "sha256": "15268xavb4wpkc12anz6wiry87hvy55nf141lc660wr22iivy79r"
   },
   {
     "name": "news",
