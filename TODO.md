@@ -4,3 +4,4 @@
   - https://wiki.archlinux.org/title/Gamescope
 - make neovim into a localy testable application
 - add nerdfonts to neovim-flake
+- fw-fanctrl
