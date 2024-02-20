@@ -6,3 +6,4 @@
 - add nerdfonts to neovim-flake
 - fw-fanctrl
 - usb-guard
+- [colmena](https://github.com/zhaofengli/colmena)
