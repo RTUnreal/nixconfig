@@ -5,3 +5,4 @@
 - make neovim into a localy testable application
 - add nerdfonts to neovim-flake
 - fw-fanctrl
+- usb-guard
