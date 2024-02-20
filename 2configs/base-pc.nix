@@ -26,6 +26,8 @@
     };
   };
 
+  boot.plymouth.enable = true;
+
   fonts.packages = with pkgs; [
     (nerdfonts.override {fonts = ["SourceCodePro"];})
   ];
