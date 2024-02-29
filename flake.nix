@@ -16,6 +16,7 @@
     nix-gaming.url = "github:fufexan/nix-gaming";
     hyprland.url = "github:hyprwm/Hyprland";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+    nixvim.url = "github:nix-community/nixvim";
   };
 
   outputs = {
@@ -30,6 +31,7 @@
     treefmt-nix,
     systems,
     nixos-hardware,
+    nixvim,
     ...
   }: let
     # Small tool to iterate over each systems
@@ -55,6 +57,7 @@
 
       devel-forge = import ./2configs/devel/forge.nix;
       devel-ci = import ./2configs/devel/ci.nix;
+      inherit (nixvim.nixosModules) nixvim;
     };
 
     nixosConfigurations = let
@@ -255,7 +258,13 @@
           '');
         };
       });
-    packages = eachSystem (pkgs:
+    packages = eachSystem (pkgs: let
+      mkNixVim = {desktop}:
+        nixvim.legacyPackages.${pkgs.system}.makeNixvim (import ./5pkgs/nixvim-config.nix {
+          enableIDEFeatures = false;
+          enableDesktop = desktop;
+        });
+    in
       {
         inherit
           (neovim-flake.lib.neovimConfiguration {
@@ -264,6 +273,8 @@
           })
           neovim
           ;
+        nixvim = mkNixVim {desktop = false;};
+        nixvimDesktop = mkNixVim {desktop = true;};
 
         mango-bin = pkgs.callPackage ./5pkgs/mango.nix {};
         md-dl = nixpkgs-unstable.legacyPackages.${pkgs.system}.callPackage ./5pkgs/md-dl.nix {};
