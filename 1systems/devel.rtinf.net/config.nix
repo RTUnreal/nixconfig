@@ -6,7 +6,7 @@
     ./../../2configs/base-server.nix
     ./../../2configs/devel/forge.nix
     # TODO: Remove when buildbot is standing
-    ./../../2configs/devel/ci.nix
+    #./../../2configs/devel/ci.nix
     ./../../2configs/devel/buildbot.nix
   ];
   # Use the GRUB 2 boot loader.
