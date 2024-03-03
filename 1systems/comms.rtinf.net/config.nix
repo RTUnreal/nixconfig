@@ -20,6 +20,7 @@
   };
 
   services = {
+    /*
     mastodon = {
       enable = true;
       localDomain = "social.rtinf.net";
@@ -34,7 +35,6 @@
       };
     };
     opensearch.enable = true;
-    /*
     matrix-synapse = {
     enable = true;
     settings = {
