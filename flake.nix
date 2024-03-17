@@ -3,10 +3,6 @@
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     retiolum.url = "git+https://git.thalheim.io/Mic92/retiolum";
-    nixinate = {
-      url = "github:matthewcroughan/nixinate";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     flake-compat = {
       url = "github:edolstra/flake-compat";
       flake = false;
@@ -26,7 +22,6 @@
     nix-gaming,
     hyprland,
     nixpkgs,
-    nixinate,
     nixpkgs-unstable,
     neovim-flake,
     retiolum,
@@ -237,30 +232,6 @@
 
     nixosConfigurations = (colmena.lib.makeHive self.colmena).nodes;
 
-    # adapted from: https://github.com/kmein/niveum
-    apps = eachSystem (pkgs: let
-      nixinate' = (nixinate.nixinate.${pkgs.system} self).nixinate;
-    in
-      (builtins.listToAttrs (builtins.map
-        (name: {
-          name = "nixinate-${name}";
-          value = nixinate'.${name};
-        })
-        (builtins.attrNames nixinate')))
-      // {
-        deploy = {
-          type = "app";
-          program = toString (pkgs.writers.writeDash "deploy" ''
-            if [ $# -eq 0 ]
-            then
-              systems='${toString (builtins.filter (x: !(pkgs.lib.hasPrefix "testVM-" x)) (builtins.attrNames self.nixosConfigurations))}'
-            else
-              systems=$*
-            fi
-            ${pkgs.parallel}/bin/parallel --line-buffer --tagstring '{}' 'nix run .\?submodules=1\#nixinate-{}' ::: $systems
-          '');
-        };
-      });
     packages = eachSystem (pkgs: let
       mkNixVim = opt:
         nixvim.legacyPackages.${pkgs.system}.makeNixvim (import ./5pkgs/nixvim-config.nix {inherit (nixpkgs) lib;} opt);
