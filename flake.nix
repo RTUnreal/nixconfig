@@ -17,6 +17,8 @@
     hyprland.url = "github:hyprwm/Hyprland";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     nixvim.url = "github:nix-community/nixvim";
+    colmena.url = "github:zhaofengli/colmena";
+    mms.url = "github:Triton171/nixos-modded-minecraft-servers/8f00cdc8477a306d7f2e1036fcad03506ae9ce12";
   };
 
   outputs = {
@@ -32,6 +34,8 @@
     systems,
     nixos-hardware,
     nixvim,
+    colmena,
+    mms,
     ...
   }: let
     # Small tool to iterate over each systems
@@ -43,6 +47,177 @@
 
     treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
   in {
+    colmena = let
+      pinned-nixpkgs = {
+        nix.registry.nixpkgs.flake = nixpkgs;
+      };
+      unfreePkgs = system: {allowedUnfree ? []}: {
+        _module.args.nixpkgs-unstable = import nixpkgs-unstable {
+          inherit system;
+          config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs-unstable.legacyPackages."${system}".lib.getName pkg) allowedUnfree;
+        };
+      };
+      selfpkgs = system: {
+        _module.args.selfpkgs = self.packages.${system};
+      };
+    in {
+      meta = {
+        nixpkgs = import nixpkgs {system = "x86_64-linux";};
+      };
+
+      runner = let
+        system = "x86_64-linux";
+      in {
+        nixpkgs.system = system;
+        deployment.allowLocalDeployment = true;
+        imports = [
+          (unfreePkgs system {
+            allowedUnfree = [
+              "steam"
+              "steam-original"
+              "steam-run"
+
+              "zoom"
+              "anydesk"
+
+              "vscode-extension-ms-vscode-cpptools"
+            ];
+          })
+          (selfpkgs system)
+          pinned-nixpkgs
+          retiolum.nixosModules.retiolum
+          ./1systems/runner/config.nix
+        ];
+      };
+      spinner = let
+        system = "x86_64-linux";
+      in {
+        nixpkgs.system = system;
+        imports = [
+          (unfreePkgs system {
+            allowedUnfree = [
+              "steam"
+              "steam-original"
+              "steam-run"
+
+              "zoom"
+              "anydesk"
+
+              "nvidia-x11"
+              "nvidia-settings"
+
+              "vscode-extension-ms-vscode-cpptools"
+            ];
+          })
+          (selfpkgs system)
+          pinned-nixpkgs
+          retiolum.nixosModules.retiolum
+          self.nixosModules.virtualization
+          ./1systems/spinner/config.nix
+        ];
+      };
+      worker = let
+        system = "x86_64-linux";
+      in {
+        nixpkgs.system = system;
+        imports = [
+          (unfreePkgs system {
+            allowedUnfree = [
+              "zoom"
+              "anydesk"
+
+              "vscode-extension-ms-vscode-cpptools"
+            ];
+          })
+          (selfpkgs system)
+          pinned-nixpkgs
+          retiolum.nixosModules.retiolum
+          nixos-hardware.nixosModules.framework-13-7040-amd
+          self.nixosModules.virtualization
+          ./1systems/worker/config.nix
+        ];
+      };
+      safe = let
+        system = "x86_64-linux";
+      in {
+        deployment = {
+          targetHost = "safe.user-sites.de";
+          tags = ["remote" "servers"];
+        };
+        nixpkgs.system = system;
+        imports = [
+          ./1systems/safe.user-sites.de/config.nix
+          ({pkgs, ...}: {
+            environment.systemPackages = [pkgs.wireguard-tools];
+            networking = {
+              wireguard.interfaces = {
+                wg0 = {
+                  privateKey = "wBxjEgRPmPelxISVv54zjAgGhv3ZaOeK7uv1VKuhf14=";
+                  ips = ["10.82.0.1/24"];
+                  listenPort = 51820;
+                };
+              };
+            };
+          })
+        ];
+      };
+      devel = let
+        system = "x86_64-linux";
+      in {
+        nixpkgs.system = system;
+        deployment = {
+          targetHost = "devel.rtinf.net";
+          tags = ["remote" "servers"];
+        };
+        imports = [
+          (unfreePkgs system {})
+          ./1systems/devel.rtinf.net/config.nix
+        ];
+      };
+      atm9 = let
+        system = "x86_64-linux";
+      in {
+        nixpkgs.system = system;
+        deployment = {
+          targetHost = "atm9.rtinf.net";
+          tags = ["remote" "servers"];
+        };
+        imports = [
+          (unfreePkgs system {})
+          mms.module
+          ./1systems/atm8.rtinf.net/config.nix
+        ];
+      };
+      /*
+      konfactory = let
+        system = "x86_64-linux";
+      in {
+
+        deployment = {
+          targetHost = "konfactory.rtinf.net";
+          tags = ["remote" "servers"];
+        };
+
+        imports = [
+          #{_modules.args.nixUnstPath = "${nixpkgs-unstable}";}
+          #(unfreePkgs system {
+          #  allowedUnfree = [
+          #    "factorio-headless"
+          #  ];
+          #})
+          #./1systems/konfactory.rtinf.net/config.nix
+        ];
+      };
+      comms = let
+        system = "x86_64-linux";
+      in {
+        imports = [
+          (unfreePkgs system {})
+          ./1systems/comms.rtinf.net/config.nix
+        ];
+      };
+      */
+    };
     nixosModules = {
       base = import ./2configs/base.nix;
       base-pc = import ./2configs/base-pc.nix;
@@ -60,180 +235,8 @@
       inherit (nixvim.nixosModules) nixvim;
     };
 
-    nixosConfigurations = let
-      pinned-nixpkgs = {
-        nix.registry.nixpkgs.flake = nixpkgs;
-      };
-      unfreePkgs = {
-        system,
-        allowedUnfree,
-      }:
-        import nixpkgs-unstable {
-          inherit system;
-          config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs-unstable.legacyPackages."${system}".lib.getName pkg) allowedUnfree;
-        };
-    in
-      {
-        runner =
-          nixpkgs.lib.nixosSystem
-          rec {
-            system = "x86_64-linux";
-            specialArgs = {
-              nixpkgs-unstable = unfreePkgs {
-                inherit system;
-                allowedUnfree = [
-                  "steam"
-                  "steam-original"
-                  "steam-run"
+    nixosConfigurations = (colmena.lib.makeHive self.colmena).nodes;
 
-                  "zoom"
-                  "anydesk"
-
-                  "vscode-extension-ms-vscode-cpptools"
-                ];
-              };
-              selfpkgs = self.packages.${system};
-            };
-            modules = [
-              pinned-nixpkgs
-              retiolum.nixosModules.retiolum
-              ./1systems/runner/config.nix
-            ];
-          };
-        spinner = nixpkgs.lib.nixosSystem rec {
-          system = "x86_64-linux";
-          specialArgs = {
-            inherit hyprland;
-            nixpkgs-unstable = unfreePkgs {
-              inherit system;
-              allowedUnfree = [
-                "steam"
-                "steam-original"
-                "steam-run"
-
-                "zoom"
-                "anydesk"
-
-                "nvidia-x11"
-                "nvidia-settings"
-
-                "vscode-extension-ms-vscode-cpptools"
-              ];
-            };
-            selfpkgs = self.packages.${system};
-          };
-          modules = [
-            pinned-nixpkgs
-            retiolum.nixosModules.retiolum
-            self.nixosModules.virtualization
-            ./1systems/spinner/config.nix
-          ];
-        };
-        worker = nixpkgs.lib.nixosSystem rec {
-          system = "x86_64-linux";
-          specialArgs = {
-            inherit hyprland;
-            nixpkgs-unstable = unfreePkgs {
-              inherit system;
-              allowedUnfree = [
-                "zoom"
-                "anydesk"
-
-                "vscode-extension-ms-vscode-cpptools"
-              ];
-            };
-            selfpkgs = self.packages.${system};
-          };
-          modules = [
-            pinned-nixpkgs
-            retiolum.nixosModules.retiolum
-            nixos-hardware.nixosModules.framework-13-7040-amd
-            self.nixosModules.virtualization
-            ./1systems/worker/config.nix
-          ];
-        };
-        devel = nixpkgs.lib.nixosSystem rec {
-          system = "x86_64-linux";
-          specialArgs = {
-            nixpkgs-unstable = nixpkgs-unstable.legacyPackages."${system}";
-          };
-          modules = [
-            ./1systems/devel.rtinf.net/config.nix
-            {
-              _module.args.nixinate = {
-                host = "devel.rtinf.net";
-                sshUser = "root";
-                buildOn = "remote";
-                substituteOnTarget = true;
-                hermetic = true;
-              };
-            }
-          ];
-        };
-        safe = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            {
-              _module.args.nixinate = {
-                host = "safe.user-sites.de";
-                sshUser = "root";
-                buildOn = "remote";
-                substituteOnTarget = true;
-                hermetic = true;
-              };
-            }
-            ./1systems/safe.user-sites.de/config.nix
-          ];
-        };
-        konfactory = nixpkgs.lib.nixosSystem rec {
-          system = "x86_64-linux";
-          specialArgs = {
-            nixUnstPath = nixpkgs-unstable;
-            nixpkgs-unstable = unfreePkgs {
-              inherit system;
-              allowedUnfree = [
-                "factorio-headless"
-              ];
-            };
-          };
-          modules = [
-            /*
-              {
-              _module.args.nixinate = {
-                host = "konfactory.rtinf.net";
-                sshUser = "root";
-                buildOn = "remote";
-                substituteOnTarget = true;
-                hermetic = true;
-              };
-            }
-            */
-            ./1systems/konfactory.rtinf.net/config.nix
-          ];
-        };
-
-        /*
-        comms = nixpkgs.lib.nixosSystem rec {
-          #system = "aarch64-linux";
-          system = "x86_64-linux";
-          specialArgs = {
-            nixpkgs-unstable = nixpkgs-unstable.legacyPackages.${system};
-          };
-          modules = [
-            ./1systems/comms.rtinf.net/config.nix
-          ];
-        };
-        */
-      }
-      // (
-        let
-          makeTestVM = x: {
-            name = "testVM-" + x;
-            value = self.nixosConfigurations.${x}.extendModules {modules = [./5pkgs/vm-config.nix];};
-          };
-        in
-          builtins.listToAttrs (builtins.map makeTestVM ["safe" "devel"])
-      );
     # adapted from: https://github.com/kmein/niveum
     apps = eachSystem (pkgs: let
       nixinate' = (nixinate.nixinate.${pkgs.system} self).nixinate;
@@ -259,11 +262,8 @@
         };
       });
     packages = eachSystem (pkgs: let
-      mkNixVim = {desktop}:
-        nixvim.legacyPackages.${pkgs.system}.makeNixvim (import ./5pkgs/nixvim-config.nix {
-          enableIDEFeatures = false;
-          enableDesktop = desktop;
-        });
+      mkNixVim = opt:
+        nixvim.legacyPackages.${pkgs.system}.makeNixvim (import ./5pkgs/nixvim-config.nix {inherit (nixpkgs) lib;} opt);
     in
       {
         inherit
@@ -273,8 +273,13 @@
           })
           neovim
           ;
-        nixvim = mkNixVim {desktop = false;};
-        nixvimDesktop = mkNixVim {desktop = true;};
+        nixvim = mkNixVim {};
+        nixvimDesktop = mkNixVim {enableDesktop = true;};
+        nixvimIDE = mkNixVim {enableIDEFeatures = true;};
+        nixvimTheFullPackage = mkNixVim {
+          enableIDEFeatures = true;
+          enableStupidFeatures = true;
+        };
 
         mango-bin = pkgs.callPackage ./5pkgs/mango.nix {};
         md-dl = nixpkgs-unstable.legacyPackages.${pkgs.system}.callPackage ./5pkgs/md-dl.nix {};
@@ -305,16 +310,6 @@
             ];
           };
       });
-    hydraJobs.nixosConfigurations."x86_64-linux" = let
-      mapNameToConfigs = y:
-        builtins.listToAttrs (builtins.map
-          (x: {
-            name = x;
-            value = self.nixosConfigurations.${x}.config.system.build.toplevel;
-          })
-          y);
-    in
-      mapNameToConfigs ["safe" "devel"];
 
     formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
     checks = eachSystem (pkgs: {
