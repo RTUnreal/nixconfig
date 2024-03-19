@@ -23,7 +23,6 @@
   outputs = {
     self,
     nix-gaming,
-    hyprland,
     nixpkgs,
     nixpkgs-unstable,
     neovim-flake,
