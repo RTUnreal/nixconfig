@@ -28,15 +28,21 @@ in {
         enable = true;
         hijackCursor = true;
       };
+      rainbow-delimiters.enable = true;
       lsp = {
         enable = true;
         servers = {
+          html.enable = true;
+          bashls.enable = true;
           rust-analyzer = {
             enable = true;
             installCargo = false;
             installRustc = false;
           };
-          nixd.enable = true;
+          nil_ls.enable = true;
+          cmake.enable = true;
+          clangd.enable = true;
+          pylsp.enable = true;
         };
       };
       fidget.enable = true;
@@ -45,10 +51,13 @@ in {
         theme = "catppuccin";
       };
       cmp-nvim-lsp.enable = true;
-      nvim-cmp.enable = true;
+      cmp.enable = true;
       gitsigns = {
         enable = true;
       };
+      treesitter.enable = true;
+      trouble.enable = true;
+      typst-vim.enable = true;
       noice.enable = true;
     })
     (mkIf enableStupidFeatures {
