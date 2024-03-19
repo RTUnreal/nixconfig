@@ -12,7 +12,10 @@
     nix-gaming.url = "github:fufexan/nix-gaming";
     hyprland.url = "github:hyprwm/Hyprland";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    nixvim.url = "github:nix-community/nixvim";
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
     colmena.url = "github:zhaofengli/colmena";
     mms.url = "github:Triton171/nixos-modded-minecraft-servers/8f00cdc8477a306d7f2e1036fcad03506ae9ce12";
   };
