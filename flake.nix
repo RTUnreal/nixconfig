@@ -118,6 +118,7 @@
         system = "x86_64-linux";
       in {
         nixpkgs.system = system;
+        deployment.allowLocalDeployment = true;
         imports = [
           (unfreePkgs system {
             allowedUnfree = [
