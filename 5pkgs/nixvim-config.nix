@@ -108,6 +108,8 @@ in {
           };
         };
       };
+      nvim-lightbulb.enable=true;
+      lsp-lines.enable = true;
       fidget.enable = true;
       lualine = {
         enable = true;
