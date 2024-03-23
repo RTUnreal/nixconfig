@@ -9,7 +9,6 @@
     };
     treefmt-nix.url = "github:numtide/treefmt-nix";
     neovim-flake.url = "github:notashelf/neovim-flake";
-    nix-gaming.url = "github:fufexan/nix-gaming";
     hyprland.url = "github:hyprwm/Hyprland";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     nixvim = {
@@ -22,7 +21,6 @@
 
   outputs = {
     self,
-    nix-gaming,
     nixpkgs,
     nixpkgs-unstable,
     neovim-flake,
@@ -235,11 +233,11 @@
 
     nixosConfigurations = (colmena.lib.makeHive self.colmena).nodes;
 
-    packages = eachSystem (pkgs: let
-      mkNixVim = opt:
-        nixvim.legacyPackages.${pkgs.system}.makeNixvim (import ./5pkgs/nixvim-config.nix {inherit (nixpkgs) lib;} opt);
-    in
-      {
+    packages = eachSystem (
+      pkgs: let
+        mkNixVim = opt:
+          nixvim.legacyPackages.${pkgs.system}.makeNixvim (import ./5pkgs/nixvim-config.nix {inherit (nixpkgs) lib;} opt);
+      in {
         inherit
           (neovim-flake.lib.neovimConfiguration {
             modules = [./5pkgs/neovim-flake-config.nix];
@@ -258,9 +256,7 @@
         mango-bin = pkgs.callPackage ./5pkgs/mango.nix {};
         md-dl = nixpkgs-unstable.legacyPackages.${pkgs.system}.callPackage ./5pkgs/md-dl.nix {};
       }
-      // pkgs.lib.optionalAttrs (pkgs.system == "x86_64-linux") {
-        inherit (nix-gaming.packages.${pkgs.system}) proton-ge;
-      });
+    );
     devShells =
       eachSystem
       (pkgs: {

@@ -1,7 +1,7 @@
 {
   config,
   pkgs,
-  selfpkgs,
+  nixpkgs-unstable,
   ...
 }: let
   ovrasStarter = pkgs.writeShellScriptBin "ovras-start" ''
@@ -39,6 +39,8 @@ in {
             )
             ++ [pkgs.appimage-run ovrasStarter];
       };
+      # TODO: Enable again in 24.05
+      #extraCompatPackages = [nixpkgs-unstable.proton-ge-bin];
     };
     # XXX: rethink gamescop
     gamescope = {
@@ -49,8 +51,7 @@ in {
   };
   environment = {
     systemPackages = [ovrasStarter];
-    sessionVariables = {
-      STEAM_EXTRA_COMPAT_TOOLS_PATHS = "${selfpkgs.proton-ge}";
-    };
+    # TODO: Remove in 24.05
+    sessionVariables.STEAM_EXTRA_COMPAT_TOOLS_PATHS = "${nixpkgs-unstable.proton-ge-bin}";
   };
 }
