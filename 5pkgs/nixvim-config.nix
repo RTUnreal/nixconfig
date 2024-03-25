@@ -11,7 +11,10 @@ in {
   vimAlias = true;
   viAlias = true;
 
-  globals.mapleader = " ";
+  globals = {
+    mapleader = " ";
+    formatOnSave = true;
+  };
   options = {
     relativenumber = true;
     number = true;
@@ -54,6 +57,12 @@ in {
       key = "${l}tn";
       action = "<cmd>NvimTreeToggle<CR>";
       options.desc = "Toggle NvimTree";
+    }
+    {
+      key = "${l}tf";
+      # from lsp-format
+      action = "<cmd>FormatToggle<CR>";
+      options.desc = "Toggle formating on save";
     }
   ];
 
@@ -126,6 +135,7 @@ in {
       };
       nvim-lightbulb.enable=true;
       lsp-lines.enable = true;
+      lsp-format.enable = true;
       fidget.enable = true;
       lualine = {
         enable = true;
