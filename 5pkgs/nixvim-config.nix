@@ -1,4 +1,4 @@
-{lib}: {
+{pkgs,lib}: {
   enableStupidFeatures ? false,
   enableIDEFeatures ? false,
   enableDesktop ? enableIDEFeatures,
@@ -107,7 +107,10 @@ in {
             installCargo = false;
             installRustc = false;
           };
-          nil_ls.enable = true;
+          nil_ls = {
+            enable = true;
+            settings.formatting.command = ["${lib.getExe pkgs.alejandra}" "--quiet"];
+          };
           cmake.enable = true;
           clangd.enable = true;
           pylsp.enable = true;

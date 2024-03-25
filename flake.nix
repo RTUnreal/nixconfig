@@ -236,7 +236,11 @@
     packages = eachSystem (
       pkgs: let
         mkNixVim = opt:
-          nixvim.legacyPackages.${pkgs.system}.makeNixvim (import ./5pkgs/nixvim-config.nix {inherit (nixpkgs) lib;} opt);
+          nixvim.legacyPackages.${pkgs.system}.makeNixvim (import ./5pkgs/nixvim-config.nix {
+              inherit (nixpkgs) lib;
+              inherit pkgs;
+            }
+            opt);
       in {
         inherit
           (neovim-flake.lib.neovimConfiguration {
