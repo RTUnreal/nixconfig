@@ -71,7 +71,17 @@ in {
         enable = true;
         hijackCursor = true;
       };
-      bufferline.enable = true;
+      bufferline = {
+        enable = true;
+        offsets = [
+          {
+            filetype = "NvimTree";
+            text = "File Explorer";
+            highlight = "Directory";
+            separator = true;
+          }
+        ];
+      };
       lsp = {
         enable = true;
         servers = {
