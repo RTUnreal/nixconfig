@@ -50,6 +50,11 @@ in {
       action = "<cmd>buffers<CR>";
       options.desc = "List all buffers";
     }
+    {
+      key = "${l}tn";
+      action = "<cmd>NvimTreeToggle<CR>";
+      options.desc = "Toggle NvimTree";
+    }
   ];
 
   clipboard.providers.xclip.enable = enableDesktop;
@@ -63,6 +68,7 @@ in {
         enable = true;
         registrations = {
           "${l}l" = "+lsp";
+          "${l}t" = "+toggle";
         };
       };
     }
