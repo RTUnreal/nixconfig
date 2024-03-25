@@ -111,6 +111,10 @@ in {
           cmake.enable = true;
           clangd.enable = true;
           pylsp.enable = true;
+          phpactor = {
+            enable = true;
+            cmd = ["phpactor" "language-server" "--config-extra" "{\"language_server_php_cs_fixer.enabled\":true}"];
+          };
         };
         keymaps = {
           lspBuf = {
