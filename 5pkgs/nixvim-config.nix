@@ -133,7 +133,7 @@ in {
           };
         };
       };
-      nvim-lightbulb.enable=true;
+      nvim-lightbulb.enable = true;
       lsp-lines.enable = true;
       lsp-format.enable = true;
       fidget.enable = true;
