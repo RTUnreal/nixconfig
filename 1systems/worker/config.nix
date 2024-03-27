@@ -13,7 +13,7 @@
 in {
   imports = [
     ./hardware-configuration.nix
-    #./retiolum-cfg.nix
+    ./retiolum-cfg.nix
     ../../2configs/base.nix
     ../../2configs/base-pc.nix
     ../../2configs/bluetooth.nix
