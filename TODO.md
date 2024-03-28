@@ -1,9 +1,7 @@
-- use flake registry instead of single flake references
 - figure out if using gamescope is worth it
   - programs.gamescope
   - https://wiki.archlinux.org/title/Gamescope
-- make neovim into a localy testable application
 - add nerdfonts to neovim-flake
 - fw-fanctrl
 - usb-guard
-- [colmena](https://github.com/zhaofengli/colmena)
+- maybe switch to raw nixos-rebuild --target-host
