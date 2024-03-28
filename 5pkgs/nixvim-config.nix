@@ -1,4 +1,7 @@
-{pkgs,lib}: {
+{
+  pkgs,
+  lib,
+}: {
   enableStupidFeatures ? false,
   enableIDEFeatures ? false,
   enableDesktop ? enableIDEFeatures,
@@ -55,6 +58,18 @@ in {
     }
     {
       key = "${l}tn";
+      action = ''
+        function()
+          vim.o.signcolumn = vim.o.signcolumn ~= "no" and "no" or "auto"
+          vim.o.number = not vim.o.number
+          vim.o.relativenumber = not vim.o.relativenumber
+        end
+      '';
+      lua = true;
+      options.desc = "Toggle terminal copy mode";
+    }
+    {
+      key = "${l}tr";
       action = "<cmd>NvimTreeToggle<CR>";
       options.desc = "Toggle NvimTree";
     }
