@@ -1,7 +1,6 @@
 - figure out if using gamescope is worth it
   - programs.gamescope
   - https://wiki.archlinux.org/title/Gamescope
-- add nerdfonts to neovim-flake
 - fw-fanctrl
 - usb-guard
 - maybe switch to raw nixos-rebuild --target-host
