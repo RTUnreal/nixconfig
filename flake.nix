@@ -44,7 +44,7 @@
   in {
     colmena = let
       pinned-nixpkgs = {
-        nix.registry.nixpkgs.flake = nixpkgs;
+        nix.registry.n.flake = nixpkgs;
       };
       unfreePkgs = system: {allowedUnfree ? []}: {
         _module.args.nixpkgs-unstable = import nixpkgs-unstable {
