@@ -102,7 +102,7 @@ in {
 
     discord
     nixosUnstable.zoom-us
-    anydesk
+    nixosUnstable.anydesk
   ];
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [
