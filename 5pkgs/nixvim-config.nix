@@ -2,7 +2,7 @@
   pkgs,
   lib,
 }: {
-  enableStupidFeatures ? false,
+  enableSillyFeatures ? false,
   enableIDEFeatures ? false,
   enableDesktop ? enableIDEFeatures,
 }: let
@@ -173,7 +173,7 @@ in {
       typst-vim.enable = true;
       noice.enable = true;
     })
-    (mkIf enableStupidFeatures {
+    (mkIf enableSillyFeatures {
       neocord = {
         enable = true;
         settings = {
