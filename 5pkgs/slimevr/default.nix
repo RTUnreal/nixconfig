@@ -42,7 +42,6 @@
 
     npmDepsHash = "sha256-jHd0yf1eO5fCre59IOjvadI14Rulfd978wAAkD5MurY=";
 
-    #nativeBuildInputs = [typescript];
     postPatch = ''
       ${lib.getExe jq} '.dependencies += .devDependencies' package.json > p.json
       mv p.json package.json
@@ -126,4 +125,8 @@ in
       wrapProgram $out/bin/slimevr \
         --add-flags "--launch-from-path $out/share/java"
     '';
+
+    meta = {
+      mainProgram = "slimevr";
+    };
   }
