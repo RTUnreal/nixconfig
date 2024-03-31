@@ -27,6 +27,7 @@
     xxd
     jq
     qrencode
+    bat
 
     # net utils
     bind

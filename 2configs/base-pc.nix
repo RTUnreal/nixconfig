@@ -39,6 +39,10 @@
 
   users.users.trr.extraGroups = ["networkmanager"];
 
+  environment.systemPackages = with pkgs; [
+    lazygit
+  ];
+
   # Enable sound.
   sound.enable = true;
   programs = {
