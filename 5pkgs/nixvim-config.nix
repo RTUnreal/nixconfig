@@ -18,7 +18,7 @@ in {
     mapleader = " ";
     formatOnSave = true;
   };
-  options = {
+  opts = {
     relativenumber = true;
     number = true;
     mouse =
