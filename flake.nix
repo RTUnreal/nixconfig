@@ -12,7 +12,7 @@
     hyprland.url = "github:hyprwm/Hyprland";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     nixvim = {
-      url = "github:nix-community/nixvim";
+      url = "github:nix-community/nixvim/nixos-23.11";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     colmena.url = "github:zhaofengli/colmena";
@@ -43,18 +43,17 @@
     treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
   in {
     colmena = let
-      pinned-nixpkgs = {
-        nix.registry.n.flake = nixpkgs;
-      };
       unfreePkgs = system: {allowedUnfree ? []}: {
         _module.args.nixpkgs-unstable = import nixpkgs-unstable {
           inherit system;
           config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs-unstable.legacyPackages."${system}".lib.getName pkg) allowedUnfree;
         };
       };
-      selfpkgs = system: {
-        _module.args.selfpkgs = self.packages.${system};
-      };
+      rtinf = import ./3modules/modules.nix;
+      common = system:
+        rtinf {
+          inherit nixpkgs self system;
+        };
     in {
       meta = {
         nixpkgs = import nixpkgs {system = "x86_64-linux";};
@@ -66,6 +65,7 @@
         nixpkgs.system = system;
         deployment.allowLocalDeployment = true;
         imports = [
+          (common system)
           (unfreePkgs system {
             allowedUnfree = [
               "steam"
@@ -78,8 +78,7 @@
               "vscode-extension-ms-vscode-cpptools"
             ];
           })
-          (selfpkgs system)
-          pinned-nixpkgs
+
           retiolum.nixosModules.retiolum
           ./1systems/runner/config.nix
         ];
@@ -89,6 +88,7 @@
       in {
         nixpkgs.system = system;
         imports = [
+          (common system)
           (unfreePkgs system {
             allowedUnfree = [
               "steam"
@@ -104,10 +104,7 @@
               "vscode-extension-ms-vscode-cpptools"
             ];
           })
-          (selfpkgs system)
-          pinned-nixpkgs
           retiolum.nixosModules.retiolum
-          self.nixosModules.virtualization
           ./1systems/spinner/config.nix
         ];
       };
@@ -117,6 +114,7 @@
         nixpkgs.system = system;
         deployment.allowLocalDeployment = true;
         imports = [
+          (common system)
           (unfreePkgs system {
             allowedUnfree = [
               "zoom"
@@ -125,11 +123,8 @@
               "vscode-extension-ms-vscode-cpptools"
             ];
           })
-          (selfpkgs system)
-          pinned-nixpkgs
           retiolum.nixosModules.retiolum
           nixos-hardware.nixosModules.framework-13-7040-amd
-          self.nixosModules.virtualization
           ./1systems/worker/config.nix
         ];
       };
@@ -142,19 +137,8 @@
         };
         nixpkgs.system = system;
         imports = [
+          (common system)
           ./1systems/safe.user-sites.de/config.nix
-          ({pkgs, ...}: {
-            environment.systemPackages = [pkgs.wireguard-tools];
-            networking = {
-              wireguard.interfaces = {
-                wg0 = {
-                  privateKey = "wBxjEgRPmPelxISVv54zjAgGhv3ZaOeK7uv1VKuhf14=";
-                  ips = ["10.82.0.1/24"];
-                  listenPort = 51820;
-                };
-              };
-            };
-          })
         ];
       };
       devel = let
@@ -166,6 +150,7 @@
           tags = ["remote" "servers"];
         };
         imports = [
+          (common system)
           (unfreePkgs system {})
           ./1systems/devel.rtinf.net/config.nix
         ];
@@ -179,6 +164,7 @@
           tags = ["remote" "servers"];
         };
         imports = [
+          (common system)
           (unfreePkgs system {})
           mms.module
           ./1systems/atm8.rtinf.net/config.nix
@@ -215,15 +201,11 @@
       */
     };
     nixosModules = {
-      base = import ./2configs/base.nix;
-      base-pc = import ./2configs/base-pc.nix;
-      base-server = import ./2configs/base-server.nix;
       bluetooth = import ./2configs/bluetooth.nix;
       docker = import ./2configs/docker.nix;
       mpv = import ./2configs/mpv.nix;
       nvidia-prime = import ./2configs/nvidia-prime.nix;
       steam = import ./2configs/steam.nix;
-      virtualization = import ./3modules/virtualisation.nix;
       wacom = import ./2configs/wacom.nix;
 
       devel-forge = import ./2configs/devel/forge.nix;
@@ -254,7 +236,7 @@
         nixvimIDE = mkNixVim {enableIDEFeatures = true;};
         nixvimTheFullPackage = mkNixVim {
           enableIDEFeatures = true;
-          enableStupidFeatures = true;
+          enableSillyFeatures = true;
         };
 
         slimevr = pkgs.callPackage ./5pkgs/slimevr/default.nix {};

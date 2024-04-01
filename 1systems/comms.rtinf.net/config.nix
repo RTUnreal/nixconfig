@@ -1,7 +1,5 @@
 {...}: {
   imports = [
-    ../../2configs/base.nix
-    ../../2configs/base-server.nix
   ];
 
   # Use the GRUB 2 boot loader.
@@ -9,6 +7,7 @@
     enable = true;
     devices = ["/dev/sda"];
   };
+  rtinf.base.systemType = "server";
 
   networking = {
     hostName = "comms";

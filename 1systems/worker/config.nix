@@ -14,8 +14,6 @@ in {
   imports = [
     ./hardware-configuration.nix
     ./retiolum-cfg.nix
-    ../../2configs/base.nix
-    ../../2configs/base-pc.nix
     ../../2configs/bluetooth.nix
     ../../2configs/docker.nix
     ../../2configs/kde.nix
@@ -24,6 +22,7 @@ in {
     ../../2configs/steam.nix
     (import ../../2configs/vscode {inherit nixosUnstable;})
   ];
+  rtinf.base.systemType = "desktop";
 
   hardware.enableRedistributableFirmware = true;
 
@@ -70,8 +69,8 @@ in {
     ghidra
 
     discord
-    zoom-us
-    anydesk
+    nixosUnstable.zoom-us
+    nixosUnstable.anydesk
   ];
   nixpkgs.config.allowUnfreePredicate = pkg:
     builtins.elem (lib.getName pkg) [

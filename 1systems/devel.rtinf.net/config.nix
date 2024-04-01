@@ -2,13 +2,12 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./../../2configs/base.nix
-    ./../../2configs/base-server.nix
     ./../../2configs/devel/forge.nix
     # TODO: Remove when buildbot is standing
     #./../../2configs/devel/ci.nix
     ./../../2configs/devel/buildbot.nix
   ];
+  rtinf.base.systemType = "server";
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only

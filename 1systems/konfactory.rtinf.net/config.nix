@@ -25,10 +25,9 @@
 
   imports = [
     ./hardware-configuration.nix
-    ../../2configs/base.nix
-    ../../2configs/base-server.nix
     "${nixUnstPath}/nixos/modules/services/games/factorio.nix"
   ];
+  rtinf.base.systemType = "server";
 
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;

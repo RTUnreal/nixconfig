@@ -6,11 +6,10 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./../../2configs/base.nix
-    ./../../2configs/base-server.nix
     ./../../2configs/safe
     ./../../2configs/mango.nix
   ];
+  rtinf.base.systemType = "server";
 
   # Use the GRUB 2 boot loader.
   boot.loader.grub = {

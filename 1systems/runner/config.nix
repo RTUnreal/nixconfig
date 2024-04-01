@@ -17,8 +17,6 @@ in {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./../../2configs/base.nix
-    ./../../2configs/base-pc.nix
     ./../../2configs/kde.nix
     ./../../2configs/virtualization.nix
     ./../../2configs/docker.nix
@@ -28,6 +26,7 @@ in {
     (import ./../../2configs/vscode {inherit nixosUnstable;})
     ./retiolum-cfg.nix
   ];
+  rtinf.base.systemType = "desktop";
 
   hardware.enableRedistributableFirmware = true;
 
@@ -54,7 +53,7 @@ in {
 
   rtinf.neovim = {
     enableIDEFeatures = true;
-    enableExtendedFeatures = true;
+    enableSillyFeatures = true;
   };
 
   networking.firewall.checkReversePath = false;
