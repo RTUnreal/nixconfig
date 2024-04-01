@@ -1,25 +1,29 @@
 {
   config,
-  pkgs,
+  selfpkgs,
   lib,
   ...
 }: let
-  inherit (lib) mkEnableOption mkIf filterAttrs;
+  inherit (lib) mkEnableOption mkIf mkOption types;
   cfg = config.rtinf.neovim;
 in {
   options.rtinf.neovim = {
     enable = mkEnableOption "the neovim config";
-    enableIDEFeatures = mkEnableOption "the IDE features";
-    enableSillyFeatures = mkEnableOption "the silly features";
-    enableDesktop = mkEnableOption "the desktop features" // {default = cfg.enableIDEFeatures;};
+    type = mkOption {
+      type = types.enum ["barebones" "desktop" "ide" "full"];
+    };
   };
-  config = mkIf cfg.enable {
-    /*
-    programs.nixvim =
-      {
-        enable = true;
-      }
-      // ((import ../5pkgs/nixvim-config.nix) {inherit pkgs lib;} (filterAttrs (x: !builtins.elem x ["enable"]) cfg));
-    */
-  };
+  config = mkIf cfg.enable (let
+    pkg =
+      if cfg.type == "full"
+      then selfpkgs.nixvimTheFullPackage
+      else if cfg.type == "ide"
+      then selfpkgs.nixvimIDE
+      else if cfg.type == "desktop"
+      then selfpkgs.nixvimDesktop
+      else selfpkgs.nixvim;
+  in {
+    #environment.systemPackages = [(pkg.nixvimExtend {colorschemes.base16.package = null;})];
+    programs.neovim.defaultEditor = true;
+  });
 }

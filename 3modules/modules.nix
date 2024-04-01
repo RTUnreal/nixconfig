@@ -12,7 +12,7 @@
     ./base.nix
     ./virtualisation.nix
 
-    self.nixosModules.nixvim
+    #self.nixosModules.nixvim
     ./nixvim.nix
   ];
 }

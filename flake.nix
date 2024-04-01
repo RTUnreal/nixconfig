@@ -1,7 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.11";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     retiolum.url = "git+https://git.thalheim.io/Mic92/retiolum";
     flake-compat = {
       url = "github:edolstra/flake-compat";
@@ -12,7 +12,7 @@
     hyprland.url = "github:hyprwm/Hyprland";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     nixvim = {
-      url = "github:nix-community/nixvim/nixos-23.11";
+      url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     colmena.url = "github:zhaofengli/colmena";
@@ -219,8 +219,8 @@
       pkgs: let
         mkNixVim = opt:
           nixvim.legacyPackages.${pkgs.system}.makeNixvim (import ./5pkgs/nixvim-config.nix {
-              inherit (nixpkgs) lib;
-              inherit pkgs;
+              inherit (nixpkgs-unstable) lib;
+              pkgs = nixpkgs-unstable.legacyPackages.${pkgs.system};
             }
             opt);
       in {

@@ -51,10 +51,7 @@ in {
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
-  rtinf.neovim = {
-    enableIDEFeatures = true;
-    enableSillyFeatures = true;
-  };
+  rtinf.neovim.type = "full";
 
   networking.firewall.checkReversePath = false;
 
