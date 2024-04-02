@@ -152,6 +152,14 @@ in {
               action = "signature_help";
               desc = "Help";
             };
+            "${l}lgd" = {
+              action = "definition";
+              desc = "Definition";
+            };
+            "${l}lgD" = {
+              action = "declaration";
+              desc = "Declaration";
+            };
           };
         };
       };
