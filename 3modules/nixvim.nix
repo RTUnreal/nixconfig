@@ -11,6 +11,7 @@ in {
     enable = mkEnableOption "the neovim config";
     type = mkOption {
       type = types.enum ["barebones" "desktop" "ide" "full"];
+      default = "barebones";
     };
   };
   config = mkIf cfg.enable (let
@@ -23,7 +24,7 @@ in {
       then selfpkgs.nixvimDesktop
       else selfpkgs.nixvim;
   in {
-    #environment.systemPackages = [(pkg.nixvimExtend {colorschemes.base16.package = null;})];
+    environment.systemPackages = [pkg];
     programs.neovim.defaultEditor = true;
   });
 }

@@ -49,11 +49,16 @@
           config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs-unstable.legacyPackages."${system}".lib.getName pkg) allowedUnfree;
         };
       };
-      rtinf = import ./3modules/modules.nix;
-      common = system:
-        rtinf {
-          inherit nixpkgs self system;
+      common = system: {
+        nix.registry.n.flake = nixpkgs;
+        _module.args = {
+          selfpkgs = self.packages.${system};
+          selfnixosModules = self.nixosModules;
         };
+        imports = [
+          ./3modules/modules.nix
+        ];
+      };
     in {
       meta = {
         nixpkgs = import nixpkgs {system = "x86_64-linux";};
