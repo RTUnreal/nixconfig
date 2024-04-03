@@ -87,7 +87,6 @@ in {
     {
       nvim-colorizer.enable = true;
       todo-comments.enable = true;
-      rainbow-delimiters.enable = true;
       which-key = {
         enable = true;
         registrations = {
@@ -177,6 +176,7 @@ in {
         enable = true;
       };
       treesitter.enable = true;
+      rainbow-delimiters.enable = true;
       trouble.enable = true;
       typst-vim.enable = true;
       noice.enable = true;
