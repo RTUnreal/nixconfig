@@ -65,7 +65,6 @@ in {
     tdesktop
     blender
     libreoffice-fresh
-    selfpkgs.neovim
     ghidra
 
     discord

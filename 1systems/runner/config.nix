@@ -64,7 +64,6 @@ in {
     glxinfo
     xorg.xdpyinfo
 
-    selfpkgs.neovim
     nixosUnstable.rustup
     nixosUnstable.rust-analyzer
     nixosUnstable.cargo-outdated
