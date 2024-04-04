@@ -1,5 +1,4 @@
 {
-  selfpkgs,
   config,
   lib,
   pkgs,
