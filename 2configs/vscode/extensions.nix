@@ -8,8 +8,8 @@
   {
     name = "vscode-intelephense-client";
     publisher = "bmewburn";
-    version = "1.10.2";
-    sha256 = "0sy4xbfrnkwcvwi3f0fk6dlxwjjpg5byfjgl4cbacziircyxmvw5";
+    version = "1.10.4";
+    sha256 = "12a2d3yrij26gl9znzi5ayjkb6s9dg05rl6cz19bxj3lihpw0gkc";
   }
   {
     name = "better-toml";
@@ -86,14 +86,14 @@
   {
     name = "vscode-language-pack-de";
     publisher = "ms-ceintl";
-    version = "1.88.2024032009";
-    sha256 = "1idrqm7lmxlcg70k4mm8r2f0yjjwkjikkw5iw2dbk5c1c5nv0cs1";
+    version = "1.88.2024040309";
+    sha256 = "1gnprnqninqigyylkhsiwl8wdr8wiwsvc66riv0hvaqj2wixbiba";
   }
   {
     name = "jupyter";
     publisher = "ms-toolsai";
-    version = "2024.3.2024032201";
-    sha256 = "1cf28qfzrqvih1x600nlgk5v0r2jqcdgljn6vf10hckgvm2hga3d";
+    version = "2024.3.2024032701";
+    sha256 = "0p0zpx1fzfj2sbiwj4lp0slr3j0kjjkcxx4sabzy1b5i0q7z9l3z";
   }
   {
     name = "jupyter-keymap";
@@ -110,8 +110,8 @@
   {
     name = "cpptools";
     publisher = "ms-vscode";
-    version = "1.19.9";
-    sha256 = "0yycifi72hawgxn2g8421xg5ri6cwvdw70fk2x6f3bryxqvx5ag4";
+    version = "1.20.0";
+    sha256 = "1bvaw2xvjq2z5gmbvlr6dnigjrv5w8xfg5zh13ahl2wplazchwl6";
   }
   {
     name = "test-adapter-converter";
@@ -128,8 +128,8 @@
   {
     name = "rust-analyzer";
     publisher = "rust-lang";
-    version = "0.4.1893";
-    sha256 = "09vn4sz2r2q658ri14ppkqjfpbq8vlhagxnvnig261h3ck1mhm6s";
+    version = "0.4.1909";
+    sha256 = "0cb0991xifrx5jg2ysz1pmc4bbmckf5q7ss9cy70ap7pi4gdzarb";
   }
   {
     name = "even-better-toml";
