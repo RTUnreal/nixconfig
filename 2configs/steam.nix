@@ -39,8 +39,7 @@ in {
             )
             ++ [pkgs.appimage-run ovrasStarter];
       };
-      # TODO: Enable again in 24.05
-      #extraCompatPackages = [nixpkgs-unstable.proton-ge-bin];
+      extraCompatPackages = [nixpkgs-unstable.proton-ge-bin];
     };
     # XXX: rethink gamescop
     gamescope = {
@@ -51,7 +50,5 @@ in {
   };
   environment = {
     systemPackages = [ovrasStarter];
-    # TODO: Remove in 24.05
-    sessionVariables.STEAM_EXTRA_COMPAT_TOOLS_PATHS = "${nixpkgs-unstable.proton-ge-bin}";
   };
 }
