@@ -2,15 +2,17 @@
   config,
   pkgs,
   lib,
+  nixpkgs-unstable,
   ...
 }: let
-  inherit (lib) mkOption types mkMerge mkIf;
+  inherit (lib) mkOption mkEnableOption types mkMerge mkIf;
   cfg = config.rtinf.base;
 in {
   options.rtinf.base = {
     systemType = mkOption {
       type = types.nullOr (types.enum ["desktop" "server"]);
     };
+    additionalPrograms = mkEnableOption "add additional Programs";
   };
 
   config = mkMerge [
@@ -157,6 +159,7 @@ in {
               }
             ]);
         };
+        partition-manager.enable = true;
       };
     })
     (mkIf (cfg.systemType == "server") {
@@ -169,6 +172,29 @@ in {
         enable = true;
         settings.PermitRootLogin = "yes";
       };
+    })
+    (mkIf cfg.additionalPrograms {
+      environment.systemPackages = with pkgs; [
+        thunderbird
+        keepassxc
+        mumble
+        neochat
+        element-desktop
+        xournalpp
+        texlive.combined.scheme-full
+        texstudio
+        hexchat
+        vlc
+        nixpkgs-unstable.nextcloud-client
+        tdesktop
+        blender
+        libreoffice-fresh
+        ghidra
+
+        discord
+        nixpkgs-unstable.zoom-us
+        nixpkgs-unstable.anydesk
+      ];
     })
   ];
 }

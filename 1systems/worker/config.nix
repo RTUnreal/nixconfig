@@ -21,7 +21,13 @@ in {
     ../../2configs/steam.nix
     (import ../../2configs/vscode {inherit nixosUnstable;})
   ];
-  rtinf.base.systemType = "desktop";
+  rtinf = {
+    base = {
+      systemType = "desktop";
+      additionalPrograms = true;
+    };
+    virtualisation.enable = true;
+  };
 
   hardware.enableRedistributableFirmware = true;
 
@@ -38,50 +44,6 @@ in {
   networking.hostName = "worker";
 
   time.timeZone = "Europe/Berlin";
-
-  rtinf = {
-    virtualisation = {
-      enable = true;
-    };
-  };
-
-  environment.systemPackages = with pkgs; [
-    kate
-    kcalc
-    ark
-
-    thunderbird
-    keepassxc
-    mumble
-    neochat
-    element-desktop
-    xournalpp
-    texlive.combined.scheme-full
-    texstudio
-    hexchat
-    vlc
-    nixosUnstable.nextcloud-client
-    tdesktop
-    blender
-    libreoffice-fresh
-    ghidra
-
-    discord
-    nixosUnstable.zoom-us
-    nixosUnstable.anydesk
-  ];
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "steam"
-      "steam-original"
-      "steam-run"
-
-      "discord"
-      "zoom"
-      "anydesk"
-
-      "vscode-extension-ms-vscode-cpptools"
-    ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

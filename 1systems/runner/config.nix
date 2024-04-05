@@ -25,7 +25,14 @@ in {
     (import ./../../2configs/vscode {inherit nixosUnstable;})
     ./retiolum-cfg.nix
   ];
-  rtinf.base.systemType = "desktop";
+  rtinf = {
+    base = {
+      systemType = "desktop";
+      additionalPrograms = true;
+    };
+    virtualisation.enable = true;
+    neovim.type = "full";
+  };
 
   hardware.enableRedistributableFirmware = true;
 
@@ -36,9 +43,6 @@ in {
       efi.canTouchEfiVariables = true;
     };
     extraModulePackages = with config.boot.kernelPackages; [
-      /*
-      rtl88x2bu
-      */
       v4l2loopback
     ];
     kernelModules = ["rtw88_8822bu"];
@@ -50,67 +54,24 @@ in {
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
-  rtinf.neovim.type = "full";
-
   networking.firewall.checkReversePath = false;
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-    lm_sensors
-    wireguard-tools
-    glxinfo
-    xorg.xdpyinfo
-
-    thunderbird
     prismlauncher
-    mumble
-    hexchat
-    element-desktop
-    nixosUnstable.nextcloud-client
     obs-studio
 
-    keepassxc
-    neochat
-    tdesktop
-    xournalpp
     inkscape
-    # TODO: Revert when fixed in nixpkgs
-    #nixosUnstable.blender-hip
+    nixosUnstable.blender-hip
     krita
-    nixosUnstable.texstudio
-    texlive.combined.scheme-full
-    libreoffice
     gimp
     musescore
-    ghidra-bin
     soundux
 
-    vlc
     paprefs
-
-    discord
-    nixosUnstable.zoom-us
-    nixosUnstable.anydesk
   ];
-  nixpkgs.config.allowUnfreePredicate = pkg:
-    builtins.elem (lib.getName pkg) [
-      "steam"
-      "steam-original"
-      "steam-run"
 
-      "discord"
-      "zoom"
-      "unityhub"
-      "anydesk"
-
-      "vscode-extension-ms-vscode-cpptools"
-    ];
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
   programs = {
     bash.undistractMe = {
       enable = true;
@@ -119,7 +80,6 @@ in {
     };
     kdeconnect.enable = true;
     dconf.enable = true;
-    partition-manager.enable = true;
   };
 
   system.stateVersion = "21.11"; # Did you read the comment?

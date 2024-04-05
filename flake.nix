@@ -16,6 +16,7 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     colmena.url = "github:zhaofengli/colmena";
+    nix-gaming.url = "github:fufexan/nix-gaming";
     mms.url = "github:Triton171/nixos-modded-minecraft-servers/8f00cdc8477a306d7f2e1036fcad03506ae9ce12";
   };
 
@@ -29,6 +30,7 @@
     systems,
     nixos-hardware,
     nixvim,
+    nix-gaming,
     colmena,
     mms,
     ...
@@ -43,12 +45,16 @@
     treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
   in {
     colmena = let
-      unfreePkgs = system: {allowedUnfree ? []}: {
-        _module.args.nixpkgs-unstable = import nixpkgs-unstable {
-          inherit system;
-          config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs-unstable.legacyPackages."${system}".lib.getName pkg) allowedUnfree;
-        };
-      };
+      unfreePkgs = system: {allowedUnfree ? []}: ({lib, ...}:
+        {
+          _module.args.nixpkgs-unstable = import nixpkgs-unstable {
+            inherit system;
+            config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs-unstable.legacyPackages."${system}".lib.getName pkg) allowedUnfree;
+          };
+        }
+        // lib.optionalAttrs (allowedUnfree != []) {
+          nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) allowedUnfree;
+        });
       common = system: {
         nix.registry.n.flake = nixpkgs;
         _module.args = {
@@ -56,6 +62,8 @@
           selfnixosModules = self.nixosModules;
         };
         imports = [
+          retiolum.nixosModules.retiolum
+          nix-gaming.nixosModules.platformOptimizations
           ./3modules/modules.nix
         ];
       };
@@ -77,14 +85,13 @@
               "steam-original"
               "steam-run"
 
+              "discord"
               "zoom"
               "anydesk"
 
               "vscode-extension-ms-vscode-cpptools"
             ];
           })
-
-          retiolum.nixosModules.retiolum
           ./1systems/runner/config.nix
         ];
       };
@@ -100,6 +107,7 @@
               "steam-original"
               "steam-run"
 
+              "discord"
               "zoom"
               "anydesk"
 
@@ -109,7 +117,6 @@
               "vscode-extension-ms-vscode-cpptools"
             ];
           })
-          retiolum.nixosModules.retiolum
           ./1systems/spinner/config.nix
         ];
       };
@@ -122,13 +129,17 @@
           (common system)
           (unfreePkgs system {
             allowedUnfree = [
+              "steam"
+              "steam-original"
+              "steam-run"
+
+              "discord"
               "zoom"
               "anydesk"
 
               "vscode-extension-ms-vscode-cpptools"
             ];
           })
-          retiolum.nixosModules.retiolum
           nixos-hardware.nixosModules.framework-13-7040-amd
           ./1systems/worker/config.nix
         ];
@@ -216,6 +227,7 @@
       devel-forge = import ./2configs/devel/forge.nix;
       devel-ci = import ./2configs/devel/ci.nix;
       inherit (nixvim.nixosModules) nixvim;
+      steamPlatformOptimizations = nix-gaming.nixosModules.platformOptimizations;
     };
 
     nixosConfigurations = (colmena.lib.makeHive self.colmena).nodes;
