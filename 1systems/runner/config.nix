@@ -63,10 +63,6 @@ in {
     glxinfo
     xorg.xdpyinfo
 
-    nixosUnstable.rustup
-    nixosUnstable.rust-analyzer
-    nixosUnstable.cargo-outdated
-
     thunderbird
     prismlauncher
     mumble
