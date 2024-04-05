@@ -217,8 +217,6 @@
 
       devel-forge = import ./2configs/devel/forge.nix;
       devel-ci = import ./2configs/devel/ci.nix;
-      inherit (nixvim.nixosModules) nixvim;
-      steamPlatformOptimizations = nix-gaming.nixosModules.platformOptimizations;
     };
 
     nixosConfigurations = (colmena.lib.makeHive self.colmena).nodes;
