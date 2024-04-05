@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  cfg = config.services.gitea;
+  cfg = config.services.forgejo;
   domain = config.networking.fqdn;
 in {
   users.users.git = {
@@ -16,13 +16,13 @@ in {
   };
   users.groups.git = {};
 
-  services.gitea = {
+  services.forgejo = {
     enable = true;
     package = pkgs.forgejo;
     user = "git";
-    appName = "${domain}: My Dumbest Gitea instance";
-    database.user = "git";
+    database.type = "sqlite3";
     settings = {
+      default.APP_NAME = "${domain}: My Dumbest Gitea instance";
       server = {
         PROTOCOL = "http+unix";
         DOMAIN = domain;
