@@ -45,28 +45,25 @@
     treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
   in {
     colmena = let
-      unfreePkgs = system: {allowedUnfree ? []}: ({lib, ...}:
+      common = system: {allowedUnfree ? []}: ({lib, ...}:
         {
-          _module.args.nixpkgs-unstable = import nixpkgs-unstable {
-            inherit system;
-            config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs-unstable.legacyPackages."${system}".lib.getName pkg) allowedUnfree;
+          nix.registry.n.flake = nixpkgs;
+          _module.args = {
+            selfpkgs = self.packages.${system};
+            nixpkgs-unstable = import nixpkgs-unstable {
+              inherit system;
+              config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs-unstable.legacyPackages."${system}".lib.getName pkg) allowedUnfree;
+            };
           };
+          imports = [
+            retiolum.nixosModules.retiolum
+            nix-gaming.nixosModules.platformOptimizations
+            ./3modules/modules.nix
+          ];
         }
         // lib.optionalAttrs (allowedUnfree != []) {
           nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) allowedUnfree;
         });
-      common = system: {
-        nix.registry.n.flake = nixpkgs;
-        _module.args = {
-          selfpkgs = self.packages.${system};
-          selfnixosModules = self.nixosModules;
-        };
-        imports = [
-          retiolum.nixosModules.retiolum
-          nix-gaming.nixosModules.platformOptimizations
-          ./3modules/modules.nix
-        ];
-      };
     in {
       meta = {
         nixpkgs = import nixpkgs {system = "x86_64-linux";};
@@ -78,8 +75,7 @@
         nixpkgs.system = system;
         deployment.allowLocalDeployment = true;
         imports = [
-          (common system)
-          (unfreePkgs system {
+          (common system {
             allowedUnfree = [
               "steam"
               "steam-original"
@@ -100,8 +96,7 @@
       in {
         nixpkgs.system = system;
         imports = [
-          (common system)
-          (unfreePkgs system {
+          (common system {
             allowedUnfree = [
               "steam"
               "steam-original"
@@ -126,8 +121,7 @@
         nixpkgs.system = system;
         deployment.allowLocalDeployment = true;
         imports = [
-          (common system)
-          (unfreePkgs system {
+          (common system {
             allowedUnfree = [
               "steam"
               "steam-original"
@@ -153,7 +147,7 @@
         };
         nixpkgs.system = system;
         imports = [
-          (common system)
+          (common system {})
           ./1systems/safe.user-sites.de/config.nix
         ];
       };
@@ -166,8 +160,7 @@
           tags = ["remote" "servers"];
         };
         imports = [
-          (common system)
-          (unfreePkgs system {})
+          (common system {})
           ./1systems/devel.rtinf.net/config.nix
         ];
       };
@@ -180,8 +173,7 @@
           tags = ["remote" "servers"];
         };
         imports = [
-          (common system)
-          (unfreePkgs system {})
+          (common system {})
           mms.module
           ./1systems/atm8.rtinf.net/config.nix
         ];
@@ -197,20 +189,19 @@
         };
 
         imports = [
-          #{_modules.args.nixUnstPath = "${nixpkgs-unstable}";}
-          #(unfreePkgs system {
-          #  allowedUnfree = [
-          #    "factorio-headless"
-          #  ];
-          #})
-          #./1systems/konfactory.rtinf.net/config.nix
+          (common system {
+            allowedUnfree = [
+              "factorio-headless"
+            ];
+          })
+          ./1systems/konfactory.rtinf.net/config.nix
         ];
       };
       comms = let
         system = "x86_64-linux";
       in {
         imports = [
-          (unfreePkgs system {})
+          (common system {})
           ./1systems/comms.rtinf.net/config.nix
         ];
       };
