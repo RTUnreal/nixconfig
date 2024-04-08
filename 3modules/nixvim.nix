@@ -25,6 +25,6 @@ in {
       else selfpkgs.nixvim;
   in {
     environment.systemPackages = [pkg];
-    programs.neovim.defaultEditor = true;
+    environment.variables.EDITOR = "nvim";
   });
 }
