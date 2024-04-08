@@ -4,7 +4,6 @@
 {
   config,
   pkgs,
-  lib,
   nixpkgs-unstable ?
     import <nixosUnstable> {
       config = config.nixpkgs.config;
