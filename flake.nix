@@ -247,8 +247,6 @@
 
         slimevr = pkgs.callPackage ./5pkgs/slimevr/default.nix {};
         slimevr-appimage = pkgs.callPackage ./5pkgs/slimevr/appimage.nix {};
-        mango-bin = pkgs.callPackage ./5pkgs/mango.nix {};
-        md-dl = nixpkgs-unstable.legacyPackages.${pkgs.system}.callPackage ./5pkgs/md-dl.nix {};
       }
     );
     devShells =
