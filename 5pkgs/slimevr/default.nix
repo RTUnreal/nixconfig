@@ -1,24 +1,23 @@
 {
+  lib,
   fetchurl,
   fetchgit,
   buildNpmPackage,
   rustPlatform,
-  libthai,
-  jdk17_headless,
-  cargo,
-  rustc,
-  jq,
-  lib,
-  git,
+  wrapGAppsHook,
   makeWrapper,
   pkg-config,
-  glib,
+  jq,
+  cargo,
+  rustc,
+  jdk17_headless,
   dbus,
   openssl,
-  freetype,
-  libsoup,
   gtk3,
+  glib-networking,
   webkitgtk_4_1,
+  gst_all_1,
+  withDebug ? false,
 }: let
   pname = "SlimeVR";
   version = "0.11.0";
@@ -55,7 +54,7 @@
     inherit src version;
 
     npmDepsHash = "sha256-fgt2c5o48zmCAvXrxAKQbZmIKyDD777GCz3u62bu5MA=";
-    nativeBuildInputs = [rustc cargo git];
+    nativeBuildInputs = [rustc cargo];
 
     postPatch = ''
       rm -rf solarxr-protocol
@@ -68,7 +67,7 @@
       sed '/git --no-pager tag /{n;N;N;d}' -i gui/vite.config.ts
       substituteInPlace gui/vite.config.ts \
         --replace "const commitHash = execSync('git rev-parse --verify --short HEAD').toString().trim();" 'const commitHash = "NOT AVAILABLE";' \
-        --replace "const versionTag = execSync('git --no-pager tag --sort -taggerdate --points-at HEAD')" 'const versionTag = "v${version}-nixos";' \
+        --replace "const versionTag = execSync('git --no-pager tag --sort -taggerdate --points-at HEAD')" 'const versionTag = "v${version}";' \
         --replace "const gitClean = execSync('git status --porcelain').toString() ? false : true;" 'const gitClean = true;'
 
       cat gui/vite.config.ts
@@ -91,11 +90,15 @@ in
     cargoLock = {
       lockFile = src + "/Cargo.lock";
     };
-    postPatch = ''
-      ${lib.getExe jq} '.build.distDir = "${frontend}"' gui/src-tauri/tauri.conf.json > t.json
-      mv t.json gui/src-tauri/tauri.conf.json
-      #substituteInPlace tauri.conf.json --replace '"distDir": "../out/src",' '"distDir": "frontend-build/src",'
-    '';
+    postPatch =
+      ''
+        ${lib.getExe jq} '.build.distDir = "${frontend}"' gui/src-tauri/tauri.conf.json > t.json
+        mv t.json gui/src-tauri/tauri.conf.json
+      ''
+      + lib.optionalString withDebug ''
+        substituteInPlace gui/src-tauri/src/main.rs \
+          --replace "if window_state.is_old()" "window.open_devtools();if window_state.is_old()"
+      '';
 
     passthru = {
       inherit src serverJar solarxr frontend;
@@ -103,26 +106,32 @@ in
 
     nativeBuildInputs = [
       makeWrapper
+      wrapGAppsHook
       pkg-config
     ];
 
-    buildInputs = [
-      dbus
-      openssl
-      freetype
-      libsoup
-      gtk3
-      webkitgtk_4_1
-      glib
-      libthai
-      jdk17_headless
-    ];
+    buildInputs =
+      [
+        dbus
+        openssl
+        gtk3
+        glib-networking
+        webkitgtk_4_1
+        jdk17_headless
+      ]
+      ++ (with gst_all_1; [
+        gstreamer
+        gst-plugins-base
+        gst-plugins-good
+        gst-plugins-bad
+        gst-plugins-ugly
+      ]);
 
     postInstall = ''
-      mkdir -p $out/share/java/jre/
-      ln -s ${jdk17_headless}/bin $out/share/java/jre/bin
+      mkdir -p $out/share/java
       ln -s ${serverJar} $out/share/java/slimevr.jar
       wrapProgram $out/bin/slimevr \
+        --set JAVA_HOME "${jdk17_headless}" \
         --add-flags "--launch-from-path $out/share/java"
     '';
 
