@@ -26,6 +26,7 @@ in {
       additionalPrograms = true;
     };
     virtualisation.enable = true;
+    neovim.type = "ide";
   };
 
   hardware.enableRedistributableFirmware = true;

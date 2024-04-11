@@ -76,6 +76,7 @@ in {
       nix.settings.experimental-features = ["nix-command" "flakes"];
     })
     (mkIf (cfg.systemType == "desktop") {
+      rtinf.neovim.type = lib.mkDefault "desktop";
       services = {
         # Enable the X11 windowing system.
         xserver = {
