@@ -188,7 +188,6 @@ in {
         vlc
         nixpkgs-unstable.nextcloud-client
         tdesktop
-        blender
         libreoffice-fresh
         ghidra
 
