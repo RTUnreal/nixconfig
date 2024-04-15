@@ -81,6 +81,21 @@ in {
     }
   ];
 
+  /*
+  keymapsOnEvents = mkMerge [
+    (mkIf enableIDEFeatures {
+      InsertEnter = [
+        {
+          action = "require(\"cmp\").complete";
+          key = "<C-Space>";
+          lua = true;
+          mode = ["i"];
+        }
+      ];
+    })
+  ];
+  */
+
   clipboard.providers.xclip.enable = enableDesktop;
   clipboard.register = ["unnamed"];
   plugins = mkMerge [
@@ -171,10 +186,25 @@ in {
         theme = "catppuccin";
       };
       cmp-nvim-lsp.enable = true;
-      cmp.enable = true;
-      gitsigns = {
+      cmp = {
         enable = true;
+
+        settings = {
+          window = {
+            completion.__raw = "cmp.config.window.bordered";
+            documentation.__raw = "cmp.config.window.bordered";
+          };
+          mapping = {
+            "<C-b>" = "cmp.mapping.scroll_docs(-4)";
+            "<C-f>" = "cmp.mapping.scroll_docs(4)";
+            "<C-Space>" = "cmp.mapping.complete()";
+            "<C-e>" = "cmp.mapping.abort()";
+            "<CR>" = "cmp.mapping.confirm({ select = true })";
+          };
+        };
       };
+      crates-nvim.enable = true;
+      gitsigns.enable = true;
       treesitter.enable = true;
       rainbow-delimiters.enable = true;
       trouble.enable = true;
