@@ -4,3 +4,4 @@
 - fw-fanctrl
 - usb-guard
 - maybe switch to raw nixos-rebuild --target-host
+- look at miniflux
