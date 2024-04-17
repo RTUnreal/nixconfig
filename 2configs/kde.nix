@@ -23,5 +23,6 @@
     filelight
     kalendar
     qpwgraph
+    xwaylandvideobridge
   ];
 }
