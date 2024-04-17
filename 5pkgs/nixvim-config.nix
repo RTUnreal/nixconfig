@@ -139,6 +139,10 @@ in {
               action = "format";
               desc = "Format";
             };
+            "${l}lr" = {
+              action = "references";
+              desc = "Show references";
+            };
             "${l}ln" = {
               action = "rename";
               desc = "Rename symbol";
