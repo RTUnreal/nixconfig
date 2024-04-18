@@ -4,4 +4,4 @@
 - fw-fanctrl
 - usb-guard
 - maybe switch to raw nixos-rebuild --target-host
-- look at miniflux
+- look at miniflux to replace nextcloud news
