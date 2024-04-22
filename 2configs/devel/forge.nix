@@ -40,7 +40,7 @@ in {
   };
   services.nginx.virtualHosts."${domain}" = {
     locations."/" = {
-      proxyPass = "http://unix:/run/gitea/gitea.sock";
+      proxyPass = "http://unix:/run/forgejo/forgejo.sock";
       proxyWebsockets = true;
     };
     forceSSL = true;
