@@ -14,7 +14,6 @@ in {
     ./retiolum-cfg.nix
     ../../2configs/bluetooth.nix
     ../../2configs/docker.nix
-    ../../2configs/kde.nix
     ../../2configs/wacom.nix
     #../../2configs/hyprland.nix
     ../../2configs/steam.nix
@@ -27,6 +26,7 @@ in {
     };
     virtualisation.enable = true;
     neovim.type = "ide";
+    kde.enable = true;
   };
 
   hardware.enableRedistributableFirmware = true;

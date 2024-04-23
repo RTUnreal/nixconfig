@@ -15,7 +15,6 @@ in {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./../../2configs/kde.nix
     ./../../2configs/virtualization.nix
     ./../../2configs/docker.nix
     ./../../2configs/wacom.nix
@@ -31,6 +30,7 @@ in {
     };
     virtualisation.enable = true;
     neovim.type = "full";
+    kde.enable = true;
   };
 
   hardware.enableRedistributableFirmware = true;
