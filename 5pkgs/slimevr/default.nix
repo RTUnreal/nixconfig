@@ -42,8 +42,9 @@
     npmDepsHash = "sha256-jHd0yf1eO5fCre59IOjvadI14Rulfd978wAAkD5MurY=";
 
     postPatch = ''
-      ${lib.getExe jq} '.dependencies += .devDependencies' package.json > p.json
-      mv p.json package.json
+      tmp=$(mktemp)
+      ${lib.getExe jq} '.dependencies += .devDependencies' package.json > "$tmp"
+      mv "$tmp" package.json
     '';
 
     installPhase = "mkdir $out && mv * $out";
@@ -61,16 +62,15 @@
       cp -R ${solarxr} solarxr-protocol
       chmod -R u+w solarxr-protocol
 
-      ${lib.getExe jq} '.scripts.febuild = "cd gui && npm run build"' package.json > p.json
-      mv p.json package.json
+      tmp=$(mktemp)
+      ${lib.getExe jq} '.scripts.febuild = "cd gui && npm run build"' package.json > "$tmp"
+      mv "$tmp" package.json
 
       sed '/git --no-pager tag /{n;N;N;d}' -i gui/vite.config.ts
       substituteInPlace gui/vite.config.ts \
         --replace "const commitHash = execSync('git rev-parse --verify --short HEAD').toString().trim();" 'const commitHash = "NOT AVAILABLE";' \
         --replace "const versionTag = execSync('git --no-pager tag --sort -taggerdate --points-at HEAD')" 'const versionTag = "v${version}";' \
         --replace "const gitClean = execSync('git status --porcelain').toString() ? false : true;" 'const gitClean = true;'
-
-      cat gui/vite.config.ts
     '';
 
     npmBuildScript = "febuild";
@@ -92,8 +92,9 @@ in
     };
     postPatch =
       ''
-        ${lib.getExe jq} '.build.distDir = "${frontend}"' gui/src-tauri/tauri.conf.json > t.json
-        mv t.json gui/src-tauri/tauri.conf.json
+        tmp=$(mktemp)
+        ${lib.getExe jq} '.build.distDir = "${frontend}"' gui/src-tauri/tauri.conf.json > "$tmp"
+        mv "$tmp" gui/src-tauri/tauri.conf.json
       ''
       + lib.optionalString withDebug ''
         substituteInPlace gui/src-tauri/src/main.rs \
