@@ -1,8 +1,4 @@
-{nixosUnstable ? import <nixosUnstable> {}}: {
-  pkgs,
-  lib,
-  ...
-}: let
+{nixosUnstable ? import <nixosUnstable> {}}: {lib, ...}: let
   extFromPkgs = with nixosUnstable.vscode-extensions; [
     ms-vscode.cpptools
     ms-toolsai.jupyter
@@ -22,7 +18,7 @@
       })
     (lib.filter (e: !lib.elem "${e.publisher}.${e.name}" extFilter) (import ./extensions.nix).extensions);
 in {
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = [
     (nixosUnstable.vscode-with-extensions.override {
       vscode = nixosUnstable.vscodium;
       vscodeExtensions =
