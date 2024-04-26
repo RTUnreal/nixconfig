@@ -178,6 +178,19 @@
           ./1systems/atm8.rtinf.net/config.nix
         ];
       };
+      niflheim = let
+        system = "x86_64-linux";
+      in {
+        nixpkgs.system = system;
+        deployment = {
+          targetHost = "niflheim.rtinf.net";
+          tags = ["remote" "servers"];
+        };
+        imports = [
+          (common system {})
+          ./1systems/niflheim.rtinf.net/config.nix
+        ];
+      };
       /*
       konfactory = let
         system = "x86_64-linux";
