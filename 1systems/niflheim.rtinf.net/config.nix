@@ -1,7 +1,12 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
-{config, ...}: {
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}: {
   imports = [
     ./hardware-configuration.nix
   ];
@@ -27,7 +32,30 @@
     groups.vhalheim = {};
   };
 
-  #systemd.services.valheim = {};
+  virtualisation.oci-containers = {
+    backend = "docker";
+    containers.vhalheim = {
+      image = "ghcr.io/lloesche/valheim-server";
+      ports = ["2456-2457:2456-2457/udp"];
+      volumes = [
+        "/var/lib/vhalheim/config:/config:Z"
+        "/var/lib/vhalheim/data:/opt/vhalheim:Z"
+      ];
+      environment = {
+        SERVER_NAME = "Niflheim";
+        SERVER_PORT = "2456";
+        WORLD_NAME = "Dedicated";
+        SERVER_PASS = "milfheim";
+        SERVER_ARGS = "-modifier resources muchmore";
+      };
+      extraOptions = ["--cap-add=sys_nice"]; # "--stop-timeout 120"];
+    };
+  };
+  networking.firewall.allowedUDPPorts = [2456];
+  systemd.tmpfiles.rules = [
+    "d /var/lib/vhalheim/config 0755 vhalheim vhalheim -"
+    "d /var/lib/vhalheim/data 0755 vhalheim vhalheim -"
+  ];
 
   time.timeZone = "Europe/Berlin";
 
