@@ -8,7 +8,6 @@
       flake = false;
     };
     treefmt-nix.url = "github:numtide/treefmt-nix";
-    neovim-flake.url = "github:notashelf/neovim-flake";
     hyprland.url = "github:hyprwm/Hyprland";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     nixvim = {
@@ -24,7 +23,6 @@
     self,
     nixpkgs,
     nixpkgs-unstable,
-    neovim-flake,
     retiolum,
     treefmt-nix,
     systems,
@@ -243,13 +241,6 @@
             }
             opt);
       in {
-        inherit
-          (neovim-flake.lib.neovimConfiguration {
-            modules = [./5pkgs/neovim-flake-config.nix];
-            pkgs = nixpkgs-unstable.legacyPackages.${pkgs.system};
-          })
-          neovim
-          ;
         nixvim = mkNixVim {};
         nixvimDesktop = mkNixVim {enableDesktop = true;};
         nixvimIDE = mkNixVim {enableIDEFeatures = true;};
