@@ -1,12 +1,7 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
-{
-  config,
-  pkgs,
-  lib,
-  ...
-}: {
+{config, ...}: {
   imports = [
     ./hardware-configuration.nix
   ];
@@ -46,7 +41,7 @@
         SERVER_PORT = "2456";
         WORLD_NAME = "Dedicated";
         SERVER_PASS = "milfheim";
-        SERVER_ARGS = "-modifier resources muchmore";
+        SERVER_ARGS = "-modifier resources muchmore -crossplay";
       };
       extraOptions = ["--cap-add=sys_nice"]; # "--stop-timeout 120"];
     };
