@@ -23,8 +23,6 @@
     users = {
       mc.isSystemUser = true;
       mc.group = "mc";
-
-      root.openssh.authorizedKeys.keys = config.users.users.trr.openssh.authorizedKeys.keys;
     };
     groups.mc = {};
   };

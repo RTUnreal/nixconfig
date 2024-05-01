@@ -92,6 +92,11 @@
       spinner = let
         system = "x86_64-linux";
       in {
+        deployment = {
+          targetUser = "trr";
+          targetHost = "192.168.0.101";
+          tags = ["remote" "servers"];
+        };
         nixpkgs.system = system;
         imports = [
           (common system {
@@ -140,6 +145,7 @@
         system = "x86_64-linux";
       in {
         deployment = {
+          targetUser = "trr";
           targetHost = "safe.user-sites.de";
           tags = ["remote" "servers"];
         };
@@ -154,6 +160,7 @@
       in {
         nixpkgs.system = system;
         deployment = {
+          targetUser = "trr";
           targetHost = "devel.rtinf.net";
           tags = ["remote" "servers"];
         };
@@ -167,6 +174,7 @@
       in {
         nixpkgs.system = system;
         deployment = {
+          targetUser = "trr";
           targetHost = "atm9.rtinf.net";
           tags = ["remote" "servers"];
         };

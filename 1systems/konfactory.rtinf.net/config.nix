@@ -38,8 +38,6 @@
     domain = "rtinf.net";
   };
 
-  users.users.root.openssh.authorizedKeys.keys = config.users.users.trr.openssh.authorizedKeys.keys;
-
   services.factorio = {
     enable = true;
     openFirewall = true;
