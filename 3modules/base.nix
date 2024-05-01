@@ -12,6 +12,16 @@ in {
     systemType = mkOption {
       type = types.nullOr (types.enum ["desktop" "server"]);
     };
+    laptopServer = mkOption {
+      type = types.nullOr (types.submodule {
+        options.buildinDisplayName = mkOption {
+          type = types.str;
+          example = "intel_backlight";
+          description = lib.mdDoc "`/sys/acpi/backlight` display name";
+        };
+      });
+      description = lib.mdDoc "set laptop server specific configs. `null` to disable.";
+    };
     additionalPrograms = mkEnableOption "add additional Programs";
   };
 
@@ -26,10 +36,7 @@ in {
 
       # Select internationalisation properties.
       i18n.defaultLocale = "de_DE.UTF-8";
-      console = {
-        font = "Lat2-Terminus16";
-        keyMap = "de";
-      };
+      console.font = "Lat2-Terminus16";
       environment.systemPackages = with pkgs; [
         # shell utils
         wget
@@ -77,6 +84,8 @@ in {
     })
     (mkIf (cfg.systemType == "desktop") {
       rtinf.neovim.type = lib.mkDefault "desktop";
+
+      console.keyMap = "de";
       services = {
         # Enable the X11 windowing system.
         xserver = {
@@ -167,6 +176,30 @@ in {
       services.openssh = {
         enable = true;
         settings.PermitRootLogin = "yes";
+      };
+    })
+    (mkIf (cfg.laptopServer != null) {
+      services.logind.lidSwitch = "ignore";
+      services.acpid = {
+        enable = true;
+        logEvents = true;
+        lidEventCommands = ''
+          vals=($1)
+          echo "lid event '$1'"
+          case ''${vals[3]} in
+            open)
+              echo 100 > /sys/class/acpi/backlight/${cfg.laptopServer.buildinDisplayName}/brightness
+              ;;
+            close)
+              echo 0 > /sys/class/acpi/backlight/${cfg.laptopServer.buildinDisplayName}/brightness
+              ;;
+            *)
+              echo unknown lid state ''${vals[3]}
+              ;;
+          esac
+        '';
+        # TODO: make this emit a warning when unplugged
+        # acEventCommand = "";
       };
     })
     (mkIf cfg.additionalPrograms {

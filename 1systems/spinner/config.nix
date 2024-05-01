@@ -16,12 +16,14 @@ in {
     ../../2configs/nvidia-prime.nix
     ../../2configs/wacom.nix
     ../../2configs/steam.nix
-    #../../2configs/hyprland.nix
     (import ../../2configs/vscode {inherit nixosUnstable;})
   ];
   rtinf = {
     base = {
-      systemType = "desktop";
+      systemType = "server";
+      laptopServer = {
+        buildinDisplayName = "intel_backlight";
+      };
       additionalPrograms = true;
     };
     virtualisation.enable = true;
