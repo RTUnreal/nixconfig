@@ -20,6 +20,7 @@ in {
           description = lib.mdDoc "`/sys/acpi/backlight` display name";
         };
       });
+      default = null;
       description = lib.mdDoc "set laptop server specific configs. `null` to disable.";
     };
     additionalPrograms = mkEnableOption "add additional Programs";
