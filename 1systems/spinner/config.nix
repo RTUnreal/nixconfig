@@ -27,7 +27,7 @@ in {
       additionalPrograms = true;
     };
     virtualisation.enable = true;
-    kde.enable = true;
+    hyprland.enable = true;
   };
 
   hardware.enableRedistributableFirmware = true;
