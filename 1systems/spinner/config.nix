@@ -30,6 +30,16 @@ in {
     hyprland.enable = true;
   };
 
+  services.github-runners."enowars" = {
+    enable = true;
+    url = "https://github.com/enowars";
+    tokenFile = "/var/lib/enowars/token";
+    ephemeral = true;
+  };
+  systemd.tmpfiles.rules = [
+    "d /var/lib/enowars 0755 root root -"
+  ];
+
   hardware.enableRedistributableFirmware = true;
 
   boot.loader.grub.enable = true;
