@@ -35,6 +35,7 @@ in {
     url = "https://github.com/enowars";
     tokenFile = "/var/lib/enowars/token";
     ephemeral = true;
+    nodeRuntimes = ["node16" "node20"];
   };
   systemd.tmpfiles.rules = [
     "d /var/lib/enowars 0755 root root -"
