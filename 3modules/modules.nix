@@ -6,5 +6,6 @@
     ./hyprland.nix
 
     ./nixvim.nix
+    ./wireshark.nix
   ];
 }
