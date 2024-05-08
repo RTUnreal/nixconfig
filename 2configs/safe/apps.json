@@ -32,14 +32,6 @@
     "sha256": "0kcbc1hi9s5h0jr7dyipvckjyca3fsvjh38ay77amn37x2cwaj3d"
   },
   {
-    "name": "news",
-    "version": "24.0.0",
-    "url": "https://github.com/nextcloud/news/releases/download/24.0.0/news.tar.gz",
-    "license": "agpl3Plus",
-    "description": "An RSS/Atom feed reader",
-    "sha256": "1bkh73h0ibxyjpy3cmvhnlr7isvgqkcxdw2dw15mxksj2cln9wki"
-  },
-  {
     "name": "notes",
     "version": "4.9.4",
     "url": "https://github.com/nextcloud-releases/notes/releases/download/v4.9.4/notes-v4.9.4.tar.gz",

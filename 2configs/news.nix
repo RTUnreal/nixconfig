@@ -2,6 +2,10 @@
   services = {
     miniflux = {
       enable = true;
+      adminCredentialsFile = "/root/test";
+      config = {
+        BASE_URL = "https://news.user-sites.de/";
+      };
     };
 
     nginx.virtualHosts."news.user-sites.de" = {

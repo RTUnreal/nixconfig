@@ -7,6 +7,7 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./../../2configs/safe
+    ./../../2configs/news.nix
     ./../../2configs/mango.nix
   ];
   rtinf.base.systemType = "server";
