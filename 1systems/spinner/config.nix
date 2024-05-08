@@ -5,9 +5,7 @@
       config = config.nixpkgs.config;
     },
   ...
-}: let
-  nixosUnstable = nixpkgs-unstable;
-in {
+}: {
   imports = [
     ./hardware-configuration.nix
     ./retiolum-cfg.nix
@@ -15,8 +13,6 @@ in {
     ../../2configs/docker.nix
     ../../2configs/nvidia-prime.nix
     ../../2configs/wacom.nix
-    ../../2configs/steam.nix
-    (import ../../2configs/vscode {inherit nixosUnstable;})
   ];
   rtinf = {
     base = {
