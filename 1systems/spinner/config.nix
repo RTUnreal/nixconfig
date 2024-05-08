@@ -1,11 +1,4 @@
-{
-  config,
-  nixpkgs-unstable ?
-    import <nixosUnstable> {
-      config = config.nixpkgs.config;
-    },
-  ...
-}: {
+{...}: {
   imports = [
     ./hardware-configuration.nix
     ./retiolum-cfg.nix
