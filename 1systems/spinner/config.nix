@@ -20,7 +20,6 @@
       laptopServer = {
         buildinDisplayName = "intel_backlight";
       };
-      additionalPrograms = true;
     };
     virtualisation.enable = true;
     hyprland.enable = true;
