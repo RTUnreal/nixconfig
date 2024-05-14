@@ -95,7 +95,7 @@
         deployment = {
           targetUser = "trr";
           targetHost = "192.168.0.101";
-          tags = ["remote" "servers"];
+          tags = ["servers"];
         };
         nixpkgs.system = system;
         imports = [
