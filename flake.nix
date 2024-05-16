@@ -87,6 +87,10 @@
             ];
           })
           ./1systems/runner/config.nix
+          nixos-hardware.nixosModules.common-gpu-amd
+          nixos-hardware.nixosModules.common-cpu-amd
+          nixos-hardware.nixosModules.common-cpu-amd-pstate
+          {hardware.amdgpu.amdvlk = true;}
         ];
       };
       spinner = let
