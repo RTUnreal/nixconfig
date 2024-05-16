@@ -126,7 +126,11 @@ in {
         lazygit
       ];
 
-      # Enable sound.
+      hardware.opengl = {
+        enable = true;
+        driSupport = true;
+        driSupport32Bit = true;
+      };
       sound.enable = true;
       programs = {
         firefox = {
