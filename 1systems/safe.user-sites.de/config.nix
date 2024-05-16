@@ -9,6 +9,7 @@
     ./../../2configs/safe
     ./../../2configs/news.nix
     ./../../2configs/mango.nix
+    ./../../2configs/ffsync.nix
   ];
   rtinf.base.systemType = "server";
 
