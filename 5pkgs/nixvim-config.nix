@@ -61,6 +61,7 @@ in {
       action = ''
         function()
           vim.o.signcolumn = vim.o.signcolumn ~= "no" and "no" or "auto"
+          vim.o.mouse = vim.o.mouse ~= "a" and "a" or ""
           vim.o.number = not vim.o.number
           vim.o.relativenumber = not vim.o.relativenumber
         end
