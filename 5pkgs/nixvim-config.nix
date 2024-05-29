@@ -58,7 +58,7 @@ in {
     }
     {
       key = "${l}tn";
-      action = ''
+      action.__raw = ''
         function()
           vim.o.signcolumn = vim.o.signcolumn ~= "no" and "no" or "auto"
           vim.o.mouse = vim.o.mouse ~= "a" and "a" or ""
@@ -66,7 +66,6 @@ in {
           vim.o.relativenumber = not vim.o.relativenumber
         end
       '';
-      lua = true;
       options.desc = "Toggle terminal copy mode";
     }
     {
