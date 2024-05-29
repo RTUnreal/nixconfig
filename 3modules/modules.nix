@@ -7,5 +7,7 @@
 
     ./nixvim.nix
     ./wireshark.nix
+
+    ./magnet.nix
   ];
 }

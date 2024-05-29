@@ -1,4 +1,4 @@
-{...}: {
+{config, ...}: {
   imports = [
     ./hardware-configuration.nix
     ./retiolum-cfg.nix
@@ -6,6 +6,7 @@
     ../../2configs/docker.nix
     ../../2configs/nvidia-prime.nix
     ../../2configs/wacom.nix
+    ../../2configs/alexandria.nix
   ];
   rtinf = {
     base = {
@@ -16,7 +17,13 @@
     };
     virtualisation.enable = true;
     hyprland.enable = true;
+    magnet = {
+      enable = true;
+      openFirewall = true;
+    };
   };
+
+  users.users.${config.services.jellyfin.user}.extraGroups = [config.rtinf.magnet.group];
 
   hardware.enableRedistributableFirmware = true;
 
