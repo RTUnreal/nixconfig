@@ -223,8 +223,8 @@ in {
         neochat
         element-desktop
         xournalpp
-        texlive.combined.scheme-full
-        texstudio
+        #texlive.combined.scheme-full
+        #texstudio
         hexchat
         vlc
         nixpkgs-unstable.nextcloud-client
