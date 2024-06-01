@@ -6,7 +6,7 @@ in {
   services.kavita = {
     enable = true;
     tokenKeyFile = "/var/lib/kavita/TOKEN";
-    ipAdresses = [ipAdress];
+    settings.IpAddresses = "${ipAdress}";
   };
   users.users.kavita.extraGroups = ["nextcloud"];
   services.nginx = {
@@ -17,7 +17,7 @@ in {
       locations."/" = {
         recommendedProxySettings = true;
         proxyWebsockets = true;
-        proxyPass = "http://${ipAdress}:${toString cfg.port}";
+        proxyPass = "http://${ipAdress}:${toString cfg.settings.Port}";
       };
     };
   };

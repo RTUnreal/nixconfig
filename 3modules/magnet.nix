@@ -53,6 +53,7 @@ in {
       services.magnet = {
         description = "Magnet web service";
         wantedBy = ["multi-user.target"];
+        wants = ["network-online.target"];
         after = ["network.target" "local-fs.target" "network-online.target" "nss-lookup.target"];
         path = [cfg.package];
         serviceConfig = {

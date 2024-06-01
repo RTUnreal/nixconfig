@@ -9,14 +9,16 @@
 in {
   options.rtinf.kde.enable = mkEnableOption "set kde configuration";
   config = mkIf cfg.enable {
-    services.xserver = {
-      # Enable the Plasma 5 Desktop Environment.
+    # Enable the Plasma 5 Desktop Environment.
+    services = {
       displayManager.sddm.enable = true;
-      desktopManager.plasma5 = {
-        enable = true;
-        kdeglobals = {
-          KDE = {
-            SingleClick = false;
+      xserver = {
+        desktopManager.plasma5 = {
+          enable = true;
+          kdeglobals = {
+            KDE = {
+              SingleClick = false;
+            };
           };
         };
       };

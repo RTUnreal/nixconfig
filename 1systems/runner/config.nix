@@ -66,7 +66,6 @@ in {
     krita
     gimp
     musescore
-    soundux
 
     paprefs
   ];
