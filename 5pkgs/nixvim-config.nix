@@ -121,7 +121,7 @@ in {
             installCargo = false;
             installRustc = false;
           };
-          nil_ls = {
+          nil-ls = {
             enable = true;
             settings.formatting.command = ["${lib.getExe pkgs.alejandra}" "--quiet"];
           };
@@ -153,8 +153,8 @@ in {
               desc = "Code action";
             };
             "${l}lh" = {
-              action = "signature_help";
-              desc = "Help";
+              action = "hover";
+              desc = "Hover";
             };
             "${l}lgd" = {
               action = "definition";
