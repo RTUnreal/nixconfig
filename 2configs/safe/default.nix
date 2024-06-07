@@ -1,7 +1,24 @@
-{pkgs, ...}: {
+{pkgs, ...}: let
+  storageMountPoint = "/mnt/storagebox";
+in {
   security.acme = {
     defaults.email = "alex@user-sites.de";
     acceptTerms = true;
+  };
+  fileSystems.${storageMountPoint} = {
+    device = "//u408927.your-storagebox.de/backup";
+    fsType = "cifs";
+    options = [
+      "iocharset=utf8"
+      "rw"
+      "credentials=/root/storagebox-secrets"
+      "uid=nextcloud"
+      "gid=nextcloud"
+      "file_mode=0660"
+      "dir_mode=0770"
+      "seal"
+      "mfsymlinks" # nextcloud-setup wants to create symlinks on cifs
+    ];
   };
   services = {
     nginx.virtualHosts."safe.user-sites.de" = {
@@ -15,14 +32,14 @@
       https = true;
       hostName = "safe.user-sites.de";
       package = pkgs."nextcloud${builtins.toString version}";
-      datadir = "/data/nextcloud";
+      datadir = "/${storageMountPoint}/nextcloud";
       config = {
         dbtype = "pgsql";
         dbuser = "nextcloud";
         dbhost = "/run/postgresql"; # nextcloud will add /.s.PGSQL.5432 by itself
         dbname = "nextcloud";
         adminuser = "root";
-        adminpassFile = "/data/nextcloud/config/adminpw";
+        adminpassFile = "/var/lib/nextcloud/adminpw";
       };
       extraApps = let
         mapListToNCApps = list:
@@ -53,7 +70,8 @@
     };
   };
   systemd.services."nextcloud-setup" = {
-    requires = ["postgresql.service"];
-    after = ["postgresql.service"];
+    requires = ["mnt-storagebox.mount" "postgresql.service"];
+    wants = ["mnt-storagebox.mount" "postgresql.service"];
+    after = ["mnt-storagebox.mount" "postgresql.service"];
   };
 }
