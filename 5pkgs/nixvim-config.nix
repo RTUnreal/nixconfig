@@ -26,6 +26,12 @@ in {
       then "a"
       else "";
   };
+  highlight = {
+    ExtraWhitespace.bg = "red";
+  };
+  match = {
+    ExtraWhitespace = "\\s\\+$";
+  };
   keymaps = optionals enableIDEFeatures [
     {
       key = "${l}bn";
