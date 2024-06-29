@@ -139,6 +139,7 @@ in {
             enable = true;
             cmd = ["phpactor" "language-server" "--config-extra" "{\"language_server_php_cs_fixer.enabled\":true}"];
           };
+          jsonls.enable = true;
         };
         keymaps = {
           lspBuf = {
