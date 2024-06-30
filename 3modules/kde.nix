@@ -12,9 +12,9 @@ in {
     # Enable the Plasma 5 Desktop Environment.
     services = {
       displayManager.sddm.enable = true;
+      desktopManager.plasma6.enable = true;
       xserver = {
         desktopManager.plasma5 = {
-          enable = true;
           kdeglobals = {
             KDE = {
               SingleClick = false;
@@ -25,15 +25,9 @@ in {
     };
 
     environment.systemPackages = with pkgs; [
-      kate
       kcalc
-      okular
-      gwenview
-      ark
-      spectacle
       okteta
       filelight
-      kalendar
       qpwgraph
       xwaylandvideobridge
     ];
