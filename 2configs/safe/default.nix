@@ -16,6 +16,7 @@ in {
       "gid=nextcloud"
       "file_mode=0660"
       "dir_mode=0770"
+      "cache=none"
       "seal"
       "mfsymlinks" # nextcloud-setup wants to create symlinks on cifs
     ];
