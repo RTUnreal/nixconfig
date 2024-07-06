@@ -80,6 +80,11 @@ in {
       options.desc = "Toggle NvimTree";
     }
     {
+      key = "${l}ld";
+      action = "<cmd>Trouble diagnostics toggle<CR>";
+      options.desc = "Toggle Trouble";
+    }
+    {
       key = "${l}tf";
       # from lsp-format
       action = "<cmd>FormatToggle<CR>";
