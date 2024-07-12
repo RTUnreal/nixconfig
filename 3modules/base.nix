@@ -49,6 +49,7 @@ in {
         jq
         qrencode
         bat
+        colmena
 
         # net utils
         bind
@@ -222,7 +223,6 @@ in {
         thunderbird
         keepassxc
         mumble
-        neochat
         element-desktop
         xournalpp
         #texlive.combined.scheme-full
