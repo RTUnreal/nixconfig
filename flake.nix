@@ -80,7 +80,6 @@
               "steam-run"
 
               "discord"
-              "zoom"
               "anydesk"
 
               "vscode-extension-ms-vscode-cpptools"
@@ -115,7 +114,6 @@
               "steam-run"
 
               "discord"
-              "zoom"
               "anydesk"
 
               "nvidia-x11"
@@ -140,7 +138,6 @@
               "steam-run"
 
               "discord"
-              "zoom"
               "anydesk"
 
               "vscode-extension-ms-vscode-cpptools"

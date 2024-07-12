@@ -235,7 +235,6 @@ in {
         ghidra
 
         discord
-        nixpkgs-unstable.zoom-us
         nixpkgs-unstable.anydesk
       ];
     })
