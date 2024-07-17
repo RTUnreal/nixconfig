@@ -1,6 +1,7 @@
 {
   pkgs,
   nixpkgs-unstable,
+  selfpkgs,
   ...
 }: let
   ovrasStarter = pkgs.writeShellScriptBin "ovras-start" ''
@@ -54,7 +55,7 @@ in {
       package = pkgs.steam.override {
         extraLibraries = pkgs: [pkgs.appimage-run ovrasStarter];
       };
-      extraCompatPackages = [nixpkgs-unstable.proton-ge-bin];
+      extraCompatPackages = [selfpkgs.proton-ge-rtsp-bin];
       platformOptimizations.enable = true;
     };
     gamemode.enable = true;
