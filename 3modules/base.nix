@@ -96,7 +96,7 @@ in {
           # Configure keymap in X11
           xkb = {
             layout = "de,us";
-            options = "eurosign:e,caps:escape_shifted_capslock,grp:win_space_toggle";
+            options = "eurosign:e,caps:escape,grp:win_space_toggle";
           };
         };
 
