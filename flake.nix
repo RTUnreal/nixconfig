@@ -2,7 +2,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-    retiolum.url = "git+https://git.thalheim.io/Mic92/retiolum";
+    retiolum.url = "https://git.thalheim.io/Mic92/retiolum/archive/master.tar.gz";
     flake-compat = {
       url = "github:edolstra/flake-compat";
       flake = false;
