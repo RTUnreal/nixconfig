@@ -184,6 +184,7 @@
           ./1systems/atm8.rtinf.net/config.nix
         ];
       };
+      /*
       niflheim = let
         system = "x86_64-linux";
       in {
@@ -197,7 +198,6 @@
           ./1systems/niflheim.rtinf.net/config.nix
         ];
       };
-      /*
       konfactory = let
         system = "x86_64-linux";
       in {
