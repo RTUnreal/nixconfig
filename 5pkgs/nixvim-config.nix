@@ -100,10 +100,16 @@ in {
       todo-comments.enable = true;
       which-key = {
         enable = true;
-        registrations = {
-          "${l}l" = "+lsp";
-          "${l}t" = "+toggle";
-        };
+        settings.spec = [
+          {
+            __unkeyed-1 = "${l}l";
+            desc = "+lsp";
+          }
+          {
+            __unkeyed-1 = "${l}t";
+            desc = "+toggle";
+          }
+        ];
       };
     }
     (mkIf enableIDEFeatures {
