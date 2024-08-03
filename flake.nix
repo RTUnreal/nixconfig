@@ -46,6 +46,7 @@
       common = system: {allowedUnfree ? []}: ({lib, ...}:
         {
           nix.registry.n.flake = nixpkgs;
+          nixpkgs = {inherit system;};
           _module.args = {
             selfpkgs = self.packages.${system};
             nixpkgs-unstable = import nixpkgs-unstable {
@@ -54,7 +55,6 @@
             };
           };
           imports = [
-            retiolum.nixosModules.retiolum
             nix-gaming.nixosModules.platformOptimizations
             ./3modules/modules.nix
           ];
@@ -70,7 +70,6 @@
       runner = let
         system = "x86_64-linux";
       in {
-        nixpkgs.system = system;
         deployment.allowLocalDeployment = true;
         imports = [
           (common system {
@@ -86,6 +85,7 @@
             ];
           })
           ./1systems/runner/config.nix
+          retiolum.nixosModules.retiolum
           nixos-hardware.nixosModules.common-gpu-amd
           nixos-hardware.nixosModules.common-cpu-amd
           nixos-hardware.nixosModules.common-cpu-amd-pstate
@@ -97,9 +97,8 @@
         deployment = {
           targetUser = "trr";
           targetHost = "192.168.0.101";
-          tags = ["servers"];
+          tags = ["servers" "personal"];
         };
-        nixpkgs.system = system;
         imports = [
           (common system {
             allowedUnfree = [
@@ -117,12 +116,12 @@
             ];
           })
           ./1systems/spinner/config.nix
+          retiolum.nixosModules.retiolum
         ];
       };
       worker = let
         system = "x86_64-linux";
       in {
-        nixpkgs.system = system;
         deployment.allowLocalDeployment = true;
         imports = [
           (common system {
@@ -137,6 +136,7 @@
               "vscode-extension-ms-vscode-cpptools"
             ];
           })
+          retiolum.nixosModules.retiolum
           nixos-hardware.nixosModules.framework-13-7040-amd
           ./1systems/worker/config.nix
         ];
@@ -147,9 +147,8 @@
         deployment = {
           targetUser = "trr";
           targetHost = "safe.user-sites.de";
-          tags = ["remote" "servers"];
+          tags = ["remote" "servers" "personal"];
         };
-        nixpkgs.system = system;
         imports = [
           (common system {})
           ./1systems/safe.user-sites.de/config.nix
@@ -158,7 +157,6 @@
       devel = let
         system = "x86_64-linux";
       in {
-        nixpkgs.system = system;
         deployment = {
           targetUser = "trr";
           targetHost = "devel.rtinf.net";
@@ -172,11 +170,10 @@
       atm9 = let
         system = "x86_64-linux";
       in {
-        nixpkgs.system = system;
         deployment = {
           targetUser = "trr";
           targetHost = "atm9.rtinf.net";
-          tags = ["remote" "servers"];
+          tags = ["remote" "servers" "personal"];
         };
         imports = [
           (common system {})
@@ -184,14 +181,27 @@
           ./1systems/atm8.rtinf.net/config.nix
         ];
       };
+      konstream = let
+        system = "aarch64-linux";
+      in {
+        deployment = {
+          targetUser = "trr";
+          buildOnTarget = true;
+          targetHost = "konstream.rtinf.net";
+          tags = ["remote" "servers" "koncert"];
+        };
+        imports = [
+          (common system {})
+          ./1systems/konstream.rtinf.net/config.nix
+        ];
+      };
       /*
       niflheim = let
         system = "x86_64-linux";
       in {
-        nixpkgs.system = system;
         deployment = {
           targetHost = "niflheim.rtinf.net";
-          tags = ["remote" "servers"];
+          tags = ["remote" "servers" "personal"];
         };
         imports = [
           (common system {})
@@ -201,12 +211,10 @@
       konfactory = let
         system = "x86_64-linux";
       in {
-
         deployment = {
           targetHost = "konfactory.rtinf.net";
-          tags = ["remote" "servers"];
+          tags = ["remote" "servers" "koncert"];
         };
-
         imports = [
           (common system {
             allowedUnfree = [

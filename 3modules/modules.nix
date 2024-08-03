@@ -9,5 +9,6 @@
     ./wireshark.nix
 
     ./magnet.nix
+    ./stream.nix
   ];
 }
