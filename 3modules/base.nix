@@ -191,7 +191,7 @@ in {
       security.sudo.wheelNeedsPassword = false;
       services.openssh = {
         enable = true;
-        settings.PermitRootLogin = "yes";
+        #settings.PermitRootLogin = "yes";
       };
     })
     (mkIf (cfg.laptopServer != null) {
