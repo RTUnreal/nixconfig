@@ -10,5 +10,6 @@
 
     ./magnet.nix
     ./stream.nix
+    ./mofongo.nix
   ];
 }

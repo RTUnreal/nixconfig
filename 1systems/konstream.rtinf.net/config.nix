@@ -1,4 +1,4 @@
-{...}: {
+{config, ...}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -9,6 +9,13 @@
       enable = true;
       hls = {};
       openFirewall = true;
+    };
+    mofongo = {
+      enable = true;
+      appendConfigWithFile = "${config.rtinf.mofongo.stateDir}/additional-settings.txt";
+      settings = {
+        prefix = "m!";
+      };
     };
   };
 
