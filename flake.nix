@@ -237,7 +237,6 @@
     nixosModules = {
       bluetooth = import ./2configs/bluetooth.nix;
       docker = import ./2configs/docker.nix;
-      mpv = import ./2configs/mpv.nix;
       nvidia-prime = import ./2configs/nvidia-prime.nix;
       steam = import ./2configs/steam.nix;
       wacom = import ./2configs/wacom.nix;

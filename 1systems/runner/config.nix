@@ -18,7 +18,6 @@ in {
     ./../../2configs/virtualization.nix
     ./../../2configs/docker.nix
     ./../../2configs/wacom.nix
-    ./../../2configs/mpv.nix
     ./../../2configs/steam.nix
     (import ./../../2configs/vscode {inherit nixosUnstable;})
     ./retiolum-cfg.nix
@@ -31,6 +30,9 @@ in {
     virtualisation.enable = true;
     neovim.type = "full";
     kde.enable = true;
+    programs = {
+      mpv = true;
+    };
   };
 
   hardware.enableRedistributableFirmware = true;
