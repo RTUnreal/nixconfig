@@ -235,7 +235,6 @@
       */
     };
     nixosModules = {
-      docker = import ./2configs/docker.nix;
       nvidia-prime = import ./2configs/nvidia-prime.nix;
       steam = import ./2configs/steam.nix;
       wacom = import ./2configs/wacom.nix;

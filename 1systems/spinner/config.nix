@@ -2,7 +2,6 @@
   imports = [
     ./hardware-configuration.nix
     ./retiolum-cfg.nix
-    ../../2configs/docker.nix
     ../../2configs/nvidia-prime.nix
     ../../2configs/wacom.nix
     ../../2configs/alexandria.nix
@@ -22,6 +21,7 @@
     };
     misc = {
       bluetooth = true;
+      docker = true;
     };
   };
 

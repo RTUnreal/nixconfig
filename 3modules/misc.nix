@@ -10,8 +10,9 @@
 in {
   options.rtinf.misc = {
     adb = mkEnableOption "adb";
-    mpv = mkEnableOption "mpv";
     bluetooth = mkEnableOption "bluetooth";
+    docker = mkEnableOption "docker";
+    mpv = mkEnableOption "mpv";
   };
   config = mkMerge [
     (mkIf cfg.mpv {
@@ -35,12 +36,13 @@ in {
         };
       };
     })
-    (
-      mkIf cfg.adb
-      {
-        programs.adb.enable = true;
-        users.users.trr.extraGroups = ["adbusers"];
-      }
-    )
+    (mkIf cfg.adb {
+      programs.adb.enable = true;
+      users.users.trr.extraGroups = ["adbusers"];
+    })
+    (mkIf cfg.docker {
+      virtualisation.docker.enable = true;
+      users.users.trr.extraGroups = ["docker"];
+    })
   ];
 }

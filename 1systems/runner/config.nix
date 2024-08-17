@@ -16,7 +16,6 @@ in {
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./../../2configs/virtualization.nix
-    ./../../2configs/docker.nix
     ./../../2configs/wacom.nix
     ./../../2configs/steam.nix
     (import ./../../2configs/vscode {inherit nixosUnstable;})
@@ -31,6 +30,7 @@ in {
     neovim.type = "full";
     kde.enable = true;
     misc = {
+      docker = true;
       mpv = true;
     };
   };
