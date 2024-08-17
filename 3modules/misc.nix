@@ -9,6 +9,7 @@
   cfg = config.rtinf.misc;
 in {
   options.rtinf.misc = {
+    adb = mkEnableOption "adb";
     mpv = mkEnableOption "mpv";
     bluetooth = mkEnableOption "bluetooth";
   };
@@ -34,5 +35,12 @@ in {
         };
       };
     })
+    (
+      mkIf cfg.adb
+      {
+        programs.adb.enable = true;
+        users.users.trr.extraGroups = ["adbusers"];
+      }
+    )
   ];
 }
