@@ -15,7 +15,6 @@ in {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./../../2configs/virtualization.nix
     ./../../2configs/steam.nix
     (import ./../../2configs/vscode {inherit nixosUnstable;})
     ./retiolum-cfg.nix
@@ -31,6 +30,7 @@ in {
     misc = {
       docker = true;
       mpv = true;
+      virtualization = true;
       wacom = true;
     };
   };

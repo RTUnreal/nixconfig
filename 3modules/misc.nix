@@ -13,6 +13,7 @@ in {
     bluetooth = mkEnableOption "bluetooth";
     docker = mkEnableOption "docker support";
     mpv = mkEnableOption "mpv";
+    virtualization = mkEnableOption "virtualization support";
     wacom = mkEnableOption "wacom support";
   };
   config = mkMerge [
@@ -25,7 +26,7 @@ in {
         })
       ];
 
-      environment.systemPackages = with pkgs; [mpv];
+      environment.systemPackages = [pkgs.mpv];
     })
     (mkIf cfg.bluetooth {
       hardware.bluetooth = {
@@ -44,6 +45,11 @@ in {
     (mkIf cfg.docker {
       virtualisation.docker.enable = true;
       users.users.trr.extraGroups = ["docker"];
+    })
+    (mkIf cfg.virtualization {
+      virtualisation.libvirtd.enable = true;
+      users.users.trr.extraGroups = ["libvirtd"];
+      environment.systemPackages = [pkgs.virt-manager];
     })
     (mkIf cfg.wacom {
       services.xserver.wacom.enable = true;
