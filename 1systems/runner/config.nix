@@ -30,7 +30,7 @@ in {
     virtualisation.enable = true;
     neovim.type = "full";
     kde.enable = true;
-    programs = {
+    misc = {
       mpv = true;
     };
   };

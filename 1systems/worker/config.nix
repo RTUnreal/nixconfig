@@ -12,7 +12,6 @@ in {
   imports = [
     ./hardware-configuration.nix
     ./retiolum-cfg.nix
-    ../../2configs/bluetooth.nix
     ../../2configs/docker.nix
     ../../2configs/wacom.nix
     #../../2configs/hyprland.nix
@@ -27,6 +26,9 @@ in {
     virtualisation.enable = true;
     neovim.type = "ide";
     kde.enable = true;
+    misc = {
+      bluetooth = true;
+    };
   };
 
   hardware.enableRedistributableFirmware = true;

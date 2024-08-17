@@ -235,7 +235,6 @@
       */
     };
     nixosModules = {
-      bluetooth = import ./2configs/bluetooth.nix;
       docker = import ./2configs/docker.nix;
       nvidia-prime = import ./2configs/nvidia-prime.nix;
       steam = import ./2configs/steam.nix;
