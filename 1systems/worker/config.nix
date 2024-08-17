@@ -13,7 +13,6 @@ in {
     ./hardware-configuration.nix
     ./retiolum-cfg.nix
     #../../2configs/hyprland.nix
-    ../../2configs/steam.nix
     (import ../../2configs/vscode {inherit nixosUnstable;})
   ];
   rtinf = {
@@ -24,6 +23,7 @@ in {
     virtualisation.enable = true;
     neovim.type = "ide";
     kde.enable = true;
+    steam.enable = true;
     misc = {
       bluetooth = true;
       docker = true;

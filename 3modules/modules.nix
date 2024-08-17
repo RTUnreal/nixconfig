@@ -4,6 +4,7 @@
     ./virtualisation.nix
     ./kde.nix
     ./hyprland.nix
+    ./steam.nix
 
     ./misc.nix
     ./nixvim.nix

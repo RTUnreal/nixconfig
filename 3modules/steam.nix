@@ -1,8 +1,14 @@
 {
+  config,
   pkgs,
+  lib,
   selfpkgs,
   ...
 }: let
+  inherit (lib) mkEnableOption mkIf;
+
+  cfg = config.rtinf.steam;
+
   ovrasStarter = pkgs.writeShellScriptBin "ovras-start" ''
     unset LD_LIBRARY_PATH
     unset QML2_IMPORT_PATH
@@ -48,18 +54,21 @@
     '';
   };
 in {
-  programs = {
-    steam = {
-      enable = true;
-      package = pkgs.steam.override {
-        extraLibraries = pkgs: [pkgs.appimage-run ovrasStarter];
-      };
-      extraCompatPackages = [selfpkgs.proton-ge-rtsp-bin];
-      platformOptimizations.enable = true;
-    };
-    gamemode.enable = true;
+  options.rtinf.steam = {
+    enable = mkEnableOption "steam";
   };
-  environment = {
-    systemPackages = [ovrasStarter clear_cache];
+  config = mkIf cfg.enable {
+    programs = {
+      steam = {
+        enable = true;
+        package = pkgs.steam.override {
+          extraLibraries = pkgs: [pkgs.appimage-run ovrasStarter];
+        };
+        extraCompatPackages = [selfpkgs.proton-ge-rtsp-bin];
+        platformOptimizations.enable = true;
+      };
+      gamemode.enable = true;
+    };
+    environment.systemPackages = [ovrasStarter clear_cache];
   };
 }

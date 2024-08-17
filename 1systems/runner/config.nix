@@ -15,7 +15,6 @@ in {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    ./../../2configs/steam.nix
     (import ./../../2configs/vscode {inherit nixosUnstable;})
     ./retiolum-cfg.nix
   ];
@@ -27,6 +26,7 @@ in {
     virtualisation.enable = true;
     neovim.type = "full";
     kde.enable = true;
+    steam.enable = true;
     misc = {
       docker = true;
       mpv = true;
