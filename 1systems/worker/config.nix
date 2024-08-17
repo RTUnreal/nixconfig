@@ -12,7 +12,6 @@ in {
   imports = [
     ./hardware-configuration.nix
     ./retiolum-cfg.nix
-    ../../2configs/wacom.nix
     #../../2configs/hyprland.nix
     ../../2configs/steam.nix
     (import ../../2configs/vscode {inherit nixosUnstable;})
@@ -28,6 +27,7 @@ in {
     misc = {
       bluetooth = true;
       docker = true;
+      wacom = true;
     };
   };
 

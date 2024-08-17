@@ -11,8 +11,9 @@ in {
   options.rtinf.misc = {
     adb = mkEnableOption "adb";
     bluetooth = mkEnableOption "bluetooth";
-    docker = mkEnableOption "docker";
+    docker = mkEnableOption "docker support";
     mpv = mkEnableOption "mpv";
+    wacom = mkEnableOption "wacom support";
   };
   config = mkMerge [
     (mkIf cfg.mpv {
@@ -43,6 +44,9 @@ in {
     (mkIf cfg.docker {
       virtualisation.docker.enable = true;
       users.users.trr.extraGroups = ["docker"];
+    })
+    (mkIf cfg.wacom {
+      services.xserver.wacom.enable = true;
     })
   ];
 }

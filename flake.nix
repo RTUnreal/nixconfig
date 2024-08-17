@@ -237,7 +237,6 @@
     nixosModules = {
       nvidia-prime = import ./2configs/nvidia-prime.nix;
       steam = import ./2configs/steam.nix;
-      wacom = import ./2configs/wacom.nix;
 
       devel-forge = import ./2configs/devel/forge.nix;
       devel-ci = import ./2configs/devel/ci.nix;
