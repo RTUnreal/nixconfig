@@ -1,19 +1,8 @@
-{
-  config,
-  pkgs,
-  nixpkgs-unstable ?
-    import <nixosUnstable> {
-      inherit (config.nixpkgs) config;
-    },
-  ...
-}: let
-  nixosUnstable = nixpkgs-unstable;
-in {
+{pkgs, ...}: {
   imports = [
     ./hardware-configuration.nix
     ./retiolum-cfg.nix
     #../../2configs/hyprland.nix
-    (import ../../2configs/vscode {inherit nixosUnstable;})
   ];
   rtinf = {
     base = {
@@ -24,6 +13,7 @@ in {
     neovim.type = "ide";
     kde.enable = true;
     steam.enable = true;
+    vscode.enable = true;
     misc = {
       bluetooth = true;
       docker = true;

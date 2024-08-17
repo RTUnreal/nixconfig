@@ -4,18 +4,12 @@
 {
   config,
   pkgs,
-  nixpkgs-unstable ?
-    import <nixosUnstable> {
-      config = config.nixpkgs.config;
-    },
+  nixpkgs-unstable,
   ...
-}: let
-  nixosUnstable = nixpkgs-unstable;
-in {
+}: {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    (import ./../../2configs/vscode {inherit nixosUnstable;})
     ./retiolum-cfg.nix
   ];
   rtinf = {
@@ -27,6 +21,7 @@ in {
     neovim.type = "full";
     kde.enable = true;
     steam.enable = true;
+    vscode.enable = true;
     misc = {
       docker = true;
       mpv = true;
@@ -64,7 +59,7 @@ in {
     obs-studio
 
     inkscape
-    nixosUnstable.blender-hip
+    nixpkgs-unstable.blender-hip
     krita
     gimp
     musescore

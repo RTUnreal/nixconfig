@@ -9,6 +9,7 @@
     ./misc.nix
     ./nixvim.nix
     ./wireshark.nix
+    ./vscode
 
     ./magnet.nix
     ./stream.nix

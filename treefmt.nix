@@ -4,5 +4,5 @@ _: {
     alejandra.enable = true;
     deadnix.enable = true;
   };
-  settings.formatter.alejandra.excludes = ["2configs/vscode/extensions.nix"];
+  settings.formatter.alejandra.excludes = ["3modules/vscode/extensions.nix"];
 }
