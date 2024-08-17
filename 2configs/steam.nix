@@ -1,6 +1,5 @@
 {
   pkgs,
-  nixpkgs-unstable,
   selfpkgs,
   ...
 }: let
