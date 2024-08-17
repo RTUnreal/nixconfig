@@ -25,11 +25,11 @@
   },
   {
     "name": "mail",
-    "version": "3.7.6",
-    "url": "https://github.com/nextcloud-releases/mail/releases/download/v3.7.6/mail-v3.7.6.tar.gz",
+    "version": "3.7.7",
+    "url": "https://github.com/nextcloud-releases/mail/releases/download/v3.7.7/mail-v3.7.7.tar.gz",
     "license": "agpl3Plus",
     "description": "💌 A mail app for Nextcloud",
-    "sha256": "1d8xdzvb4kplwlbhbhkgjf9jm0waw7gh2d5brmzd5nawrwcakzrj"
+    "sha256": "09bcfibv3nr08q8nq6c628vsjsw4xdbn7h8w983hwl58bhrw9mqr"
   },
   {
     "name": "notes",
