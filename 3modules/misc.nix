@@ -6,9 +6,9 @@
 }: let
   inherit (lib) mkMerge mkIf mkEnableOption;
 
-  cfg = config.rtinf.programs;
+  cfg = config.rtinf.misc;
 in {
-  options.rtinf.programs = {
+  options.rtinf.misc = {
     mpv = mkEnableOption "mpv";
     bluetooth = mkEnableOption "bluetooth";
   };

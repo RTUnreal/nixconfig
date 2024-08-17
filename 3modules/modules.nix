@@ -5,7 +5,7 @@
     ./kde.nix
     ./hyprland.nix
 
-    ./programs.nix
+    ./misc.nix
     ./nixvim.nix
     ./wireshark.nix
 
