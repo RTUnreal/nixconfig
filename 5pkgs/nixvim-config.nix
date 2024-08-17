@@ -119,7 +119,7 @@ in {
       };
       bufferline = {
         enable = true;
-        offsets = [
+        settings.options.offsets = [
           {
             filetype = "NvimTree";
             text = "File Explorer";
