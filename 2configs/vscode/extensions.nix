@@ -8,8 +8,8 @@
   {
     name = "vscode-intelephense-client";
     publisher = "bmewburn";
-    version = "1.11.5";
-    sha256 = "0xnb9x22pj3lzg6r5y58a9rylad3pb5myzl197il4xdwffj9wsa0";
+    version = "1.12.3";
+    sha256 = "1imvlpm9vx1yqx28jwxa2jyg4ds631ni4f4vs9s48cqa26yq2ydz";
   }
   {
     name = "better-toml";
@@ -44,14 +44,14 @@
   {
     name = "elixir-ls";
     publisher = "jakebecker";
-    version = "0.22.1";
-    sha256 = "1szn87bqfzi2dvh32f9jgc29mkwflpxnqhjnkn1ll0dp5rrr2byf";
+    version = "0.23.1";
+    sha256 = "1vzxilmsh77mr6nz13bh54ivskj2p3qjh9cc3xj1bfqv2j5ml2mg";
   }
   {
     name = "nix-ide";
     publisher = "jnoortheen";
-    version = "0.3.1";
-    sha256 = "1cpfckh6zg8byi6x1llkdls24w9b0fvxx4qybi9zfcy5gc60r6nk";
+    version = "0.3.3";
+    sha256 = "1rhb845l32r9ncwxynngq1zji2lf487ryc54n8hw8y9hph95pw7y";
   }
   {
     name = "vscode-graphviz";
@@ -86,14 +86,14 @@
   {
     name = "vscode-language-pack-de";
     publisher = "ms-ceintl";
-    version = "1.91.2024071009";
-    sha256 = "0s5figvv12qmhgdam3q7hpnkwl3d6v9zfz46jnva8k0891q8ba3a";
+    version = "1.92.2024081409";
+    sha256 = "0545j7lg5skj9nj3qicpy89jlpwr1lw63ph6djd68was32af8237";
   }
   {
     name = "jupyter";
     publisher = "ms-toolsai";
-    version = "2024.6.2024070901";
-    sha256 = "1qi7jzjay1kqbmzgp1mlvwa7rdnqnqxk5z9sbbay4848przrpnfr";
+    version = "2024.8.2024081201";
+    sha256 = "0rb9rx0kvi29asp1r97q3l3yjn00vizwlp5dhybsggpqsy2gbz9h";
   }
   {
     name = "jupyter-keymap";
@@ -104,14 +104,14 @@
   {
     name = "jupyter-renderers";
     publisher = "ms-toolsai";
-    version = "1.0.18";
-    sha256 = "0aag2rm6vgscaybhnfpyl27fxb84ahsvdpxl5g0qjzhsddlrfhp0";
+    version = "1.0.19";
+    sha256 = "1cv1qr3cjwpnlpccg8dwcds96ycb8i0wy97b324inrjhcgfgg7fp";
   }
   {
     name = "cpptools";
     publisher = "ms-vscode";
-    version = "1.21.0";
-    sha256 = "115g8qhdabgd68xfwvj2z800hgm7a9165zga7r57k2f75ccgj4c6";
+    version = "1.21.6";
+    sha256 = "0finzqbl1rqdffy4wxa6brndarvv9axknf2znqasdwss5gyxs52s";
   }
   {
     name = "test-adapter-converter";
@@ -128,8 +128,8 @@
   {
     name = "rust-analyzer";
     publisher = "rust-lang";
-    version = "0.4.2033";
-    sha256 = "1razkcf25mayxij7nkrf71pw66l552sd26bsq8hc38475v5vhkq7";
+    version = "0.4.2075";
+    sha256 = "1a2wznjblrpnclglga55f2sd8a439ax4g8h6w9f4ipsg431l6aww";
   }
   {
     name = "even-better-toml";
