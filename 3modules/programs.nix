@@ -10,6 +10,7 @@
 in {
   options.rtinf.programs = {
     mpv = mkEnableOption "mpv";
+    bluetooth = mkEnableOption "bluetooth";
   };
   config = mkMerge [
     (mkIf cfg.mpv {
@@ -22,6 +23,16 @@ in {
       ];
 
       environment.systemPackages = with pkgs; [mpv];
+    })
+    (mkIf cfg.bluetooth {
+      hardware.bluetooth = {
+        enable = true;
+        settings = {
+          General = {
+            Experimental = true;
+          };
+        };
+      };
     })
   ];
 }
