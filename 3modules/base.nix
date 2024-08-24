@@ -138,6 +138,9 @@ in {
       programs = {
         firefox = {
           enable = true;
+          preferences = {
+            "identity.sync.tokenserver.uri" = "https://ffsync.user-sites.de/token/1.0/sync/1.5";
+          };
         };
         gnupg.agent = {
           enable = true;
