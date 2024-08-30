@@ -217,7 +217,10 @@ in {
       };
       crates-nvim.enable = true;
       gitsigns.enable = true;
-      treesitter.enable = true;
+      treesitter = {
+        enable = true;
+        settings.highlight.enable = true;
+      };
       rainbow-delimiters.enable = true;
       trouble.enable = true;
       typst-vim.enable = true;
