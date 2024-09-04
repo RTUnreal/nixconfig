@@ -306,8 +306,33 @@
       });
 
     formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
-    checks = eachSystem (pkgs: {
-      formatting = treefmtEval.${pkgs.system}.config.build.check self;
-    });
+    checks = eachSystem (
+      pkgs: let
+        system = pkgs.system;
+        lib = pkgs.lib;
+      in
+        {
+          formatting = treefmtEval.${pkgs.system}.config.build.check self;
+        }
+        // ( # Nixvim derivations
+          builtins.listToAttrs
+          (
+            builtins.map ({
+              name,
+              value,
+            }: {
+              inherit name;
+              value = nixvim.lib.${system}.check.mkTestDerivationFromNvim {
+                inherit name;
+                nvim = value;
+              };
+            })
+            (
+              builtins.filter ({name, ...}: builtins.match "^nixvim" name != null)
+              (lib.mapAttrsToList lib.nameValuePair self.packages.${system})
+            )
+          )
+        )
+    );
   };
 }
