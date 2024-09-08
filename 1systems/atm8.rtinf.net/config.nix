@@ -26,11 +26,11 @@
   services.modded-minecraft-servers = {
     eula = true;
     instances = {
-      "atm9" = {
+      "eclipsed" = {
         enable = true;
         jvmPackage = pkgs.jre_headless;
         serverConfig = {
-          motd = "Welcum";
+          motd = "Fantasy Medieval";
           extra-options = {
             simulation-distance = 10;
             allow-flight = true;
