@@ -191,7 +191,7 @@ in {
       fidget.enable = true;
       lualine = {
         enable = true;
-        theme = "catppuccin";
+        settings.options.theme = "catppuccin";
       };
       luasnip.enable = true;
       cmp = {
