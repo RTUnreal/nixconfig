@@ -42,6 +42,14 @@
 
     treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
   in {
+    apps = eachSystem (pkgs: {
+      restart-mc-eclisped = {
+        type = "app";
+        program = toString (pkgs.writers.writeDash "restart-mc-eclipsed" ''
+          exec ${pkgs.lib.getExe pkgs.colmena} exec -f ${self}/flake.nix --on atm9 -v --show-trace -- systemctl restart mc-eclipsed.service
+        '');
+      };
+    });
     colmena = let
       common = system: {allowedUnfree ? []}: ({lib, ...}:
         {
