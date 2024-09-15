@@ -4,7 +4,7 @@
   lib,
   ...
 }: let
-  inherit (lib) mkEnableOption mkOption types mkIf mkMerge;
+  inherit (lib) mkEnableOption mkOption types mkIf mkMerge optionalString;
   cfg = config.rtinf.stream;
 
   certdir =
@@ -120,25 +120,23 @@ in {
               record off;
 
               ${
-          if cfg.hls != null
-          then ''
+          optionalString (cfg.hls != null)
+          ''
             hls on;
             hls_path ${cfg.directory}${cfg.hls.storagePath};
             hls_playlist_length ${cfg.playlistLength};
             hls_fragment ${cfg.fragmentLength};
           ''
-          else ""
         }
 
               ${
-          if cfg.dash != null
-          then ''
+          optionalString (cfg.dash != null)
+          ''
             dash on;
             dash_path ${cfg.directory}${cfg.dash.storagePath};
             dash_playlist_length ${cfg.playlistLength};
             dash_fragment ${cfg.fragmentLength};
           ''
-          else ""
         }
             }
           }
