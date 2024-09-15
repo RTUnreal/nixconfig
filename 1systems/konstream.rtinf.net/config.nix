@@ -8,6 +8,9 @@
     stream = {
       enable = true;
       hls = {};
+      auth = {
+        authDir = "/var/lib/rtmp-auth";
+      };
       openFirewall = true;
     };
     mofongo = {
