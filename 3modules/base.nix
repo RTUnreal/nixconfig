@@ -58,7 +58,6 @@ in {
         nmap
 
         # system utils
-        htop
         inxi
         pciutils
         usbutils
@@ -174,6 +173,10 @@ in {
                 host = "safe.user-sites.de";
               }
             ]);
+        };
+        appimage = {
+          enable = true;
+          binfmt = true;
         };
         partition-manager.enable = true;
       };
