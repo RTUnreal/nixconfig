@@ -105,7 +105,7 @@ in {
           listen 1936 ssl;
           ssl_certificate ${certdir}/fullchain.pem;
           ssl_certificate_key ${certdir}/key.pem;
-          pass 127.0.0.1:1935;
+          proxy_pass 127.0.0.1:1935;
         }
       '';
       appendConfig = ''
