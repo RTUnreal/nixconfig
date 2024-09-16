@@ -34,6 +34,10 @@
 
   # List services that you want to enable:
 
+  users.users.trr.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOzDeh+d/nSEnYIhAOtuwW5/rJNwXeS7wgWXgp588TOY"
+  ];
+
   security.acme = {
     acceptTerms = true;
     defaults.email = "unreal@rtinf.net";
