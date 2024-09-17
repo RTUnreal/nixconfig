@@ -1,4 +1,6 @@
-{config, ...}: {
+{config, ...}: let
+  imgPath = "/var/lib/koncert-imgs";
+in {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -32,7 +34,12 @@
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
 
-  # List services that you want to enable:
+  services.nginx.virtualHosts."konstream.rtinf.net".locations."/imgs".root = imgPath;
+  systemd.services.nginx.serviceConfig.ReadOnlyPaths = imgPath;
+
+  systemd.tmpfiles.rules = [
+    "d ${imgPath} 0755 trr users -"
+  ];
 
   users.users.trr.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOzDeh+d/nSEnYIhAOtuwW5/rJNwXeS7wgWXgp588TOY"
