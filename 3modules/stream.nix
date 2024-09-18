@@ -11,6 +11,91 @@
     if cfg.certDir == null
     then config.security.acme.certs.${cfg.domain}.directory
     else cfg.certDir;
+
+  writeGo = name: {
+    go ? pkgs.go,
+    makeWrapperArgs ? [],
+    strip ? true,
+  }:
+    pkgs.writers.makeBinWriter {
+      compileScript = ''
+        export GO111MODULE=off
+        export GOTOOLCHAIN=local
+        export GOCACHE="$(pwd)/go-build"
+
+        echo "package main" > main.go
+        cat "$contentPath" >> main.go
+        ${lib.getExe go} build main.go
+        mv main $out
+      '';
+      inherit makeWrapperArgs strip;
+    }
+    name;
+
+  writeGoBin = name: writeGo "/bin/${name}";
+
+  rtmp-auth =
+    writeGoBin "rtmp-auth" {}
+    /*
+    go
+    */
+    ''
+      import (
+        "log"
+        "path"
+        "net/http"
+        "os"
+        "os/exec"
+        "regexp"
+        "strings"
+      )
+
+      func main() {
+        auth_dir, exists := os.LookupEnv("AUTH_DIR")
+        if !exists {
+          log.Fatal("AUTH_DIR not set")
+          os.Exit(1)
+        }
+        listen_addr, exists := os.LookupEnv("LISTEN_ADDR")
+        if !exists {
+          log.Fatal("AUTH_DIR not set")
+          os.Exit(1)
+        }
+
+        http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+          var matched bool
+          var err error
+          var cmd *exec.Cmd
+          var auth_path string
+          var stderr strings.Builder
+          r.ParseForm()
+          name := r.Form.Get("name")
+          username := r.Form.Get("username")
+          password := r.Form.Get("password")
+
+          if name == "" || username == "" || password == "" { goto DENY }
+
+          if matched, _ = regexp.Match(`^\w*$`, []byte(name)); !matched { goto DENY }
+
+          auth_path = path.Join(auth_dir, name)
+
+          cmd = exec.Command("htpasswd", "-bv", auth_path, username, password)
+          cmd.Stderr = &stderr
+          if err = cmd.Run(); err != nil {
+            log.Printf("htpasswd failed: %v\n%q", err, stderr.String())
+            goto DENY
+          }
+
+          log.Printf("Successful Login for '%s' by '%s'", name, username)
+          return
+          DENY:
+          log.Printf("Failed Login for '%s' by '%s'", name, username)
+          w.WriteHeader(http.StatusForbidden)
+        })
+
+        log.Fatal(http.ListenAndServe(listen_addr, nil))
+      }
+    '';
 in {
   options.rtinf.stream = {
     enable = mkEnableOption "enable stream";
@@ -167,60 +252,56 @@ in {
       ];
     })
     (mkIf (cfg.auth != null) {
-      services.uwsgi = {
-        enable = true;
-        plugins = ["python3"];
-        instance = {
-          type = "emperor";
-          vassals.rtmp-auth = {
-            type = "normal";
-            master = true;
-            workers = 2;
-            http = ":${toString cfg.auth.port}";
-            module = "auth_app:app";
-            env = ["AUTH_DIR=${cfg.auth.authDir}"];
-            chdir =
-              pkgs.writeTextDir "auth_app.py"
-              /*
-              py
-              */
-              ''
-                from flask import Flask, request, abort
-                from subprocess import run
-                import os
-                import re
+      users.users.rtmp-auth = {
+        isSystemUser = true;
+        group = "rtmp-auth";
+      };
+      users.groups.rtmp-auth = {};
+      systemd.services.rtmp-auth = {
+        description = "rtmp-auth service";
+        wantedBy = ["multi-user.target"];
+        after = ["network.target"];
+        path = [pkgs.apacheHttpd];
 
-                app = Flask(__name__)
-                NAME_RE = re.compile(r"^\w+$")
+        environment = {
+          AUTH_DIR = cfg.auth.authDir;
+          LISTEN_ADDR = ":${toString cfg.auth.port}";
+        };
 
-                auth_dir = os.environ['AUTH_DIR'] + '/'
+        serviceConfig = {
+          ExecStart = lib.getExe rtmp-auth;
+          User = "rtmp-auth";
+          Group = "rtmp-auth";
+          ReadWritePaths = [cfg.auth.authDir];
 
-
-                @app.route("/", methods=["GET"])
-                def hello_world():
-                    args = request.args
-                    name = args.get("name")
-                    username = args.get("username")
-                    password = args.get("password")
-
-                    auth_file = auth_dir + name
-
-                    print(auth_file, username, password)
-
-                    if None in (name, username, password) or not NAME_RE.match(name) or run(["${pkgs.apacheHttpd}/bin/htpasswd", "-bv", auth_file, username, password], capture_output=True).returncode != 0:  # noqa: E501
-                        print(f"Failed Login for '{name}': '{username}'")
-                        abort(403)
-
-                    print(f"{username} started a stream on {name}")
-                    return ""
-              '';
-            pythonPackages = self: [self.flask];
-          };
+          # Hardening
+          CapabilityBoundingSet = [""];
+          DeviceAllow = [""];
+          LockPersonality = true;
+          MemoryDenyWriteExecute = true;
+          PrivateDevices = true;
+          PrivateUsers = true;
+          ProcSubset = "pid";
+          ProtectClock = true;
+          ProtectControlGroups = true;
+          ProtectHome = true;
+          ProtectHostname = true;
+          ProtectKernelLogs = true;
+          ProtectKernelModules = true;
+          ProtectKernelTunables = true;
+          ProtectProc = "invisible";
+          RestrictAddressFamilies = ["AF_INET" "AF_INET6" "AF_UNIX"];
+          RestrictNamespaces = true;
+          RestrictRealtime = true;
+          RestrictSUIDSGID = true;
+          SystemCallArchitectures = "native";
+          SystemCallFilter = ["@system-service" "~@privileged"];
+          UMask = "0077";
         };
       };
       environment.systemPackages = [pkgs.apacheHttpd];
       systemd.tmpfiles.rules = [
-        "d ${cfg.auth.authDir} 0744 ${config.services.uwsgi.user} ${config.services.uwsgi.group} -"
+        "d ${cfg.auth.authDir} 0744 rtmp-auth rtmp-auth -"
       ];
     })
   ];
