@@ -57,6 +57,7 @@
           nixpkgs = {inherit system;};
           _module.args = {
             selfpkgs = self.packages.${system};
+            selflib = self.lib;
             nixpkgs-unstable = import nixpkgs-unstable {
               inherit system;
               config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs-unstable.legacyPackages."${system}".lib.getName pkg) allowedUnfree;
@@ -289,6 +290,9 @@
           }) {};
       }
     );
+
+    lib = import ./4lib;
+
     devShells =
       eachSystem
       (pkgs: {

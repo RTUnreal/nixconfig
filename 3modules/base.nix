@@ -3,6 +3,7 @@
   pkgs,
   lib,
   nixpkgs-unstable,
+  selflib,
   ...
 }: let
   inherit (lib) mkOption mkEnableOption types mkMerge mkIf;
@@ -146,33 +147,29 @@ in {
           enableSSHSupport = true;
         };
         ssh = {
-          #startAgent = true;
-          # TODO: generate from system
-          knownHosts = {
-            safetest = {
-              hostNames = ["safe.user-sites.de"];
-              publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIAd9bT8/AMtPQheRlPWK4sJwEci3fHsZE1+eIGXkdBY/";
-            };
-          };
-          extraConfig = let
-            mapHosts = map ({
-                name,
-                host,
-                ...
-              } @ args: ''
+          extraConfig = lib.pipe selflib.hosts [
+            (builtins.mapAttrs (
+              name: args: ''
                 Host ${name}
-                Hostname ${host}
-                IdentityFile ${args.identity_file or "~/.ssh/id_rsa"}
+                Hostname ${builtins.head args.hostNames}
                 User ${args.user or "trr"}
-                ${args.extraConfig or ""}
-              '');
-          in
-            builtins.concatStringsSep "\n" (mapHosts [
-              {
-                name = "safetest";
-                host = "safe.user-sites.de";
-              }
-            ]);
+                ${args.extraSSHConfig or ""}
+              ''
+            ))
+            builtins.attrValues
+            (builtins.concatStringsSep "\n")
+          ];
+
+          knownHostsFiles = [
+            (pkgs.writeText "known_hosts" (
+              lib.pipe selflib.hosts [
+                builtins.attrValues
+                (builtins.concatMap (h: (builtins.map (k: (builtins.concatStringsSep "," h.hostNames) + " " + k) h.sshHostKeys)))
+                (builtins.concatStringsSep "\n")
+                (t: t + "\n")
+              ]
+            ))
+          ];
         };
         appimage = {
           enable = true;
