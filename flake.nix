@@ -212,44 +212,6 @@
           ./1systems/konstream.rtinf.net/config.nix
         ];
       };
-      /*
-      niflheim = let
-        system = "x86_64-linux";
-      in {
-        deployment = {
-          targetHost = "niflheim.rtinf.net";
-          tags = ["remote" "servers" "personal"];
-        };
-        imports = [
-          (common system {})
-          ./1systems/niflheim.rtinf.net/config.nix
-        ];
-      };
-      konfactory = let
-        system = "x86_64-linux";
-      in {
-        deployment = {
-          targetHost = "konfactory.rtinf.net";
-          tags = ["remote" "servers" "koncert"];
-        };
-        imports = [
-          (common system {
-            allowedUnfree = [
-              "factorio-headless"
-            ];
-          })
-          ./1systems/konfactory.rtinf.net/config.nix
-        ];
-      };
-      comms = let
-        system = "x86_64-linux";
-      in {
-        imports = [
-          (common system {})
-          ./1systems/comms.rtinf.net/config.nix
-        ];
-      };
-      */
     };
     nixosModules = {
       nvidia-prime = import ./2configs/nvidia-prime.nix;
