@@ -70,6 +70,7 @@ in {
       ];
     };
   };
+  networking.firewall.allowedTCPPorts = [80 443];
   systemd.services."nextcloud-setup" = {
     requires = ["mnt-storagebox.mount" "postgresql.service"];
     wants = ["mnt-storagebox.mount" "postgresql.service"];

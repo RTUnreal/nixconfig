@@ -16,7 +16,6 @@
   networking = {
     hostName = "safe";
     domain = "user-sites.de";
-    firewall.allowedTCPPorts = [22 80 443];
   };
 
   environment.systemPackages = [
