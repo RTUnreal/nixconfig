@@ -53,6 +53,13 @@
       find "$COMPATDATA" -name 'mesa_shader_cache*' -exec rm -rvf '{}' + || true
     '';
   };
+
+  delete_vrc_eac = pkgs.writeShellApplication {
+    name = "steam_delete_vrc_eac";
+    text = ''
+      rm -rf ~/.local/share/Steam/steamapps/compatdata/438100/pfx/drive_c/users/steamuser/AppData/Roaming/
+    '';
+  };
 in {
   options.rtinf.steam = {
     enable = mkEnableOption "steam";
@@ -69,6 +76,6 @@ in {
       };
       gamemode.enable = true;
     };
-    environment.systemPackages = [ovrasStarter clear_cache];
+    environment.systemPackages = [ovrasStarter clear_cache delete_vrc_eac];
   };
 }
