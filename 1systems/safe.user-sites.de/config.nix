@@ -4,8 +4,6 @@
   ...
 }: {
   imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
     ./../../2configs/safe
     ./../../2configs/news.nix
     ./../../2configs/mango.nix
@@ -13,23 +11,13 @@
   ];
   rtinf.base.systemType = "server";
 
-  # Use the GRUB 2 boot loader.
-  boot.loader.grub = {
-    enable = true;
-    devices = ["/dev/sda"];
-  };
+  boot.loader.grub.devices = ["/dev/sda"];
 
   networking = {
     hostName = "safe";
     domain = "user-sites.de";
-
-    useDHCP = false;
-    interfaces.enp1s0.useDHCP = true;
     firewall.allowedTCPPorts = [22 80 443];
   };
-
-  # Set your time zone.
-  time.timeZone = "Europe/Berlin";
 
   environment.systemPackages = [
     (pkgs.writeScriptBin "upgrade-pg-cluster" ''

@@ -31,9 +31,6 @@ in {
   networking.hostName = "konstream";
   networking.domain = "rtinf.net";
 
-  # Set your time zone.
-  time.timeZone = "Europe/Berlin";
-
   services.nginx.virtualHosts."konstream.rtinf.net".locations."/imgs".root = imgPath;
   systemd.services.nginx.serviceConfig.ReadOnlyPaths = imgPath;
 

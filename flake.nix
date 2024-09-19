@@ -14,6 +14,7 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    srvos.url = "github:nix-community/srvos";
     colmena.url = "github:zhaofengli/colmena";
     nix-gaming.url = "github:fufexan/nix-gaming";
     mms.url = "github:Triton171/nixos-modded-minecraft-servers/8f00cdc8477a306d7f2e1036fcad03506ae9ce12";
@@ -28,6 +29,7 @@
     systems,
     nixos-hardware,
     nixvim,
+    srvos,
     nix-gaming,
     colmena,
     mms,
@@ -160,6 +162,8 @@
         };
         imports = [
           (common system {})
+          srvos.nixosModules.server
+          srvos.nixosModules.hardware-hetzner-cloud
           ./1systems/safe.user-sites.de/config.nix
         ];
       };
@@ -173,6 +177,7 @@
         };
         imports = [
           (common system {})
+          srvos.nixosModules.server
           ./1systems/devel.rtinf.net/config.nix
         ];
       };
@@ -186,6 +191,8 @@
         };
         imports = [
           (common system {})
+          srvos.nixosModules.server
+          srvos.nixosModules.hardware-hetzner-cloud
           mms.module
           ./1systems/atm8.rtinf.net/config.nix
         ];
@@ -201,6 +208,7 @@
         };
         imports = [
           (common system {})
+          srvos.nixosModules.server
           ./1systems/konstream.rtinf.net/config.nix
         ];
       };

@@ -3,13 +3,10 @@
 # and in the NixOS manual (accessible by running `nixos-help`).
 {pkgs, ...}: {
   imports = [
-    ./hardware-configuration.nix
   ];
   rtinf.base.systemType = "server";
 
-  # Use the GRUB 2 boot loader.
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
+  boot.loader.grub.device = "/dev/sda";
 
   networking = {
     hostName = "atm8";
@@ -39,8 +36,6 @@
       };
     };
   };
-
-  time.timeZone = "Europe/Berlin";
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

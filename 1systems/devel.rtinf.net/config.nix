@@ -17,9 +17,6 @@
     domain = "rtinf.net";
   };
 
-  # Set your time zone.
-  time.timeZone = "Europe/Berlin";
-
   # List services that you want to enable:
   services.nginx = {
     enable = true;
