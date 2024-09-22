@@ -15,6 +15,7 @@
   writeGo = name: {
     go ? pkgs.go,
     makeWrapperArgs ? [],
+    goBuildArgs ? [],
     strip ? true,
   }:
     pkgs.writers.makeBinWriter {
@@ -25,7 +26,7 @@
 
         echo "package main" > main.go
         cat "$contentPath" >> main.go
-        ${lib.getExe go} build main.go
+        ${lib.getExe go} build ${lib.escapeShellArgs goBuildArgs} main.go
         mv main $out
       '';
       inherit makeWrapperArgs strip;
@@ -35,7 +36,9 @@
   writeGoBin = name: writeGo "/bin/${name}";
 
   rtmp-auth =
-    writeGoBin "rtmp-auth" {}
+    writeGoBin "rtmp-auth" {
+      goBuildArgs = ["-tags=nethttpomithttp2"];
+    }
     /*
     go
     */
