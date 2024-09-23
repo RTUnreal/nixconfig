@@ -222,6 +222,7 @@ in {
         settings.highlight.enable = true;
       };
       rainbow-delimiters.enable = true;
+      web-devicons.enable = true;
       trouble.enable = true;
       typst-vim.enable = true;
       noice.enable = true;
