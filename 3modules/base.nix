@@ -232,7 +232,7 @@ in {
         #texstudio
         hexchat
         vlc
-        nixpkgs-unstable.nextcloud-client
+        nextcloud-client
         tdesktop
         libreoffice-fresh
         ghidra
