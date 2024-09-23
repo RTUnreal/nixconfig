@@ -11,6 +11,7 @@
     };
     virtualisation.enable = true;
     neovim.type = "ide";
+    gpu.type = "amd";
     kde.enable = true;
     steam.enable = true;
     vscode.enable = true;

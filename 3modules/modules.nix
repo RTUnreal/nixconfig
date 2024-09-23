@@ -5,6 +5,7 @@
     ./kde.nix
     ./hyprland.nix
     ./steam.nix
+    ./gpu.nix
 
     ./misc.nix
     ./nixvim.nix
