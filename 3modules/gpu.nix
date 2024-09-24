@@ -10,6 +10,7 @@ in {
   options.rtinf.gpu = {
     type = mkOption {
       type = types.nullOr (types.enum ["amd" "nvidia"]);
+      default = null;
     };
   };
 
