@@ -192,9 +192,18 @@ in {
         };
       };
       security.sudo.wheelNeedsPassword = false;
-      services.openssh = {
-        enable = true;
-        #settings.PermitRootLogin = "yes";
+      services = {
+        openssh = {
+          enable = true;
+          #settings.PermitRootLogin = "yes";
+        };
+        fail2ban = {
+          # also adds ssh filters
+          enable = cfg.laptopServer == null;
+          ignoreIP = [
+            "95.88.0.0/14" # Kabel Deutschland (Alex)
+          ];
+        };
       };
     })
     (mkIf (cfg.laptopServer != null) {

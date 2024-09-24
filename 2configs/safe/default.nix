@@ -63,12 +63,6 @@ in {
         }
       ];
     };
-    fail2ban = {
-      enable = true;
-      ignoreIP = [
-        "95.88.0.0/14" # Kabel Deutschland (Alex)
-      ];
-    };
   };
   networking.firewall.allowedTCPPorts = [80 443];
   systemd.services."nextcloud-setup" = {
