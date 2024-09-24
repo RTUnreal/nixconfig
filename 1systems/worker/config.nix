@@ -3,6 +3,7 @@
     ./hardware-configuration.nix
     ./retiolum-cfg.nix
     #../../2configs/hyprland.nix
+    ../../2configs/rocm.nix
   ];
   rtinf = {
     base = {
