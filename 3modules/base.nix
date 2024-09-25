@@ -6,7 +6,7 @@
   selflib,
   ...
 }: let
-  inherit (lib) mkOption mkEnableOption types mkMerge mkIf;
+  inherit (lib) mkOption mkEnableOption types mkMerge mkIf mkDefault concatMapStringsSep;
   cfg = config.rtinf.base;
 in {
   options.rtinf.base = {
@@ -203,6 +203,9 @@ in {
           ignoreIP = [
             "95.88.0.0/14" # Kabel Deutschland (Alex)
           ];
+          jails = mkIf config.services.nginx.enable {
+            nginx-botsearch.settings.port = mkDefault (concatMapStringsSep "," builtins.toString [80 443]);
+          };
         };
       };
     })
