@@ -43,7 +43,7 @@ while getopts ':n:' OPTION; do
 	esac
 done
 
-NCVERSION="${NCVERSION:-29}"
+NCVERSION="${NCVERSION:-30}"
 
 # Try to be a good citizen and clean up after ourselves if we'res killed.
 trap clean_up SIGINT

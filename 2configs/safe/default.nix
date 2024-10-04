@@ -27,7 +27,7 @@ in {
       forceSSL = true;
     };
     nextcloud = let
-      version = 29;
+      version = 30;
     in {
       enable = true;
       https = true;

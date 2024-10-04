@@ -9,35 +9,35 @@
   },
   {
     "name": "calendar",
-    "version": "4.7.9",
-    "url": "https://github.com/nextcloud-releases/calendar/releases/download/v4.7.9/calendar-v4.7.9.tar.gz",
+    "version": "5.0.0",
+    "url": "https://github.com/nextcloud-releases/calendar/releases/download/v5.0.0/calendar-v5.0.0.tar.gz",
     "license": "agpl3Plus",
     "description": "A Calendar app for Nextcloud",
-    "sha256": "1yv1cb4lnp59s37f8h4lx4naqfdqddcdcikc56cx6p30n0pnd4k4"
+    "sha256": "0iw5rsvqsd3kd6whigyd2mnfzqyd1jbrv2ffdqb180by2zbhl4gn"
   },
   {
     "name": "contacts",
-    "version": "6.0.0",
-    "url": "https://github.com/nextcloud-releases/contacts/releases/download/v6.0.0/contacts-v6.0.0.tar.gz",
+    "version": "6.1.0",
+    "url": "https://github.com/nextcloud-releases/contacts/releases/download/v6.1.0/contacts-v6.1.0.tar.gz",
     "license": "agpl3Plus",
     "description": "A contacts app for Nextcloud",
-    "sha256": "0yxp3477fx4mrds8wchhzavrxwm88dvz7s58zp59q1v7qr9i7whr"
+    "sha256": "0n1nwd87h3i5hxylfgljkmvczyzxg85qzspc9ini1ssqbiwh65g3"
   },
   {
     "name": "mail",
-    "version": "3.7.7",
-    "url": "https://github.com/nextcloud-releases/mail/releases/download/v3.7.7/mail-v3.7.7.tar.gz",
+    "version": "4.0.1",
+    "url": "https://github.com/nextcloud-releases/mail/releases/download/v4.0.1/mail-v4.0.1.tar.gz",
     "license": "agpl3Plus",
     "description": "💌 A mail app for Nextcloud",
-    "sha256": "09bcfibv3nr08q8nq6c628vsjsw4xdbn7h8w983hwl58bhrw9mqr"
+    "sha256": "04y4rrfrvpzlfhmzf2nz5fzw56vx3jz2q0w474s2h3yimp4j35z1"
   },
   {
     "name": "notes",
-    "version": "4.9.4",
-    "url": "https://github.com/nextcloud-releases/notes/releases/download/v4.9.4/notes-v4.9.4.tar.gz",
+    "version": "4.11.0",
+    "url": "https://github.com/nextcloud-releases/notes/releases/download/v4.11.0/notes-v4.11.0.tar.gz",
     "license": "agpl3Plus",
     "description": "Distraction-free notes and writing",
-    "sha256": "1ii3ii2062wklss3mxsfbvqi4hvi96a20i20lbwm6z2x6q7fqqi3"
+    "sha256": "1p9g9yxgd1ah8v7aq4bq7bahb9gjijg8zns2nbj4ci2990gzgvha"
   },
   {
     "name": "tasks",
