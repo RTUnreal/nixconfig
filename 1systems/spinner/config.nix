@@ -4,6 +4,7 @@
     ./retiolum-cfg.nix
     ../../2configs/nvidia-prime.nix
     ../../2configs/alexandria.nix
+    ../../2configs/wanze.nix
   ];
   rtinf = {
     base = {
