@@ -133,12 +133,12 @@ in {
         servers = {
           html.enable = true;
           bashls.enable = true;
-          rust-analyzer = {
+          rust_analyzer = {
             enable = true;
             installCargo = false;
             installRustc = false;
           };
-          nil-ls = {
+          nil_ls = {
             enable = true;
             settings.formatting.command = ["${lib.getExe pkgs.alejandra}" "--quiet"];
           };
