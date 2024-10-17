@@ -42,15 +42,16 @@ in {
         adminuser = "root";
         adminpassFile = "/var/lib/nextcloud/adminpw";
       };
-      extraApps = let
-        mapListToNCApps = list:
-          builtins.listToAttrs (map (value: {
-              inherit (value) name;
-              value = pkgs.fetchNextcloudApp (builtins.removeAttrs value ["name" "version" "description"]);
-            })
-            list);
-      in
-        mapListToNCApps (builtins.fromJSON (builtins.readFile ./apps.json));
+      extraApps = with pkgs."nextcloud${toString version}Packages".apps; {
+        inherit
+          calendar
+          contacts
+          mail
+          music
+          notes
+          tasks
+          ;
+      };
     };
     postgresql = {
       enable = true;
