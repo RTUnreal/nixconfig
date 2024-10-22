@@ -212,7 +212,7 @@
           ./1systems/konstream.rtinf.net/config.nix
         ];
       };
-      carlosmatos = let
+      nixohes = let
         system = "x86_64-linux";
       in {
         deployment.allowLocalDeployment = true;
