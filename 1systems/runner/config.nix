@@ -44,7 +44,7 @@
       v4l2loopback
     ];
     kernelModules = ["rtw88_8822bu"];
-    kernelPackages = pkgs.linuxKernel.packages.linux_6_10;
+    kernelPackages = pkgs.linuxKernel.packages.linux_6_11;
   };
 
   networking.hostName = "runner";
