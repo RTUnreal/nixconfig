@@ -14,6 +14,7 @@
 
     ./magnet.nix
     ./stream.nix
+    ./stream2.nix
     ./mofongo.nix
   ];
 }

@@ -46,7 +46,10 @@
       import (
         "log"
         "path"
+        "encoding/json"
+        "net"
         "net/http"
+        "net/url"
         "os"
         "os/exec"
         "regexp"
@@ -94,6 +97,84 @@
           DENY:
           log.Printf("Failed Login for '%s' by '%s'", name, username)
           w.WriteHeader(http.StatusForbidden)
+        })
+
+        http.HandleFunc("/mediamtx", func(w http.ResponseWriter, r *http.Request) {
+          var err error
+          var ip net.IP
+          var matched bool
+          var username, password, stream_name, auth_path string
+          var query url.Values
+          var cmd *exec.Cmd
+          var stderr strings.Builder
+
+          // {
+          //   "user": "user",
+          //   "password": "password",
+          //   "ip": "ip",
+          //   "action": "publish|read|playback|api|metrics|pprof",
+          //   "path": "path",
+          //   "protocol": "rtsp|rtmp|hls|webrtc|srt",
+          //   "id": "id",
+          //   "query": "query"
+          // }
+          type MediaMTXReq struct {
+            User string `json:"user"`
+            Password string `json:"password"`
+            Ip string `json:"ip"`
+            Action string `json:"action"`
+            Path string `json:"path"`
+            protocol string `json:"protocol"`
+            Id string `json:"id"`
+            Query string `json:"query"`
+          }
+          var req MediaMTXReq
+
+
+          jsonDecoder := json.NewDecoder(r.Body)
+          err = jsonDecoder.Decode(&req)
+          if err != nil {
+            log.Printf("json error: %v", err)
+            goto ERR
+          }
+
+          if req.Action == "read" { goto SUCCESS }
+
+          if ip = net.ParseIP(req.Ip); ip != nil && ip.IsLoopback() { goto SUCCESS }
+
+          if matched, _ = regexp.Match(`^live/`, []byte(req.Path)); !matched { goto DENY }
+
+          stream_name = req.Path[len("live/"):]
+
+          if matched, _ = regexp.Match(`^\w*$`, []byte(stream_name)); !matched { goto DENY }
+
+          if query, err = url.ParseQuery(req.Query); err != nil {
+            log.Printf("query params invalid: %v", err)
+            goto DENY
+          }
+
+          if !(query.Has("username") && query.Has("password")) {
+            log.Print("Not all params exist")
+          }
+
+          auth_path, username, password = path.Join(auth_dir, stream_name), query.Get("username"), query.Get("password")
+
+          cmd = exec.Command("htpasswd", "-bv", auth_path, username, password)
+          cmd.Stderr = &stderr
+          if err = cmd.Run(); err != nil {
+            log.Printf("htpasswd failed: %v\n%q", err, stderr.String())
+            goto DENY
+          }
+
+          log.Printf("Successful Login for '%s' by '%s' from '%s'", req.Path, username, req.Ip)
+          SUCCESS:
+          return
+          DENY:
+          log.Printf("Failed Login for '%s' by '%s' from '%s'", req.Path, username, req.Ip)
+          w.WriteHeader(http.StatusForbidden)
+          return
+          ERR:
+          w.WriteHeader(http.StatusInternalServerError)
         })
 
         log.Fatal(http.ListenAndServe(listen_addr, nil))

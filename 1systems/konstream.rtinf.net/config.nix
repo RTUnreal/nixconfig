@@ -15,6 +15,9 @@ in {
       };
       openFirewall = true;
     };
+    stream2 = {
+      enable = true;
+    };
     mofongo = {
       enable = true;
       appendConfigWithFile = "${config.rtinf.mofongo.stateDir}/additional-settings.txt";
