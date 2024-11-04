@@ -1,7 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable-small";
     retiolum.url = "https://git.thalheim.io/Mic92/retiolum/archive/master.tar.gz";
     flake-compat = {
       url = "github:edolstra/flake-compat";
@@ -176,7 +176,7 @@
           tags = ["remote" "servers"];
         };
         imports = [
-          (common system {})
+          (common system {allowedUnfree = ["factorio-headless"];})
           srvos.nixosModules.server
           ./1systems/devel.rtinf.net/config.nix
         ];
