@@ -17,7 +17,7 @@ in {
     };
     stream2 = {
       enable = true;
-      #hls = {};
+      hls = {};
       openFirewall = true;
     };
     mofongo = {
@@ -37,7 +37,7 @@ in {
   networking.domain = "rtinf.net";
 
   services.nginx.virtualHosts."konstream.rtinf.net".locations."/imgs".root = imgPath;
-  systemd.services.nginx.serviceConfig.ReadOnlyPaths = imgPath;
+  systemd.services.nginx.serviceConfig.ReadOnlyPaths = [imgPath];
 
   systemd.tmpfiles.rules = [
     "d ${imgPath} 0755 trr users -"

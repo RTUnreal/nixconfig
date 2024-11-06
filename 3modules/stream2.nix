@@ -126,31 +126,13 @@ in {
         # RTMPS
         1936
       ];
-      /*
-      + (
-        if enableTLS
-        then [
-          # RTSP
-          554
-          # RTSPS
-          322
-          # RTMPS
-          1936
-        ]
-        else [
-          # RTSP
-          554
-          # RTMP
-          1935
-        ]
-      )
-      */
     };
     systemd.tmpfiles.rules =
       [
-        "d /var/lib/mediamtx - mediamtx mediamtx 2min" # Fallback cleanup on crash
+        "d /var/lib/mediamtx - mediamtx mediamtx -"
       ]
-      ++ (optional (cfg.hls != null) "d /var/lib/mediamtx/${cfg.hls.storagePath} 0666 mediamtx mediamtx 2min");
+      ++ (optional (cfg.hls != null) "d /var/lib/mediamtx${cfg.hls.storagePath} 0666 mediamtx mediamtx 2min"); # Fallback cleanup on crash
+    systemd.services.nginx.serviceConfig.ReadOnlyPaths = ["/var/lib/mediamtx"];
     systemd.services.mediamtx = mkIf enableTLS {
       wants = ["acme-finished-${cfg.domain}.target"];
       after = ["acme-finished-${cfg.domain}.target"];
@@ -161,7 +143,7 @@ in {
         MTX_RTMPSERVERCERT = "%d/fullchain.pem";
       };
       serviceConfig = {
-        StateDirectory = ["mediamtx"];
+        ReadWritePaths = ["/var/lib/mediamtx"];
         AmbientCapabilities = ["CAP_NET_BIND_SERVICE"];
         LoadCredential = [
           "fullchain.pem:/var/lib/acme/${cfg.domain}/fullchain.pem"
