@@ -8,7 +8,7 @@ in {
   rtinf = {
     base.systemType = "server";
     stream = {
-      enable = true;
+      #enable = true;
       hls = {};
       auth = {
         authDir = "/var/lib/rtmp-auth";
@@ -17,6 +17,8 @@ in {
     };
     stream2 = {
       enable = true;
+      #hls = {};
+      openFirewall = true;
     };
     mofongo = {
       enable = true;
