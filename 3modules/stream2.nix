@@ -128,10 +128,8 @@ in {
       ];
     };
     systemd.tmpfiles.rules =
-      [
-        "d /var/lib/mediamtx - mediamtx mediamtx -"
-      ]
-      ++ (optional (cfg.hls != null) "d /var/lib/mediamtx${cfg.hls.storagePath} 0666 mediamtx mediamtx 2min"); # Fallback cleanup on crash
+      ["d /var/lib/mediamtx 0644 mediamtx mediamtx -"]
+      ++ (optional (cfg.hls != null) "d /var/lib/mediamtx${cfg.hls.storagePath} 0644 mediamtx mediamtx 2min"); # Fallback cleanup on crash
     systemd.services.nginx.serviceConfig.ReadOnlyPaths = ["/var/lib/mediamtx"];
     systemd.services.mediamtx = mkIf enableTLS {
       wants = ["acme-finished-${cfg.domain}.target"];
