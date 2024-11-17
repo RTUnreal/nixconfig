@@ -78,6 +78,7 @@
     kdeconnect.enable = true;
     dconf.enable = true;
   };
+  services.flatpak.enable = true;
 
   system.stateVersion = "21.11"; # Did you read the comment?
 }
