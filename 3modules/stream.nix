@@ -331,7 +331,7 @@ in {
       systemd.services.nginx.serviceConfig.ReadWritePaths = [cfg.directory];
       networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [80 443 1935 1936];
 
-      systemd.tmpfiles.rules = ["d ${cfg.directory} 0644 ${config.services.nginx.user} ${config.services.nginx.group} -"];
+      systemd.tmpfiles.rules = ["d ${cfg.directory} 0744 ${config.services.nginx.user} ${config.services.nginx.group} -"];
     })
     (mkIf (cfg.auth != null) {
       users.users.rtmp-auth = {
