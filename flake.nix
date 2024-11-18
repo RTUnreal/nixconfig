@@ -212,17 +212,6 @@
           ./1systems/konstream.rtinf.net/config.nix
         ];
       };
-      nixohes = let
-        system = "x86_64-linux";
-      in {
-        deployment.allowLocalDeployment = true;
-        imports = [
-          (common system {})
-          nixos-hardware.nixosModules.lenovo-thinkpad-t14
-          nixos-hardware.nixosModules.common-cpu-intel
-          ./1systems/carlosmatos/config.nix
-        ];
-      };
     };
     nixosModules = {
       nvidia-prime = import ./2configs/nvidia-prime.nix;
