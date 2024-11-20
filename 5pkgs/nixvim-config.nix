@@ -232,7 +232,6 @@ in {
       neocord = {
         enable = true;
         settings = {
-          client_id = "793271441293967371";
           auto_update = true;
           logo_tooltip = "The Superior Text Editor";
           main_image = "logo";
