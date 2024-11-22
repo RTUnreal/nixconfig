@@ -17,7 +17,6 @@
     srvos.url = "github:nix-community/srvos";
     colmena.url = "github:zhaofengli/colmena";
     nix-gaming.url = "github:fufexan/nix-gaming";
-    mms.url = "github:Triton171/nixos-modded-minecraft-servers/8f00cdc8477a306d7f2e1036fcad03506ae9ce12";
   };
 
   outputs = {
@@ -32,7 +31,6 @@
     srvos,
     nix-gaming,
     colmena,
-    mms,
     ...
   }: let
     # Small tool to iterate over each systems
@@ -44,14 +42,6 @@
 
     treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
   in {
-    apps = eachSystem (pkgs: {
-      restart-mc-eclisped = {
-        type = "app";
-        program = toString (pkgs.writers.writeDash "restart-mc-eclipsed" ''
-          exec ${pkgs.lib.getExe pkgs.colmena} exec -f ${self}/flake.nix --on atm9 -v --show-trace -- systemctl restart mc-eclipsed.service
-        '');
-      };
-    });
     colmena = let
       common = system: {allowedUnfree ? []}: ({lib, ...}:
         {
@@ -179,22 +169,6 @@
           (common system {allowedUnfree = ["factorio-headless"];})
           srvos.nixosModules.server
           ./1systems/devel.rtinf.net/config.nix
-        ];
-      };
-      atm9 = let
-        system = "x86_64-linux";
-      in {
-        deployment = {
-          targetUser = "trr";
-          targetHost = "atm9.rtinf.net";
-          tags = ["remote" "servers" "personal"];
-        };
-        imports = [
-          (common system {})
-          srvos.nixosModules.server
-          srvos.nixosModules.hardware-hetzner-cloud
-          mms.module
-          ./1systems/atm8.rtinf.net/config.nix
         ];
       };
       konstream = let
