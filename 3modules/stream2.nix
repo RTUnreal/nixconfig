@@ -11,7 +11,7 @@ in {
   options.rtinf.stream2 = {
     enable = mkEnableOption "enable stream";
     domain = mkOption {
-      type = types.str;
+      type = types.nullOr types.str;
       default = config.networking.fqdn;
       description = lib.mdDoc "domain of the server";
     };
@@ -21,8 +21,9 @@ in {
       description = lib.mdDoc "domain of the server";
     };
     hls = mkOption {
-      type = types.nullOr (types.submodule {
-      });
+      type =
+        types.nullOr (types.submodule {
+          });
       default = null;
       description = lib.mdDoc "set hls specific configs. `null` to disable.";
     };
@@ -52,6 +53,14 @@ in {
           rtspAddress = ":554";
 
           rtmp = true;
+          rtmpAddress = ":1935";
+
+          hls = cfg.hls != null;
+          hlsVariant = "mpegts";
+          hlsAlwaysRemux = true;
+
+          webrtc = false;
+          srt = false;
 
           # reroute to rtsp
           paths = {
@@ -66,12 +75,15 @@ in {
           encryption = "optional";
           rtspsAddress = ":322";
           rtmpEncryption = "optional";
+          rtmpsAddress = ":1936";
+          hlsTrustedProxies = ["127.0.0.1"];
         })
       ];
     };
 
     services.nginx = mkIf enableTLS {
       enable = true;
+      recommendedProxySettings = true;
       virtualHosts."${cfg.domain}" = {
         forceSSL = true;
         enableACME = true;
@@ -86,43 +98,57 @@ in {
       };
     };
 
-    networking.firewall = mkIf cfg.openFirewall {
-      /*
-      allowedUDPPorts = [
-        # RTSP/RTP
-        8000
-        # RTSP/RTCP
-        8001
-      ];
-      */
-      allowedTCPPorts = [
-        80
-        443
-        # RTSP
-        554
-        # RTSPS
-        322
-        # RTMPS
-        1936
-      ];
-    };
-    systemd.services.mediamtx = mkIf enableTLS {
-      wants = ["acme-finished-${cfg.domain}.target"];
-      after = ["acme-finished-${cfg.domain}.target"];
-      environment = {
-        MTX_SERVERKEY = "%d/key.pem";
-        MTX_SERVERCERT = "%d/fullchain.pem";
-        MTX_RTMPSERVERKEY = "%d/key.pem";
-        MTX_RTMPSERVERCERT = "%d/fullchain.pem";
-      };
-      serviceConfig = {
-        AmbientCapabilities = ["CAP_NET_BIND_SERVICE"];
-        LoadCredential = [
-          "fullchain.pem:/var/lib/acme/${cfg.domain}/fullchain.pem"
-          "key.pem:/var/lib/acme/${cfg.domain}/key.pem"
+    networking.firewall = mkIf cfg.openFirewall (mkMerge [
+      {
+        /*
+        allowedUDPPorts = [
+          # RTSP/RTP
+          8000
+          # RTSP/RTCP
+          8001
         ];
-      };
-    };
+        */
+        allowedTCPPorts = [
+          # RTSP
+          554
+          # RTMP
+          1935
+        ];
+      }
+      (mkIf enableTLS {
+        allowedTCPPorts = [
+          80
+          443
+          # RTSPS
+          322
+          # RTMPS
+          1936
+        ];
+      })
+    ]);
+    systemd.services.mediamtx = mkMerge [
+      {
+        serviceConfig = {
+          AmbientCapabilities = ["CAP_NET_BIND_SERVICE"];
+        };
+      }
+      (mkIf enableTLS {
+        wants = ["acme-finished-${cfg.domain}.target"];
+        after = ["acme-finished-${cfg.domain}.target"];
+        environment = {
+          MTX_SERVERKEY = "%d/key.pem";
+          MTX_SERVERCERT = "%d/fullchain.pem";
+          MTX_RTMPSERVERKEY = "%d/key.pem";
+          MTX_RTMPSERVERCERT = "%d/fullchain.pem";
+        };
+        serviceConfig = {
+          LoadCredential = [
+            "fullchain.pem:/var/lib/acme/${cfg.domain}/fullchain.pem"
+            "key.pem:/var/lib/acme/${cfg.domain}/key.pem"
+          ];
+        };
+      })
+    ];
     systemd.services.mediamtx-config-reload = mkIf enableTLS {
       wantedBy = ["acme-finished-${cfg.domain}.target" "multi-user.target"];
       # Before the finished targets, after the renew services.
