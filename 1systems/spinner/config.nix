@@ -19,12 +19,23 @@
       #enable = true;
       openFirewall = true;
     };
+    stream.auth = {
+      authDir = "/var/lib/rtmp-auth";
+    };
+    stream2 = {
+      enable = true;
+      domain = null;
+      hls = {};
+      openFirewall = true;
+    };
     misc = {
       bluetooth = true;
       docker = true;
       wacom = true;
     };
   };
+
+  networking.firewall.allowedTCPPorts = [8888];
 
   users.users.${config.services.jellyfin.user}.extraGroups = [config.rtinf.magnet.group];
 
