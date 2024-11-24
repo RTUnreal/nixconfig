@@ -1,10 +1,9 @@
 {
   config,
-  pkgs,
   lib,
   ...
 }: let
-  inherit (lib) mkEnableOption mkOption types mkIf mkMerge optional optionalString;
+  inherit (lib) mkEnableOption mkOption types mkIf mkMerge;
   cfg = config.rtinf.stream2;
 
   enableTLS = cfg.domain != null;
@@ -23,11 +22,6 @@ in {
     };
     hls = mkOption {
       type = types.nullOr (types.submodule {
-        options.storagePath = mkOption {
-          type = types.str;
-          default = "/hls";
-          description = lib.mdDoc "path where the HLS stream will be available";
-        };
       });
       default = null;
       description = lib.mdDoc "set hls specific configs. `null` to disable.";
@@ -61,11 +55,7 @@ in {
 
           # reroute to rtsp
           paths = {
-            "~^live/(\\w+)$" = {
-              runOnReady = "${lib.getExe pkgs.ffmpeg-headless} -i rtmp://localhost:1935/live/$G1 -c copy -f rtsp rtsp://localhost:$RTSP_PORT/stream/$G1" + (optionalString (cfg.hls != null) " -f hls -hls_flags delete_segments /var/lib/mediamtx${cfg.hls.storagePath}/$G1.m3u8");
-              runOnReadyRestart = true;
-            };
-            "~^stream/(\\w+)$" = {};
+            "~^live/(\\w+)$" = {};
           };
         }
         (mkIf (config.rtinf.stream.auth != null) {
@@ -75,11 +65,7 @@ in {
         (mkIf enableTLS {
           encryption = "optional";
           rtspsAddress = ":322";
-          serverKey = "key.pem";
-          serverCert = "fullchain.pem";
           rtmpEncryption = "optional";
-          rtmpServerKey = "key.pem";
-          rtmpServerCert = "fullchain.pem";
         })
       ];
     };
@@ -92,15 +78,8 @@ in {
 
         locations = mkMerge [
           (mkIf (cfg.hls != null) {
-            ${cfg.hls.storagePath} = {
-              root = "/var/lib/mediamtx";
-              extraConfig = ''
-                types {
-                  application/vnd.apple.mpegurl m3u8;
-                  video/mp2t ts;
-                }
-                add_header Cache-Control no-cache;
-              '';
+            "/live" = {
+              proxyPass = "http://127.0.0.1:8888";
             };
           })
         ];
@@ -127,10 +106,6 @@ in {
         1936
       ];
     };
-    systemd.tmpfiles.rules =
-      ["d /var/lib/mediamtx 0755 mediamtx mediamtx -"]
-      ++ (optional (cfg.hls != null) "d /var/lib/mediamtx${cfg.hls.storagePath} 0755 mediamtx mediamtx 2min"); # Fallback cleanup on crash
-    systemd.services.nginx.serviceConfig.ReadOnlyPaths = ["/var/lib/mediamtx"];
     systemd.services.mediamtx = mkIf enableTLS {
       wants = ["acme-finished-${cfg.domain}.target"];
       after = ["acme-finished-${cfg.domain}.target"];
@@ -141,7 +116,6 @@ in {
         MTX_RTMPSERVERCERT = "%d/fullchain.pem";
       };
       serviceConfig = {
-        ReadWritePaths = ["/var/lib/mediamtx"];
         AmbientCapabilities = ["CAP_NET_BIND_SERVICE"];
         LoadCredential = [
           "fullchain.pem:/var/lib/acme/${cfg.domain}/fullchain.pem"
