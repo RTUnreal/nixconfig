@@ -1,14 +1,16 @@
-{config, ...}: let
+{ config, ... }:
+let
   host = "mango.user-sites.de";
   cfg = config.services.kavita;
   ipAdress = "127.0.0.1";
-in {
+in
+{
   services.kavita = {
     enable = true;
     tokenKeyFile = "/var/lib/kavita/TOKEN";
     settings.IpAddresses = "${ipAdress}";
   };
-  users.users.kavita.extraGroups = ["nextcloud"];
+  users.users.kavita.extraGroups = [ "nextcloud" ];
   services.nginx = {
     enable = true;
     virtualHosts."${host}" = {

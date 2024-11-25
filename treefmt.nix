@@ -1,8 +1,8 @@
 _: {
   projectRootFile = "flake.nix";
   programs = {
-    alejandra.enable = true;
+    nixfmt-rfc-style.enable = true;
     deadnix.enable = true;
   };
-  settings.formatter.alejandra.excludes = ["3modules/vscode/extensions.nix"];
+  settings.formatter.nixfmt-rfc-style.excludes = [ "3modules/vscode/extensions.nix" ];
 }

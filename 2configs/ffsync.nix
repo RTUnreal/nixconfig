@@ -1,8 +1,5 @@
+{ pkgs, lib, ... }:
 {
-  pkgs,
-  lib,
-  ...
-}: {
   services.firefox-syncserver = {
     enable = true;
     singleNode = {

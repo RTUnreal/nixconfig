@@ -1,4 +1,5 @@
-{...}: {
+{ ... }:
+{
   boot.kernel.sysctl."net.ipv4.ip_forward" = true;
   virtualisation.docker.enable = true;
   services.gitlab-runner = {
@@ -12,9 +13,7 @@
         limit = 10;
         dockerImage = "debian:stable";
         dockerPrivileged = true;
-        dockerVolumes = [
-          "/cache"
-        ];
+        dockerVolumes = [ "/cache" ];
       };
     };
   };

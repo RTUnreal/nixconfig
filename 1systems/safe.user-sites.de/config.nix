@@ -1,8 +1,5 @@
+{ config, pkgs, ... }:
 {
-  config,
-  pkgs,
-  ...
-}: {
   imports = [
     ./../../2configs/safe
     ./../../2configs/news.nix
@@ -11,7 +8,7 @@
   ];
   rtinf.base.systemType = "server";
 
-  boot.loader.grub.devices = ["/dev/sda"];
+  boot.loader.grub.devices = [ "/dev/sda" ];
 
   networking = {
     hostName = "safe";

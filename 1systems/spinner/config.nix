@@ -1,4 +1,5 @@
-{config, ...}: {
+{ config, ... }:
+{
   imports = [
     ./hardware-configuration.nix
     ./retiolum-cfg.nix
@@ -25,7 +26,7 @@
     stream2 = {
       enable = true;
       domain = null;
-      hls = {};
+      hls = { };
       openFirewall = true;
     };
     misc = {
@@ -35,15 +36,15 @@
     };
   };
 
-  networking.firewall.allowedTCPPorts = [8888];
+  networking.firewall.allowedTCPPorts = [ 8888 ];
 
-  users.users.${config.services.jellyfin.user}.extraGroups = [config.rtinf.magnet.group];
+  users.users.${config.services.jellyfin.user}.extraGroups = [ config.rtinf.magnet.group ];
 
   hardware.enableRedistributableFirmware = true;
 
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sdb";
-  boot.supportedFilesystems = ["ntfs"];
+  boot.supportedFilesystems = [ "ntfs" ];
 
   networking.hostName = "spinner";
 

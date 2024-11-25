@@ -1,13 +1,17 @@
-{
-  config,
-  lib,
-  ...
-}: let
-  inherit (lib) mkEnableOption mkOption types mkIf mkMerge;
+{ config, lib, ... }:
+let
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    types
+    mkIf
+    mkMerge
+    ;
   cfg = config.rtinf.stream2;
 
   enableTLS = cfg.domain != null;
-in {
+in
+{
   options.rtinf.stream2 = {
     enable = mkEnableOption "enable stream";
     domain = mkOption {
@@ -21,9 +25,7 @@ in {
       description = lib.mdDoc "domain of the server";
     };
     hls = mkOption {
-      type =
-        types.nullOr (types.submodule {
-          });
+      type = types.nullOr (types.submodule { });
       default = null;
       description = lib.mdDoc "set hls specific configs. `null` to disable.";
     };
@@ -44,12 +46,12 @@ in {
       # https://github.com/bluenviron/mediamtx/blob/main/mediamtx.yml
       settings = mkMerge [
         {
-          logDestinations = ["syslog"];
+          logDestinations = [ "syslog" ];
 
           api = true;
 
           rtsp = true;
-          protocols = ["tcp"]; # "udp"];
+          protocols = [ "tcp" ]; # "udp"];
           rtspAddress = ":554";
 
           rtmp = true;
@@ -64,7 +66,7 @@ in {
 
           # reroute to rtsp
           paths = {
-            "~^live/(\\w+)$" = {};
+            "~^live/(\\w+)$" = { };
           };
         }
         (mkIf (config.rtinf.stream.auth != null) {
@@ -76,7 +78,7 @@ in {
           rtspsAddress = ":322";
           rtmpEncryption = "optional";
           rtmpsAddress = ":1936";
-          hlsTrustedProxies = ["127.0.0.1"];
+          hlsTrustedProxies = [ "127.0.0.1" ];
         })
       ];
     };
@@ -101,12 +103,12 @@ in {
     networking.firewall = mkIf cfg.openFirewall (mkMerge [
       {
         /*
-        allowedUDPPorts = [
-          # RTSP/RTP
-          8000
-          # RTSP/RTCP
-          8001
-        ];
+          allowedUDPPorts = [
+            # RTSP/RTP
+            8000
+            # RTSP/RTCP
+            8001
+          ];
         */
         allowedTCPPorts = [
           # RTSP
@@ -129,12 +131,12 @@ in {
     systemd.services.mediamtx = mkMerge [
       {
         serviceConfig = {
-          AmbientCapabilities = ["CAP_NET_BIND_SERVICE"];
+          AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
         };
       }
       (mkIf enableTLS {
-        wants = ["acme-finished-${cfg.domain}.target"];
-        after = ["acme-finished-${cfg.domain}.target"];
+        wants = [ "acme-finished-${cfg.domain}.target" ];
+        after = [ "acme-finished-${cfg.domain}.target" ];
         environment = {
           MTX_SERVERKEY = "%d/key.pem";
           MTX_SERVERCERT = "%d/fullchain.pem";
@@ -150,12 +152,17 @@ in {
       })
     ];
     systemd.services.mediamtx-config-reload = mkIf enableTLS {
-      wantedBy = ["acme-finished-${cfg.domain}.target" "multi-user.target"];
+      wantedBy = [
+        "acme-finished-${cfg.domain}.target"
+        "multi-user.target"
+      ];
       # Before the finished targets, after the renew services.
-      before = ["acme-finished-${cfg.domain}.target"];
-      after = ["acme-${cfg.domain}.service"];
+      before = [ "acme-finished-${cfg.domain}.target" ];
+      after = [ "acme-${cfg.domain}.service" ];
       # Block reloading if not all certs exist yet.
-      unitConfig.ConditionPathExists = ["${config.security.acme.certs.${cfg.domain}.directory}/fullchain.pem"];
+      unitConfig.ConditionPathExists = [
+        "${config.security.acme.certs.${cfg.domain}.directory}/fullchain.pem"
+      ];
       serviceConfig = {
         Type = "oneshot";
         TimeoutSec = 60;

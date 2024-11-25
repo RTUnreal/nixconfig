@@ -1,15 +1,15 @@
+{ pkgs, lib }:
 {
-  pkgs,
-  lib,
-}: {
   enableSillyFeatures ? false,
   enableIDEFeatures ? false,
   enableDesktop ? enableIDEFeatures,
-}: let
+}:
+let
   inherit (lib) mkIf mkMerge optionals;
 
   l = "<leader>";
-in {
+in
+{
   colorschemes.catppuccin.enable = true;
   vimAlias = true;
   viAlias = true;
@@ -21,10 +21,7 @@ in {
   opts = {
     relativenumber = true;
     number = true;
-    mouse =
-      if enableIDEFeatures
-      then "a"
-      else "";
+    mouse = if enableIDEFeatures then "a" else "";
   };
   highlight = {
     ExtraWhitespace.bg = "red";
@@ -93,7 +90,7 @@ in {
   ];
 
   clipboard.providers.xclip.enable = enableDesktop;
-  clipboard.register = ["unnamed"];
+  clipboard.register = [ "unnamed" ];
   plugins = mkMerge [
     {
       nvim-colorizer.enable = true;
@@ -141,7 +138,10 @@ in {
           };
           nil_ls = {
             enable = true;
-            settings.formatting.command = ["${lib.getExe pkgs.alejandra}" "--quiet"];
+            settings.formatting.command = [
+              "${lib.getExe pkgs.nixfmt}"
+              "--quiet"
+            ];
           };
           cmake.enable = true;
           clangd.enable = true;
@@ -149,7 +149,12 @@ in {
           elixirls.enable = true;
           phpactor = {
             enable = true;
-            cmd = ["phpactor" "language-server" "--config-extra" "{\"language_server_php_cs_fixer.enabled\":true}"];
+            cmd = [
+              "phpactor"
+              "language-server"
+              "--config-extra"
+              "{\"language_server_php_cs_fixer.enabled\":true}"
+            ];
           };
           jsonls.enable = true;
         };
@@ -203,7 +208,10 @@ in {
             completion.__raw = "cmp.config.window.bordered()";
             documentation.__raw = "cmp.config.window.bordered()";
           };
-          sources = [{name = "nvim_lsp";} {name = "luasnip";}];
+          sources = [
+            { name = "nvim_lsp"; }
+            { name = "luasnip"; }
+          ];
           snippet.expand = "function(args) require('luasnip').lsp_expand(args.body) end";
           mapping = {
             "<C-b>" = "cmp.mapping.scroll_docs(-4)";

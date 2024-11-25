@@ -18,7 +18,8 @@
   webkitgtk_4_1,
   gst_all_1,
   withDebug ? false,
-}: let
+}:
+let
   pname = "SlimeVR";
   version = "0.11.0";
 
@@ -55,7 +56,10 @@
     inherit src version;
 
     npmDepsHash = "sha256-fgt2c5o48zmCAvXrxAKQbZmIKyDD777GCz3u62bu5MA=";
-    nativeBuildInputs = [rustc cargo];
+    nativeBuildInputs = [
+      rustc
+      cargo
+    ];
 
     postPatch = ''
       rm -rf solarxr-protocol
@@ -84,59 +88,64 @@
     '';
   };
 in
-  rustPlatform.buildRustPackage {
-    inherit pname;
-    inherit version src;
-    cargoLock = {
-      lockFile = src + "/Cargo.lock";
-    };
-    postPatch =
-      ''
-        tmp=$(mktemp)
-        ${lib.getExe jq} '.build.distDir = "${frontend}"' gui/src-tauri/tauri.conf.json > "$tmp"
-        mv "$tmp" gui/src-tauri/tauri.conf.json
-      ''
-      + lib.optionalString withDebug ''
-        substituteInPlace gui/src-tauri/src/main.rs \
-          --replace "if window_state.is_old()" "window.open_devtools();if window_state.is_old()"
-      '';
-
-    passthru = {
-      inherit src serverJar solarxr frontend;
-    };
-
-    nativeBuildInputs = [
-      makeWrapper
-      wrapGAppsHook
-      pkg-config
-    ];
-
-    buildInputs =
-      [
-        dbus
-        openssl
-        gtk3
-        glib-networking
-        webkitgtk_4_1
-        jdk17_headless
-      ]
-      ++ (with gst_all_1; [
-        gstreamer
-        gst-plugins-base
-        gst-plugins-good
-        gst-plugins-bad
-        gst-plugins-ugly
-      ]);
-
-    postInstall = ''
-      mkdir -p $out/share/java
-      ln -s ${serverJar} $out/share/java/slimevr.jar
-      wrapProgram $out/bin/slimevr \
-        --set JAVA_HOME "${jdk17_headless}" \
-        --add-flags "--launch-from-path $out/share/java"
+rustPlatform.buildRustPackage {
+  inherit pname;
+  inherit version src;
+  cargoLock = {
+    lockFile = src + "/Cargo.lock";
+  };
+  postPatch =
+    ''
+      tmp=$(mktemp)
+      ${lib.getExe jq} '.build.distDir = "${frontend}"' gui/src-tauri/tauri.conf.json > "$tmp"
+      mv "$tmp" gui/src-tauri/tauri.conf.json
+    ''
+    + lib.optionalString withDebug ''
+      substituteInPlace gui/src-tauri/src/main.rs \
+        --replace "if window_state.is_old()" "window.open_devtools();if window_state.is_old()"
     '';
 
-    meta = {
-      mainProgram = "slimevr";
-    };
-  }
+  passthru = {
+    inherit
+      src
+      serverJar
+      solarxr
+      frontend
+      ;
+  };
+
+  nativeBuildInputs = [
+    makeWrapper
+    wrapGAppsHook
+    pkg-config
+  ];
+
+  buildInputs =
+    [
+      dbus
+      openssl
+      gtk3
+      glib-networking
+      webkitgtk_4_1
+      jdk17_headless
+    ]
+    ++ (with gst_all_1; [
+      gstreamer
+      gst-plugins-base
+      gst-plugins-good
+      gst-plugins-bad
+      gst-plugins-ugly
+    ]);
+
+  postInstall = ''
+    mkdir -p $out/share/java
+    ln -s ${serverJar} $out/share/java/slimevr.jar
+    wrapProgram $out/bin/slimevr \
+      --set JAVA_HOME "${jdk17_headless}" \
+      --add-flags "--launch-from-path $out/share/java"
+  '';
+
+  meta = {
+    mainProgram = "slimevr";
+  };
+}

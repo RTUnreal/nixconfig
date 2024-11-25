@@ -1,4 +1,5 @@
-{lib, ...}: {
+{ lib, ... }:
+{
   services.home-assistant = {
     enable = true;
     openFirewall = true;
@@ -17,9 +18,9 @@
       "wake_word"
     ];
     config = {
-      mobile_app = {};
-      assist_pipeline = {};
-      wake_word = {};
+      mobile_app = { };
+      assist_pipeline = { };
+      wake_word = { };
     };
   };
 
@@ -28,7 +29,7 @@
       "en" = {
         enable = true;
         # see https://github.com/rhasspy/rhasspy3/blob/master/programs/tts/piper/script/download.py
-        voice = "de-eva_k-x-low"; #"en-gb-southern_english_female-low";
+        voice = "de-eva_k-x-low"; # "en-gb-southern_english_female-low";
         uri = "tcp://0.0.0.0:10200";
         speaker = 0;
       };

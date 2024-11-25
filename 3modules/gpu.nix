@@ -3,20 +3,32 @@
   pkgs,
   lib,
   ...
-}: let
-  inherit (lib) mkOption types optional mkIf;
+}:
+let
+  inherit (lib)
+    mkOption
+    types
+    optional
+    mkIf
+    ;
   cfg = config.rtinf.gpu;
-in {
+in
+{
   options.rtinf.gpu = {
     type = mkOption {
-      type = types.nullOr (types.enum ["amd" "nvidia"]);
+      type = types.nullOr (
+        types.enum [
+          "amd"
+          "nvidia"
+        ]
+      );
       default = null;
     };
   };
 
   config = mkIf (cfg.type != null) {
     environment.systemPackages =
-      []
+      [ ]
       ++ optional (cfg.type == "amd") pkgs.nvtopPackages.amd
       ++ optional (cfg.type == "nvidia") pkgs.nvtopPackages.nvidia;
   };

@@ -3,10 +3,12 @@
   lib,
   #hyprland,
   ...
-}: let
+}:
+let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.rtinf.hyprland;
-in {
+in
+{
   options.rtinf.hyprland.enable = mkEnableOption "enable hyprland";
   config = mkIf cfg.enable {
     programs.hyprland = {

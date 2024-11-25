@@ -3,13 +3,22 @@
   pkgs,
   lib,
   ...
-}: let
-  inherit (lib) mkEnableOption mkOption mkPackageOption mkIf optionalAttrs types;
+}:
+let
+  inherit (lib)
+    mkEnableOption
+    mkOption
+    mkPackageOption
+    mkIf
+    optionalAttrs
+    types
+    ;
   cfg = config.rtinf.magnet;
-in {
+in
+{
   options.rtinf.magnet = {
     enable = mkEnableOption "enable magnet";
-    package = mkPackageOption pkgs "qbittorrent-nox" {};
+    package = mkPackageOption pkgs "qbittorrent-nox" { };
     user = mkOption {
       type = types.str;
       default = "magnet";
@@ -41,21 +50,22 @@ in {
           home = cfg.stateDir;
         };
       };
-      groups = optionalAttrs (cfg.group == "magnet") {
-        magnet = {};
-      };
+      groups = optionalAttrs (cfg.group == "magnet") { magnet = { }; };
     };
 
     systemd = {
-      tmpfiles.rules = [
-        "d '${cfg.stateDir}' 750 ${cfg.user} ${cfg.group}"
-      ];
+      tmpfiles.rules = [ "d '${cfg.stateDir}' 750 ${cfg.user} ${cfg.group}" ];
       services.magnet = {
         description = "Magnet web service";
-        wantedBy = ["multi-user.target"];
-        wants = ["network-online.target"];
-        after = ["network.target" "local-fs.target" "network-online.target" "nss-lookup.target"];
-        path = [cfg.package];
+        wantedBy = [ "multi-user.target" ];
+        wants = [ "network-online.target" ];
+        after = [
+          "network.target"
+          "local-fs.target"
+          "network-online.target"
+          "nss-lookup.target"
+        ];
+        path = [ cfg.package ];
         serviceConfig = {
           Type = "exec";
           DynamicUser = false;
@@ -69,8 +79,8 @@ in {
       };
     };
 
-    networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [cfg.port];
+    networking.firewall.allowedTCPPorts = mkIf cfg.openFirewall [ cfg.port ];
 
-    environment.systemPackages = [cfg.package];
+    environment.systemPackages = [ cfg.package ];
   };
 }

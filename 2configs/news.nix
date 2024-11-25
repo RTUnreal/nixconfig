@@ -1,4 +1,5 @@
-{...}: {
+{ ... }:
+{
   services = {
     miniflux = {
       enable = true;

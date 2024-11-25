@@ -1,21 +1,21 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   domain = "ci.devel.rtinf.net";
-in {
+in
+{
   nixpkgs.overlays = [
     (_final: prev: {
       hydra_unstable = prev.hydra_unstable.overrideAttrs (old: {
-        patches =
-          (old.patches or [])
-          ++ [
-            (prev.fetchpatch {
-              url = "https://github.com/NixOS/hydra/pull/1227.patch";
-              sha256 = "sha256-A4dN/4zLMKLYaD38lu87lzAWH/3EUM7G5njx7Q4W47w=";
-            })
-            (prev.fetchpatch {
-              url = "https://github.com/NixOS/hydra/pull/1232.patch";
-              sha256 = "sha256-R5Pakyhf5Tw9Tc4iGmZ/xiVEHiCT0ITfYNGFEf2y3OE=";
-            })
-          ];
+        patches = (old.patches or [ ]) ++ [
+          (prev.fetchpatch {
+            url = "https://github.com/NixOS/hydra/pull/1227.patch";
+            sha256 = "sha256-A4dN/4zLMKLYaD38lu87lzAWH/3EUM7G5njx7Q4W47w=";
+          })
+          (prev.fetchpatch {
+            url = "https://github.com/NixOS/hydra/pull/1232.patch";
+            sha256 = "sha256-R5Pakyhf5Tw9Tc4iGmZ/xiVEHiCT0ITfYNGFEf2y3OE=";
+          })
+        ];
         doChecks = false;
       });
     })
@@ -28,7 +28,7 @@ in {
     enable = true;
     hydraURL = "https://${domain}";
     notificationSender = "hydra@${domain}";
-    buildMachinesFiles = [];
+    buildMachinesFiles = [ ];
     useSubstitutes = true;
     # FIXME: file might not be always available
     extraConfig = ''
@@ -58,8 +58,8 @@ in {
     };
   };
   networking.hosts = {
-    "127.0.0.1" = ["${domain}"];
-    "::1" = ["${domain}"];
+    "127.0.0.1" = [ "${domain}" ];
+    "::1" = [ "${domain}" ];
   };
   programs.git.config = {
     credential."https://devel.rtinf.net" = {

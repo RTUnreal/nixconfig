@@ -4,7 +4,8 @@
   lib,
   ...
 }:
-with lib; let
+with lib;
+let
   netname = "retiolum";
   cfg = config.networking.retiolum;
 
@@ -13,7 +14,8 @@ with lib; let
     rev = "ada461514b5dff2b6308cfb939902d90095020f2";
     sha256 = "sha256-bHOP4tjy+TLtbfN2tngCeCLe/DtVqee1xUw0tKjG1Bo=";
   };
-in {
+in
+{
   options = {
     networking.retiolum.ipv4 = mkOption {
       type = types.str;
@@ -52,10 +54,10 @@ in {
 
     networking.extraHosts = builtins.readFile (toString "${retiolum}/etc.hosts");
 
-    environment.systemPackages = [config.services.tinc.networks.${netname}.package];
+    environment.systemPackages = [ config.services.tinc.networks.${netname}.package ];
 
-    networking.firewall.allowedTCPPorts = [655];
-    networking.firewall.allowedUDPPorts = [655];
+    networking.firewall.allowedTCPPorts = [ 655 ];
+    networking.firewall.allowedUDPPorts = [ 655 ];
     #services.netdata.portcheck.checks.tinc.port = 655;
 
     systemd.network.enable = true;

@@ -5,22 +5,39 @@
   nixpkgs-unstable,
   selflib,
   ...
-}: let
-  inherit (lib) mkOption mkEnableOption types mkMerge mkIf mkDefault concatMapStringsSep;
+}:
+let
+  inherit (lib)
+    mkOption
+    mkEnableOption
+    types
+    mkMerge
+    mkIf
+    mkDefault
+    concatMapStringsSep
+    ;
   cfg = config.rtinf.base;
-in {
+in
+{
   options.rtinf.base = {
     systemType = mkOption {
-      type = types.nullOr (types.enum ["desktop" "server"]);
+      type = types.nullOr (
+        types.enum [
+          "desktop"
+          "server"
+        ]
+      );
     };
     laptopServer = mkOption {
-      type = types.nullOr (types.submodule {
-        options.buildinDisplayName = mkOption {
-          type = types.str;
-          example = "intel_backlight";
-          description = lib.mdDoc "`/sys/acpi/backlight` display name";
-        };
-      });
+      type = types.nullOr (
+        types.submodule {
+          options.buildinDisplayName = mkOption {
+            type = types.str;
+            example = "intel_backlight";
+            description = lib.mdDoc "`/sys/acpi/backlight` display name";
+          };
+        }
+      );
       default = null;
       description = lib.mdDoc "set laptop server specific configs. `null` to disable.";
     };
@@ -32,7 +49,7 @@ in {
       users.users.trr = {
         isNormalUser = true;
         description = "Alexander Gaus";
-        extraGroups = ["wheel"];
+        extraGroups = [ "wheel" ];
         uid = 1000;
       };
 
@@ -82,7 +99,10 @@ in {
 
       #system.copySystemConfiguration = true;
 
-      nix.settings.experimental-features = ["nix-command" "flakes"];
+      nix.settings.experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
     })
     (mkIf (cfg.systemType == "desktop") {
       rtinf.neovim.type = lib.mkDefault "desktop";
@@ -117,17 +137,13 @@ in {
         };
       };
 
-      fonts.packages = with pkgs; [
-        (nerdfonts.override {fonts = ["SourceCodePro"];})
-      ];
+      fonts.packages = with pkgs; [ (nerdfonts.override { fonts = [ "SourceCodePro" ]; }) ];
 
       networking.networkmanager.enable = true;
 
-      users.users.trr.extraGroups = ["networkmanager"];
+      users.users.trr.extraGroups = [ "networkmanager" ];
 
-      environment.systemPackages = with pkgs; [
-        lazygit
-      ];
+      environment.systemPackages = with pkgs; [ lazygit ];
 
       hardware.opengl = {
         enable = true;
@@ -164,7 +180,9 @@ in {
             (pkgs.writeText "known_hosts" (
               lib.pipe selflib.hosts [
                 builtins.attrValues
-                (builtins.concatMap (h: (builtins.map (k: (builtins.concatStringsSep "," h.hostNames) + " " + k) h.sshHostKeys)))
+                (builtins.concatMap (
+                  h: (builtins.map (k: (builtins.concatStringsSep "," h.hostNames) + " " + k) h.sshHostKeys)
+                ))
                 (builtins.concatStringsSep "\n")
                 (t: t + "\n")
               ]
@@ -185,7 +203,10 @@ in {
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMjWrChmpKdOSmzKghxh5c4UURnetbUsxwLS2l8TLfJW trr@worker"
       ];
       nix = {
-        settings.trusted-users = ["root" "@wheel"];
+        settings.trusted-users = [
+          "root"
+          "@wheel"
+        ];
         gc = {
           automatic = true;
           persistent = true;
@@ -204,7 +225,12 @@ in {
             "95.88.0.0/14" # Kabel Deutschland (Alex)
           ];
           jails = mkIf config.services.nginx.enable {
-            nginx-botsearch.settings.port = mkDefault (concatMapStringsSep "," builtins.toString [80 443]);
+            nginx-botsearch.settings.port = mkDefault (
+              concatMapStringsSep "," builtins.toString [
+                80
+                443
+              ]
+            );
           };
         };
       };

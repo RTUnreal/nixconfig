@@ -4,7 +4,8 @@
   lib,
   selfpkgs,
   ...
-}: let
+}:
+let
   inherit (lib) mkEnableOption mkIf;
 
   cfg = config.rtinf.steam;
@@ -60,7 +61,8 @@
       rm -rf ~/.local/share/Steam/steamapps/compatdata/438100/pfx/drive_c/users/steamuser/AppData/Roaming/
     '';
   };
-in {
+in
+{
   options.rtinf.steam = {
     enable = mkEnableOption "steam";
   };
@@ -69,13 +71,20 @@ in {
       steam = {
         enable = true;
         package = pkgs.steam.override {
-          extraLibraries = pkgs: [pkgs.appimage-run ovrasStarter];
+          extraLibraries = pkgs: [
+            pkgs.appimage-run
+            ovrasStarter
+          ];
         };
-        extraCompatPackages = [selfpkgs.proton-ge-rtsp-bin];
+        extraCompatPackages = [ selfpkgs.proton-ge-rtsp-bin ];
         platformOptimizations.enable = true;
       };
       gamemode.enable = true;
     };
-    environment.systemPackages = [ovrasStarter clear_cache delete_vrc_eac];
+    environment.systemPackages = [
+      ovrasStarter
+      clear_cache
+      delete_vrc_eac
+    ];
   };
 }

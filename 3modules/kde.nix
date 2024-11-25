@@ -3,10 +3,12 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.rtinf.kde;
-in {
+in
+{
   options.rtinf.kde.enable = mkEnableOption "set kde configuration";
   config = mkIf cfg.enable {
     # Enable the Plasma 5 Desktop Environment.

@@ -3,10 +3,12 @@
   pkgs,
   lib,
   ...
-}: let
+}:
+let
   cfg = config.services.forgejo;
   domain = config.networking.fqdn;
-in {
+in
+{
   users.users.git = {
     description = "Gitea Service";
     home = cfg.stateDir;
@@ -14,7 +16,7 @@ in {
     group = "git";
     isSystemUser = true;
   };
-  users.groups.git = {};
+  users.groups.git = { };
 
   services.forgejo = {
     enable = true;
@@ -46,6 +48,9 @@ in {
     forceSSL = true;
     enableACME = true;
   };
-  environment.systemPackages = [cfg.package];
-  networking.firewall.allowedTCPPorts = [80 443];
+  environment.systemPackages = [ cfg.package ];
+  networking.firewall.allowedTCPPorts = [
+    80
+    443
+  ];
 }

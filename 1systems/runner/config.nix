@@ -6,7 +6,8 @@
   pkgs,
   nixpkgs-unstable,
   ...
-}: {
+}:
+{
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -40,10 +41,8 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    extraModulePackages = with config.boot.kernelPackages; [
-      v4l2loopback
-    ];
-    kernelModules = ["rtw88_8822bu"];
+    extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
+    kernelModules = [ "rtw88_8822bu" ];
     kernelPackages = pkgs.linuxKernel.packages.linux_6_11;
   };
 

@@ -6,16 +6,22 @@
   lib,
   modulesPath,
   ...
-}: {
-  imports = [
-    (modulesPath + "/installer/scan/not-detected.nix")
-  ];
+}:
+{
+  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules = ["nvme" "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod"];
-  boot.initrd.kernelModules = [];
-  boot.kernelModules = ["kvm-amd"];
-  boot.extraModulePackages = [];
-  boot.supportedFilesystems = ["ntfs"];
+  boot.initrd.availableKernelModules = [
+    "nvme"
+    "xhci_pci"
+    "ahci"
+    "usb_storage"
+    "usbhid"
+    "sd_mod"
+  ];
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [ "kvm-amd" ];
+  boot.extraModulePackages = [ ];
+  boot.supportedFilesystems = [ "ntfs" ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/aed7726c-eec7-45dd-9ae2-1b317f1c9edd";
@@ -31,10 +37,13 @@
     device = "/dev/disk/by-uuid/ECFAF28DFAF252F6";
     fsType = "ntfs";
     # hopefully uid doesn't change
-    options = ["rw" "uid=1000"];
+    options = [
+      "rw"
+      "uid=1000"
+    ];
   };
 
-  swapDevices = [{device = "/dev/disk/by-uuid/3f4f324f-a68f-4b29-92db-fcdddb1c4cc7";}];
+  swapDevices = [ { device = "/dev/disk/by-uuid/3f4f324f-a68f-4b29-92db-fcdddb1c4cc7"; } ];
 
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   services.fstrim.enable = true;

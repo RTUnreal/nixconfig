@@ -1,6 +1,8 @@
-{config, ...}: let
+{ config, ... }:
+let
   imgPath = "/var/lib/koncert-imgs";
-in {
+in
+{
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
@@ -9,7 +11,7 @@ in {
     base.systemType = "server";
     stream = {
       enable = true;
-      hls = {};
+      hls = { };
       auth = {
         authDir = "/var/lib/rtmp-auth";
       };
@@ -17,7 +19,7 @@ in {
     };
     stream2 = {
       #enable = true;
-      hls = {};
+      hls = { };
       openFirewall = true;
     };
     mofongo = {
@@ -37,11 +39,9 @@ in {
   networking.domain = "rtinf.net";
 
   services.nginx.virtualHosts."konstream.rtinf.net".locations."/imgs".root = imgPath;
-  systemd.services.nginx.serviceConfig.ReadOnlyPaths = [imgPath];
+  systemd.services.nginx.serviceConfig.ReadOnlyPaths = [ imgPath ];
 
-  systemd.tmpfiles.rules = [
-    "d ${imgPath} 0755 trr users -"
-  ];
+  systemd.tmpfiles.rules = [ "d ${imgPath} 0755 trr users -" ];
 
   users.users.trr.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOzDeh+d/nSEnYIhAOtuwW5/rJNwXeS7wgWXgp588TOY"

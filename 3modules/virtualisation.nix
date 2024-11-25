@@ -6,22 +6,32 @@
 }:
 # See: https://gist.github.com/techhazard/1be07805081a4d7a51c527e452b87b26
 let
-  inherit (lib) mkOption mkEnableOption types mkIf mkMerge;
+  inherit (lib)
+    mkOption
+    mkEnableOption
+    types
+    mkIf
+    mkMerge
+    ;
   cfg = config.rtinf.virtualisation;
-in {
+in
+{
   options.rtinf.virtualisation = {
     enable = mkEnableOption "virtualisation";
 
     cpuType = mkOption {
       description = "One of `intel` or `amd`";
       default = "intel";
-      type = types.enum ["intel" "amd"];
+      type = types.enum [
+        "intel"
+        "amd"
+      ];
     };
 
     libvirtUsers = mkOption {
       description = "Extra users to add to libvirtd (root is already included)";
       type = types.listOf types.str;
-      default = ["trr"];
+      default = [ "trr" ];
     };
 
     pciPassthrough = mkEnableOption "PCI Passthrough";
@@ -34,7 +44,7 @@ in {
 
   config = mkIf cfg.enable (mkMerge [
     {
-      boot.kernelParams = ["${cfg.cpuType}_iommu=on"];
+      boot.kernelParams = [ "${cfg.cpuType}_iommu=on" ];
 
       environment.systemPackages = with pkgs; [
         virt-manager
@@ -42,7 +52,7 @@ in {
         OVMF
       ];
 
-      users.groups.libvirtd.members = ["root"] ++ cfg.libvirtUsers;
+      users.groups.libvirtd.members = [ "root" ] ++ cfg.libvirtUsers;
 
       virtualisation.libvirtd = {
         enable = true;
@@ -59,7 +69,12 @@ in {
     (mkIf cfg.pciPassthrough {
       # These modules are required for PCI passthrough, and must come before early modesetting stuff
       boot = {
-        kernelModules = ["vfio" "vfio_iommu_type1" "vfio_pci" "vfio_virqfd"];
+        kernelModules = [
+          "vfio"
+          "vfio_iommu_type1"
+          "vfio_pci"
+          "vfio_virqfd"
+        ];
         extraModprobeConfig = "options vfio-pci ids=${builtins.concatStringsSep "," cfg.pciIDs}";
       };
     })

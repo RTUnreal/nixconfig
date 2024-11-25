@@ -1,6 +1,8 @@
-{pkgs, ...}: let
+{ pkgs, ... }:
+let
   storageMountPoint = "/mnt/storagebox";
-in {
+in
+{
   security.acme = {
     defaults.email = "alex@user-sites.de";
     acceptTerms = true;
@@ -26,36 +28,38 @@ in {
       enableACME = true;
       forceSSL = true;
     };
-    nextcloud = let
-      version = 30;
-    in {
-      enable = true;
-      https = true;
-      hostName = "safe.user-sites.de";
-      package = pkgs."nextcloud${builtins.toString version}";
-      datadir = "/${storageMountPoint}/nextcloud";
-      config = {
-        dbtype = "pgsql";
-        dbuser = "nextcloud";
-        dbhost = "/run/postgresql"; # nextcloud will add /.s.PGSQL.5432 by itself
-        dbname = "nextcloud";
-        adminuser = "root";
-        adminpassFile = "/var/lib/nextcloud/adminpw";
+    nextcloud =
+      let
+        version = 30;
+      in
+      {
+        enable = true;
+        https = true;
+        hostName = "safe.user-sites.de";
+        package = pkgs."nextcloud${builtins.toString version}";
+        datadir = "/${storageMountPoint}/nextcloud";
+        config = {
+          dbtype = "pgsql";
+          dbuser = "nextcloud";
+          dbhost = "/run/postgresql"; # nextcloud will add /.s.PGSQL.5432 by itself
+          dbname = "nextcloud";
+          adminuser = "root";
+          adminpassFile = "/var/lib/nextcloud/adminpw";
+        };
+        extraApps = with pkgs."nextcloud${toString version}Packages".apps; {
+          inherit
+            calendar
+            contacts
+            mail
+            music
+            notes
+            tasks
+            ;
+        };
       };
-      extraApps = with pkgs."nextcloud${toString version}Packages".apps; {
-        inherit
-          calendar
-          contacts
-          mail
-          music
-          notes
-          tasks
-          ;
-      };
-    };
     postgresql = {
       enable = true;
-      ensureDatabases = ["nextcloud"];
+      ensureDatabases = [ "nextcloud" ];
       ensureUsers = [
         {
           name = "nextcloud";
@@ -65,10 +69,22 @@ in {
       ];
     };
   };
-  networking.firewall.allowedTCPPorts = [80 443];
+  networking.firewall.allowedTCPPorts = [
+    80
+    443
+  ];
   systemd.services."nextcloud-setup" = {
-    requires = ["mnt-storagebox.mount" "postgresql.service"];
-    wants = ["mnt-storagebox.mount" "postgresql.service"];
-    after = ["mnt-storagebox.mount" "postgresql.service"];
+    requires = [
+      "mnt-storagebox.mount"
+      "postgresql.service"
+    ];
+    wants = [
+      "mnt-storagebox.mount"
+      "postgresql.service"
+    ];
+    after = [
+      "mnt-storagebox.mount"
+      "postgresql.service"
+    ];
   };
 }
