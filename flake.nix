@@ -1,7 +1,7 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable-small";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     retiolum.url = "github:Mic92/retiolum";
     flake-compat = {
       url = "github:edolstra/flake-compat";
