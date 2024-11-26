@@ -258,18 +258,16 @@
           slimevr = pkgs.callPackage ./5pkgs/slimevr/default.nix { };
           slimevr-appimage = pkgs.callPackage ./5pkgs/slimevr/appimage.nix { };
 
-          proton-ge-rtsp-bin = pkgs.proton-ge-bin.overrideAttrs (
-            prevAttrs: rec {
-              pname = "proton-ge-rtsp-bin";
-              version = "GE-Proton9-20-rtsp15";
-              src =  pkgs.fetchzip {
-                #url = "https://github.com/SpookySkeletons/proton-ge-rtsp/releases/download/${version}/${version}.tar.gz";
-                # this version has a broken link
-                url = "https://github.com/SpookySkeletons/proton-ge-rtsp/releases/download/${version}-1/${version}.tar.gz";
-                hash = "sha256-dj5qO1AmV0KinrfgUcv+bWzLN9aaAAKf/GxX5o9b6Dc=";
-              };
-            }
-          );
+          proton-ge-rtsp-bin = pkgs.proton-ge-bin.overrideAttrs (_prevAttrs: rec {
+            pname = "proton-ge-rtsp-bin";
+            version = "GE-Proton9-20-rtsp15";
+            src = pkgs.fetchzip {
+              #url = "https://github.com/SpookySkeletons/proton-ge-rtsp/releases/download/${version}/${version}.tar.gz";
+              # this version has a broken link
+              url = "https://github.com/SpookySkeletons/proton-ge-rtsp/releases/download/${version}-1/${version}.tar.gz";
+              hash = "sha256-dj5qO1AmV0KinrfgUcv+bWzLN9aaAAKf/GxX5o9b6Dc=";
+            };
+          });
 
           jmusicbot = pkgs.callPackage (
             { fetchurl }:
