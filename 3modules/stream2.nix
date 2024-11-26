@@ -25,7 +25,15 @@ in
       description = lib.mdDoc "domain of the server";
     };
     hls = mkOption {
-      type = types.nullOr (types.submodule { });
+      type = types.nullOr (
+        types.submodule {
+          options.port = mkOption {
+            type = types.port;
+            default = 8888;
+            description = lib.mdDoc "port of the auth service";
+          };
+        }
+      );
       default = null;
       description = lib.mdDoc "set hls specific configs. `null` to disable.";
     };
@@ -58,8 +66,6 @@ in
           rtmpAddress = ":1935";
 
           hls = cfg.hls != null;
-          hlsVariant = "mpegts";
-          hlsAlwaysRemux = true;
 
           webrtc = false;
           srt = false;
@@ -80,6 +86,11 @@ in
           rtmpsAddress = ":1936";
           hlsTrustedProxies = [ "127.0.0.1" ];
         })
+        (mkIf (cfg.hls != null) {
+          hlsVariant = "lowLatency";
+          hlsAlwaysRemux = true;
+          hlsAddress = ":${toString cfg.hls.port}";
+        })
       ];
     };
 
@@ -93,7 +104,7 @@ in
         locations = mkMerge [
           (mkIf (cfg.hls != null) {
             "/live" = {
-              proxyPass = "http://127.0.0.1:8888";
+              proxyPass = "http://127.0.0.1:${toString cfg.hls.port}";
             };
           })
         ];
