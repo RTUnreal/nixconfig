@@ -259,12 +259,14 @@
           slimevr-appimage = pkgs.callPackage ./5pkgs/slimevr/appimage.nix { };
 
           proton-ge-rtsp-bin = pkgs.proton-ge-bin.overrideAttrs (
-            finalAttrs: _prevAttrs: {
+            prevAttrs: rec {
               pname = "proton-ge-rtsp-bin";
-              version = "GE-Proton9-11-rtsp15";
-              src = pkgs.fetchzip {
-                url = "https://github.com/SpookySkeletons/proton-ge-rtsp/releases/download/${finalAttrs.version}/${finalAttrs.version}.tar.gz";
-                hash = "sha256-3QWJUVkMgZldEXFVsry1FoKVE9y6Tg4IREAruPuL+hk=";
+              version = "GE-Proton9-20-rtsp15";
+              src =  pkgs.fetchzip {
+                #url = assert with builtins; trace "blah" true;"https://github.com/SpookySkeletons/proton-ge-rtsp/releases/download/${version}/${version}.tar.gz";
+                # this version has a broken link
+                url = assert with builtins; trace "blah" true;"https://github.com/SpookySkeletons/proton-ge-rtsp/releases/download/${version}-1/${version}.tar.gz";
+                hash = "sha256-dj5qO1AmV0KinrfgUcv+bWzLN9aaAAKf/GxX5o9b6Dc=";
               };
             }
           );
