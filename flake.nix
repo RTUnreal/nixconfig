@@ -263,9 +263,9 @@
               pname = "proton-ge-rtsp-bin";
               version = "GE-Proton9-20-rtsp15";
               src =  pkgs.fetchzip {
-                #url = assert with builtins; trace "blah" true;"https://github.com/SpookySkeletons/proton-ge-rtsp/releases/download/${version}/${version}.tar.gz";
+                #url = "https://github.com/SpookySkeletons/proton-ge-rtsp/releases/download/${version}/${version}.tar.gz";
                 # this version has a broken link
-                url = assert with builtins; trace "blah" true;"https://github.com/SpookySkeletons/proton-ge-rtsp/releases/download/${version}-1/${version}.tar.gz";
+                url = "https://github.com/SpookySkeletons/proton-ge-rtsp/releases/download/${version}-1/${version}.tar.gz";
                 hash = "sha256-dj5qO1AmV0KinrfgUcv+bWzLN9aaAAKf/GxX5o9b6Dc=";
               };
             }
