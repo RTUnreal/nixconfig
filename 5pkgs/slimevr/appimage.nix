@@ -5,13 +5,13 @@
 }:
 let
   pname = "slimevr";
-  version = "0.13.0";
+  version = "0.13.2";
 in
 appimageTools.wrapType2 rec {
   inherit pname version;
   src = fetchurl {
     url = "https://github.com/SlimeVR/SlimeVR-Server/releases/download/v${version}/SlimeVR-amd64.appimage";
-    sha256 = "sha256-s5HMsiTSmPp1x0WTPZnn85NnYdOCuO5zTFGd0XqlEIc=";
+    sha256 = "sha256-YlMLK+1bP+70wYgm0rROYDz2JOgZdzDFn9/sFZblYDk=";
   };
 
   extraPkgs =
