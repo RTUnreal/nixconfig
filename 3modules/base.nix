@@ -272,7 +272,7 @@ in
         vlc
         nextcloud-client
         tdesktop
-        libreoffice-fresh
+        nixpkgs-unstable.libreoffice-fresh
         ghidra
 
         discord
