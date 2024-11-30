@@ -139,7 +139,7 @@ in
           nil_ls = {
             enable = true;
             settings.formatting.command = [
-              "${lib.getExe pkgs.nixfmt}"
+              "${lib.getExe pkgs.nixfmt-rfc-style}"
               "--quiet"
             ];
           };
