@@ -11,6 +11,8 @@ in
     device = "//u408927.your-storagebox.de/backup";
     fsType = "cifs";
     options = [
+      "_netdev" # this is a network fs
+
       "iocharset=utf8"
       "rw"
       "credentials=/root/storagebox-secrets"

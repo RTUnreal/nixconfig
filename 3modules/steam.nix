@@ -10,11 +10,13 @@ let
 
   cfg = config.rtinf.steam;
 
+  # expects appimage binfmt
   ovrasStarter = pkgs.writeShellScriptBin "ovras-start" ''
     unset LD_LIBRARY_PATH
     unset QML2_IMPORT_PATH
     unset QT_PLUGIN_PATH
-    echo "$@" | sed "s|'$HOME/.local/share/Steam/steamapps/common/OVR_AdvancedSettings/run.sh'|appimage-run $HOME/.local/share/Steam/steamapps/common/OVR_AdvancedSettings/OVRAS.AppImage|"|bash -
+    #echo "$@" | sed "s|'$HOME/.local/share/Steam/steamapps/common/OVR_AdvancedSettings/run.sh'|appimage-run $HOME/.local/share/Steam/steamapps/common/OVR_AdvancedSettings/OVRAS.AppImage|"|exec bash -
+    echo "$@" | exec bash -
   '';
 
   # copied from: https://www.gamingonlinux.com/forum/topic/5716/
@@ -70,12 +72,9 @@ in
     programs = {
       steam = {
         enable = true;
-        package = pkgs.steam.override {
-          extraLibraries = pkgs: [
-            pkgs.appimage-run
-            ovrasStarter
-          ];
-        };
+        extraPackages = [
+          ovrasStarter
+        ];
         extraCompatPackages = [ selfpkgs.proton-ge-rtsp-bin ];
         platformOptimizations.enable = true;
       };

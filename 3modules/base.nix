@@ -145,12 +145,10 @@ in
 
       environment.systemPackages = with pkgs; [ lazygit ];
 
-      hardware.opengl = {
+      hardware.graphics = {
         enable = true;
-        driSupport = true;
-        driSupport32Bit = true;
+        enable32Bit = true;
       };
-      sound.enable = true;
       programs = {
         firefox = {
           enable = true;

@@ -41,6 +41,7 @@
   users.users.${config.services.jellyfin.user}.extraGroups = [ config.rtinf.magnet.group ];
 
   hardware.enableRedistributableFirmware = true;
+  hardware.nvidia.open = false;
 
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sdb";

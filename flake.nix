@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     retiolum.url = "github:Mic92/retiolum";
     flake-compat = {
@@ -90,6 +90,7 @@
                 (common system {
                   allowedUnfree = [
                     "steam"
+                    "steam-unwrapped"
                     "steam-original"
                     "steam-run"
 
@@ -122,17 +123,8 @@
               imports = [
                 (common system {
                   allowedUnfree = [
-                    "steam"
-                    "steam-original"
-                    "steam-run"
-
-                    "discord"
-                    "anydesk"
-
                     "nvidia-x11"
                     "nvidia-settings"
-
-                    "vscode-extension-ms-vscode-cpptools"
                   ];
                 })
                 ./1systems/spinner/config.nix
@@ -149,6 +141,7 @@
                 (common system {
                   allowedUnfree = [
                     "steam"
+                    "steam-unwrapped"
                     "steam-original"
                     "steam-run"
 
