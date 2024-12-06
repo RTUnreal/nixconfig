@@ -17,6 +17,7 @@
     kde.enable = true;
     steam.enable = true;
     vscode.enable = true;
+    hyprland.enable = true;
     misc = {
       bluetooth = true;
       docker = true;
