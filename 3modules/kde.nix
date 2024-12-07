@@ -31,7 +31,6 @@ in
       okteta
       filelight
       qpwgraph
-      xwaylandvideobridge
     ];
   };
 }
