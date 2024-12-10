@@ -93,7 +93,7 @@ in
   clipboard.register = [ "unnamed" ];
   plugins = mkMerge [
     {
-      nvim-colorizer.enable = true;
+      colorizer.enable = true;
       todo-comments.enable = true;
       which-key = {
         enable = true;
