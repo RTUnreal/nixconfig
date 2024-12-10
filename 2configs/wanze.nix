@@ -1,3 +1,4 @@
+# derived from: https://github.com/felschr/nixos-config/blob/1043b12ec969fbc62392b27836feafa572e4bd4b/services/home-assistant/default.nix
 { lib, ... }:
 {
   services.home-assistant = {
@@ -26,7 +27,7 @@
 
   services.wyoming.piper = {
     servers = {
-      "en" = {
+      "de" = {
         enable = true;
         # see https://github.com/rhasspy/rhasspy3/blob/master/programs/tts/piper/script/download.py
         voice = "de-eva_k-x-low"; # "en-gb-southern_english_female-low";
@@ -50,5 +51,5 @@
   };
 
   # needs access to /proc/cpuinfo
-  systemd.services."wyoming-faster-whisper-en".serviceConfig.ProcSubset = lib.mkForce "all";
+  systemd.services."wyoming-faster-whisper-de".serviceConfig.ProcSubset = lib.mkForce "all";
 }
