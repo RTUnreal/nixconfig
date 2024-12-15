@@ -36,7 +36,10 @@
     };
   };
 
-  networking.firewall.allowedTCPPorts = [ 8888 ];
+  networking.firewall.allowedTCPPorts = [
+    8888
+    9997
+  ];
 
   users.users.${config.services.jellyfin.user}.extraGroups = [ config.rtinf.magnet.group ];
 
