@@ -38,6 +38,20 @@ in
       description = lib.mdDoc "set hls specific configs. `null` to disable.";
     };
 
+    api = mkOption {
+      type = types.nullOr (
+        types.submodule {
+          options.port = mkOption {
+            type = types.port;
+            default = 9997;
+            description = lib.mdDoc "port of the api service";
+          };
+        }
+      );
+      default = { };
+      description = lib.mdDoc "set api specific configs. `null` to disable.";
+    };
+
     openFirewall = mkEnableOption "open firewall to all services";
   };
 
@@ -56,7 +70,7 @@ in
         {
           logDestinations = [ "syslog" ];
 
-          api = true;
+          api = cfg.api != null;
 
           rtsp = true;
           protocols = [ "tcp" ]; # "udp"];
@@ -85,6 +99,9 @@ in
           rtmpEncryption = "optional";
           rtmpsAddress = ":1936";
           hlsTrustedProxies = [ "127.0.0.1" ];
+        })
+        (mkIf (cfg.api != null) {
+          apiAddress = ":${toString cfg.api.port}";
         })
         (mkIf (cfg.hls != null) {
           hlsVariant = "lowLatency";
