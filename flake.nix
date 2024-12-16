@@ -17,6 +17,7 @@
     srvos.url = "github:nix-community/srvos";
     colmena.url = "github:zhaofengli/colmena";
     nix-gaming.url = "github:fufexan/nix-gaming";
+    chaosctrl.url = "git+ssh://git@devel.rtinf.net/unreal/ChaosCtrl.git";
   };
 
   outputs =
@@ -32,6 +33,7 @@
       srvos,
       nix-gaming,
       colmena,
+      chaosctrl,
       ...
     }:
     let
@@ -66,6 +68,7 @@
                   };
                 };
                 imports = [
+                  chaosctrl.nixosModules.default
                   nix-gaming.nixosModules.platformOptimizations
                   ./3modules/modules.nix
                 ];
@@ -215,6 +218,12 @@
                 (common system { })
                 srvos.nixosModules.server
                 ./1systems/konstream.rtinf.net/config.nix
+                {
+                  services.chaosctrl = {
+                    enable = true;
+                    extraEnvFile = "/root/chaosctrlEnv";
+                  };
+                }
               ];
             };
         };
