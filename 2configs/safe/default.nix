@@ -11,7 +11,11 @@ in
     device = "//u408927.your-storagebox.de/backup";
     fsType = "cifs";
     options = [
-      "_netdev" # this is a network fs
+      "x-systemd.automount"
+      "noauto"
+      "x-systemd.idle-timeout=60"
+      "x-systemd.device-timeout=5s"
+      "x-systemd.mount-timeout=5s"
 
       "iocharset=utf8"
       "rw"
