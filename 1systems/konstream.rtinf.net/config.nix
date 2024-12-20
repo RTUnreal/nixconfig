@@ -10,7 +10,7 @@ in
   rtinf = {
     base.systemType = "server";
     stream = {
-      #enable = true;
+      enable = true;
       hls = { };
       auth = {
         authDir = "/var/lib/rtmp-auth";
@@ -18,7 +18,7 @@ in
       openFirewall = true;
     };
     stream2 = {
-      enable = true;
+      #enable = true;
       hls = { };
       openFirewall = true;
     };
