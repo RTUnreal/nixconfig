@@ -60,6 +60,11 @@ in
       options.desc = "List all buffers";
     }
     {
+      key = "${l}bs";
+      action = "<cmd>BufferLinePick<CR>";
+      options.desc = "List all buffers";
+    }
+    {
       key = "${l}tn";
       action.__raw = ''
         function()
@@ -116,14 +121,16 @@ in
       };
       bufferline = {
         enable = true;
-        settings.options.offsets = [
-          {
-            filetype = "NvimTree";
-            text = "File Explorer";
-            highlight = "Directory";
-            separator = true;
-          }
-        ];
+        settings.options = {
+          offsets = [
+            {
+              filetype = "NvimTree";
+              text = "File Explorer";
+              highlight = "Directory";
+              separator = true;
+            }
+          ];
+        };
       };
       lsp = {
         enable = true;
@@ -224,7 +231,7 @@ in
           };
         };
       };
-      crates-nvim.enable = true;
+      crates.enable = true;
       gitsigns.enable = true;
       treesitter = {
         enable = true;
