@@ -8,8 +8,8 @@
   {
     name = "vscode-intelephense-client";
     publisher = "bmewburn";
-    version = "1.12.6";
-    sha256 = "0h69zl8w4zxxq924qy44ng1qcb59giixhg5f50gk6d5vsfz226rw";
+    version = "1.13.0";
+    sha256 = "0ic82ak6c4j7xi117wcailzmklc2b1v82gdg8lnc5vgxgxah8sq2";
   }
   {
     name = "better-toml";
@@ -44,8 +44,8 @@
   {
     name = "elixir-ls";
     publisher = "jakebecker";
-    version = "0.24.2";
-    sha256 = "1nyliilrq31iyam0gcmb4dwmfr7vrqb5nvrn3vwjcnz8kqj7madv";
+    version = "0.25.0";
+    sha256 = "1z7qqx3k4d09axkvnl67qg59yajw6373xmj5vpx2r3i9bm8jf30n";
   }
   {
     name = "nix-ide";
@@ -86,14 +86,14 @@
   {
     name = "vscode-language-pack-de";
     publisher = "ms-ceintl";
-    version = "1.95.2024103009";
-    sha256 = "0nsj1g50b1i6s5188yf646qnm8slz0q127fmnxcdy9b1xnl3vf1y";
+    version = "1.97.2024121809";
+    sha256 = "1vdmn0kg34dbm9sq20m3rfindn82m10dz3ljfr2az6hkh7cx0gzc";
   }
   {
     name = "jupyter";
     publisher = "ms-toolsai";
-    version = "2024.11.2024110701";
-    sha256 = "15d0bnha0w4rcrdfizgkji9kp95v8l0577yqnq0mi2cxb77v851a";
+    version = "2025.1.2024122001";
+    sha256 = "15672c6aff2h06mx590qn15hb1gjm60m3v0chwvfd24jzs7b93iv";
   }
   {
     name = "jupyter-keymap";
@@ -110,8 +110,8 @@
   {
     name = "cpptools";
     publisher = "ms-vscode";
-    version = "1.23.1";
-    sha256 = "1qjpr3sqz4gpaa1yg7g3mgl5ckg5zm8l5swj427f3hd2xfjlv3vm";
+    version = "1.23.2";
+    sha256 = "1d634p9ii19bbck4dikawi9p7zgwms7wib81f0xayg31w0gkdfrg";
   }
   {
     name = "test-adapter-converter";
@@ -122,20 +122,20 @@
   {
     name = "phoenix";
     publisher = "phoenixframework";
-    version = "0.1.2";
-    sha256 = "1k7jy2gpmc5cyjy7sdp1scb47l6avcw0y0kah9d360r33x2hvrjg";
+    version = "0.1.3";
+    sha256 = "02a6icgnid3khi1kkgb9dqwyfibc02wl8avqb8wmgqpzpihamqaj";
   }
   {
     name = "rust-analyzer";
     publisher = "rust-lang";
-    version = "0.4.2183";
-    sha256 = "04px0nl22qq3q5q7lwdn7x91j0scajx8199bgpqqrmq5l76qbf4f";
+    version = "0.4.2229";
+    sha256 = "15cny11529mgm9s4yyal4170f1z4iva5z29hcgh7m8snd0m7kcm2";
   }
   {
     name = "even-better-toml";
     publisher = "tamasfe";
-    version = "0.19.2";
-    sha256 = "0q9z98i446cc8bw1h1mvrddn3dnpnm2gwmzwv2s3fxdni2ggma14";
+    version = "0.21.2";
+    sha256 = "0208cms054yj2l8pz9jrv3ydydmb47wr4i0sw8qywpi8yimddf11";
   }
   {
     name = "markdown-links";
