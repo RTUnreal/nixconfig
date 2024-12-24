@@ -60,7 +60,7 @@
     obs-studio
 
     inkscape
-    nixpkgs-unstable.blender-hip
+    blender-hip
     krita
     gimp
     musescore
