@@ -13,6 +13,64 @@
   networking = {
     hostName = "safe";
     domain = "user-sites.de";
+
+    firewall = {
+      allowedUDPPorts = [ 51820 ];
+    };
+    wireguard = {
+      interfaces = {
+        wg0 = {
+          ips = [ "10.69.0.1/32" ];
+          listenPort = 51820;
+
+          privateKeyFile = "/var/lib/wireguard/private";
+          generatePrivateKeyFile = true;
+
+          # TODO: figure out how to use tables instead
+          /*
+            table = "123";
+            preSetup = ''
+              ${pkgs.iproute2}/bin/ip rule add iif wg0 table 123 priority 456
+            '';
+
+            postShutdown = ''
+              ${pkgs.iproute2}/bin/ip rule del iif wg0 table 123 priority 456
+            '';
+          */
+          postSetup = ''
+            ${pkgs.iproute2}/bin/ip route add 10.69.0.0/24 dev wg0
+          '';
+
+          preShutdown = ''
+            ${pkgs.iproute2}/bin/ip route del 10.69.0.0/24 dev wg0
+          '';
+
+          peers = [
+            # home server
+            {
+              publicKey = "a9DSEaO+mkpBTaaOrwiZIyduDBXBYe73e0FwbfGim18=";
+              # TODO: change to 0.0.0.0/0 when table = 123 works
+              allowedIPs = [
+                "10.69.0.0/24"
+                "192.168.0.0/24"
+              ];
+            }
+            {
+              publicKey = "VOHbmF+DU/vYjDF1gDXNpmkBGgxRnCKWnSOrlJXMtwk=";
+              allowedIPs = [ "10.69.0.3/32" ];
+            }
+            {
+              publicKey = "nAD9372w6USjUbkZ/Cl1urLaeA1C/zKMBZ18wq2j0A4=";
+              allowedIPs = [ "10.69.0.4/32" ];
+            }
+          ];
+        };
+      };
+    };
+  };
+
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = true;
   };
 
   environment.systemPackages = [

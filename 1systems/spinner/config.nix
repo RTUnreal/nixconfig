@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, pkgs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -36,10 +36,56 @@
     };
   };
 
-  networking.firewall.allowedTCPPorts = [
-    8888
-    9997
-  ];
+  networking = {
+    firewall = {
+      allowedTCPPorts = [
+        8888
+        9997
+      ];
+      allowedUDPPorts = [ 51820 ];
+    };
+    nat = {
+      enable = true;
+      #enableIPv6 = true;
+      externalInterface = "enp2s0f1";
+      internalInterfaces = [ "wg0" ];
+    };
+
+    wireguard = {
+      interfaces = {
+        wg0 = {
+          ips = [ "10.69.0.2/32" ];
+          listenPort = 51820;
+
+          privateKeyFile = "/var/lib/wireguard/private";
+          generatePrivateKeyFile = true;
+
+          postSetup = ''
+            ${pkgs.iptables}/bin/iptables -A FORWARD -i wg0 -j ACCEPT
+            ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -s 10.69.0.1/24 -o enp2s0f1 -j MASQUERADE
+          '';
+
+          preShutdown = ''
+            ${pkgs.iptables}/bin/iptables -D FORWARD -i wg0 -j ACCEPT
+            ${pkgs.iptables}/bin/iptables -t nat -D POSTROUTING -s 10.69.0.1/24 -o enp2s0f1 -j MASQUERADE
+          '';
+
+          peers = [
+            {
+              publicKey = "SWA0lWwRroZBEudH1lcASIKMv/0ayL8S/KtmUXFdomI=";
+              allowedIPs = [ "10.69.0.0/24" ];
+              endpoint = "network.user-sites.de:51820";
+              persistentKeepalive = 25;
+            }
+          ];
+        };
+      };
+    };
+  };
+
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_forward" = true;
+  };
 
   users.users.${config.services.jellyfin.user}.extraGroups = [ config.rtinf.magnet.group ];
 
