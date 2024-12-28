@@ -27,22 +27,20 @@
           generatePrivateKeyFile = true;
 
           # TODO: figure out how to use tables instead
-          /*
-            table = "123";
-            preSetup = ''
-              ${pkgs.iproute2}/bin/ip rule add iif wg0 table 123 priority 456
-            '';
-
-            postShutdown = ''
-              ${pkgs.iproute2}/bin/ip rule del iif wg0 table 123 priority 456
-            '';
-          */
-          postSetup = ''
-            ${pkgs.iproute2}/bin/ip route add 10.69.0.0/24 dev wg0
+          fwMark = "123";
+          table = "wg0";
+          preSetup = ''
+            set -x
+            #ip route add 10.69.0.1/32 dev wg0 table wg0
+            ip rule add not fwmark 123 table wg0 priority 456 || true
+            ip rule add table main suppress_prefixlength 0 || true
           '';
 
-          preShutdown = ''
-            ${pkgs.iproute2}/bin/ip route del 10.69.0.0/24 dev wg0
+          postShutdown = ''
+            set -x
+            ip rule del table main suppress_prefixlength 0 || true
+            ip rule del table wg0 || true
+            #ip route del 10.69.0.1/32 dev wg0 table wg0
           '';
 
           peers = [
@@ -51,7 +49,7 @@
               publicKey = "a9DSEaO+mkpBTaaOrwiZIyduDBXBYe73e0FwbfGim18=";
               # TODO: change to 0.0.0.0/0 when table = 123 works
               allowedIPs = [
-                "10.69.0.0/24"
+                "10.69.0.2/32"
                 "192.168.0.0/24"
               ];
             }
@@ -67,6 +65,17 @@
         };
       };
     };
+    iproute2 = {
+      enable = true;
+      rttablesExtraConfig = ''
+        123 wg0
+      '';
+    };
+  };
+  systemd.services.wireguard-wg0 = {
+    after = [
+      "systemd-networkd.service"
+    ];
   };
 
   boot.kernel.sysctl = {
