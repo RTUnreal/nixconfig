@@ -38,6 +38,7 @@
   services.fwupd.enable = true;
 
   networking.hostName = "worker";
+  networking.firewall.checkReversePath = "loose";
 
   time.timeZone = "Europe/Berlin";
 
