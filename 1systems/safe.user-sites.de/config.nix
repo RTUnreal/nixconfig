@@ -27,20 +27,13 @@
           generatePrivateKeyFile = true;
 
           # TODO: figure out how to use tables instead
-          fwMark = "123";
-          table = "wg0";
+          interfaceNamespace = "wg0";
           preSetup = ''
-            set -x
-            #ip route add 10.69.0.1/32 dev wg0 table wg0
-            ip rule add not fwmark 123 table wg0 priority 456 || true
-            ip rule add table main suppress_prefixlength 0 || true
+            ip netns add wg0 || true
           '';
 
           postShutdown = ''
-            set -x
-            ip rule del table main suppress_prefixlength 0 || true
-            ip rule del table wg0 || true
-            #ip route del 10.69.0.1/32 dev wg0 table wg0
+            ip netns del wg0 || true
           '';
 
           peers = [
@@ -49,8 +42,7 @@
               publicKey = "a9DSEaO+mkpBTaaOrwiZIyduDBXBYe73e0FwbfGim18=";
               # TODO: change to 0.0.0.0/0 when table = 123 works
               allowedIPs = [
-                "10.69.0.2/32"
-                "192.168.0.0/24"
+                "0.0.0.0/0"
               ];
             }
             {
