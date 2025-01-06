@@ -17,7 +17,7 @@
     virtualisation.enable = true;
     hyprland.enable = true;
     magnet = {
-      #enable = true;
+      enable = true;
       openFirewall = true;
     };
     stream.auth = {
