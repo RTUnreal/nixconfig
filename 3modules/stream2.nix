@@ -1,4 +1,9 @@
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  selfpkgs,
+  ...
+}:
 let
   inherit (lib)
     mkEnableOption
@@ -41,10 +46,27 @@ in
     api = mkOption {
       type = types.nullOr (
         types.submodule {
-          options.port = mkOption {
-            type = types.port;
-            default = 9997;
-            description = lib.mdDoc "port of the api service";
+          options = {
+            port = mkOption {
+              type = types.port;
+              default = 9997;
+              description = lib.mdDoc "port of the api service";
+            };
+            chaosctrl = mkOption {
+              type = types.nullOr (
+                types.submodule {
+                  options = {
+                    extraEnvFile = mkOption {
+                      example = "/run/secrets/chaosctrl";
+                      type = types.str;
+                      description = lib.mdDoc "A file with Envvars loaded before start";
+                    };
+                  };
+                }
+              );
+              default = null;
+              description = lib.mdDoc "chaosctrl specific settings. `null` to disable.";
+            };
           };
         }
       );
@@ -197,6 +219,63 @@ in
         ExecCondition = "/run/current-system/systemd/bin/systemctl -q is-active mediamtx.service";
         ExecStart = "/run/current-system/systemd/bin/systemctl --no-block restart mediamtx.service";
       };
+    };
+    systemd.services.chaosctrl = mkIf (cfg.api != null && cfg.api.chaosctrl != null) {
+      wantedBy = [
+        "multi-user.target"
+        "mediamtx.service"
+      ];
+      path = [ selfpkgs.chaosctrl ];
+      environment = {
+        STREAM_API_BASE_URL = "http://127.0.0.1:${toString cfg.api.port}";
+      };
+
+      script = ''
+        set -a
+        . $CREDENTIALS_DIRECTORY/EXTRA_ENV_FILE
+        set +a
+
+        exec chaosctrl
+      '';
+
+      serviceConfig = {
+        LoadCredential = [
+          "EXTRA_ENV_FILE:${cfg.extraEnvFile}"
+        ];
+        # Hardening
+        DynamicUser = true;
+        AmbientCapabilities = [ "CAP_NET_BIND_SERVICE" ];
+        CapabilityBoundingSet = [ "CAP_NET_BIND_SERVICE" ];
+        DeviceAllow = [ "" ];
+        LockPersonality = true;
+        NoNewPrivileges = true;
+        PrivateDevices = true;
+        PrivateTmp = true;
+        ProtectClock = true;
+        ProtectControlGroups = true;
+        ProtectHome = true;
+        ProtectHostname = true;
+        ProtectKernelLogs = true;
+        ProtectKernelModules = true;
+        ProtectKernelTunables = true;
+        ProtectProc = "invisible";
+        ProtectSystem = "full";
+        RemoveIPC = true;
+        RestrictAddressFamilies = [
+          "AF_INET"
+          "AF_INET6"
+          "AF_UNIX"
+        ];
+        RestrictNamespaces = true;
+        RestrictRealtime = true;
+        RestrictSUIDSGID = true;
+        SystemCallArchitectures = "native";
+        SystemCallFilter = [
+          "@system-service"
+          "~@privileged"
+        ];
+      };
+
     };
   };
 }
