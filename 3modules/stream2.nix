@@ -24,11 +24,6 @@ in
       default = config.networking.fqdn;
       description = lib.mdDoc "domain of the server";
     };
-    directory = mkOption {
-      type = types.str;
-      default = "/var/lib/rtmp";
-      description = lib.mdDoc "domain of the server";
-    };
     hls = mkOption {
       type = types.nullOr (
         types.submodule {
