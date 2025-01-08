@@ -279,6 +279,8 @@
               sha256 = "sha256-7CHFc94Fe6ip7RY+XJR9gWpZPKM5JY7utHp8C3paU9s=";
             }
           ) { };
+
+          chaosctrl = pkgs.callPackage ./5pkgs/chaosctrl { };
         }
       );
 
