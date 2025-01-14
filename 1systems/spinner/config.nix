@@ -6,6 +6,7 @@
     ../../2configs/nvidia-prime.nix
     ../../2configs/alexandria.nix
     ../../2configs/wanze.nix
+    ../../2configs/grafana-json-api.nix
   ];
   rtinf = {
     base = {
@@ -36,9 +37,24 @@
     };
   };
 
+  services.grafana = {
+    enable = true;
+    settings = {
+      server = {
+        http_addr = "0.0.0.0";
+      };
+      "auth.anonymous" = {
+        enabled = true;
+        org_name = "Main Org.";
+        #hide_version = true;
+      };
+    };
+  };
+
   networking = {
     firewall = {
       allowedTCPPorts = [
+        3000
         8888
         9997
       ];
