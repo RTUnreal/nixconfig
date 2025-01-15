@@ -1,1 +1,4 @@
-{ hosts = import ./hosts.nix; }
+{
+  hosts = import ./hosts.nix;
+  homevpn = import ./homevpn.nix;
+}

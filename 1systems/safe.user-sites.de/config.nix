@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  selflib,
+  ...
+}:
 {
   imports = [
     ./../../2configs/safe
@@ -6,7 +11,13 @@
     ./../../2configs/mango.nix
     ./../../2configs/ffsync.nix
   ];
-  rtinf.base.systemType = "server";
+  rtinf = {
+    base.systemType = "server";
+    dirtickvpn.interfaces.wg0 = {
+      meta = selflib.homevpn;
+      privateKeyFile = "/var/lib/wireguard/private";
+    };
+  };
 
   boot.loader.grub.devices = [ "/dev/sda" ];
 
@@ -14,64 +25,7 @@
     hostName = "safe";
     domain = "user-sites.de";
 
-    firewall = {
-      allowedUDPPorts = [ 51820 ];
-    };
-    wireguard = {
-      interfaces = {
-        wg0 = {
-          ips = [ "10.69.0.1/32" ];
-          listenPort = 51820;
-
-          privateKeyFile = "/var/lib/wireguard/private";
-          generatePrivateKeyFile = true;
-
-          # TODO: figure out how to use tables instead
-          interfaceNamespace = "wg0";
-          preSetup = ''
-            ip netns add wg0 || true
-          '';
-
-          postShutdown = ''
-            ip netns del wg0 || true
-          '';
-
-          peers = [
-            # home server
-            {
-              publicKey = "a9DSEaO+mkpBTaaOrwiZIyduDBXBYe73e0FwbfGim18=";
-              # TODO: change to 0.0.0.0/0 when table = 123 works
-              allowedIPs = [
-                "0.0.0.0/0"
-              ];
-            }
-            {
-              publicKey = "VOHbmF+DU/vYjDF1gDXNpmkBGgxRnCKWnSOrlJXMtwk=";
-              allowedIPs = [ "10.69.0.3/32" ];
-            }
-            {
-              publicKey = "nAD9372w6USjUbkZ/Cl1urLaeA1C/zKMBZ18wq2j0A4=";
-              allowedIPs = [ "10.69.0.4/32" ];
-            }
-          ];
-        };
-      };
-    };
-    iproute2 = {
-      enable = true;
-      rttablesExtraConfig = ''
-        123 wg0
-      '';
-    };
-  };
-  systemd.services.wireguard-wg0 = {
-    after = [
-      "systemd-networkd.service"
-    ];
-  };
-
-  boot.kernel.sysctl = {
-    "net.ipv4.ip_forward" = true;
+    wireguard.interfaces.wg0.generatePrivateKeyFile = true;
   };
 
   environment.systemPackages = [
