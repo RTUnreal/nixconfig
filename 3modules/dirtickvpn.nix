@@ -182,6 +182,7 @@ in
           };
         }
       );
+      default = { };
     };
     egressInterfaceName = mkOption {
       type = types.str;
