@@ -262,10 +262,10 @@
 
           proton-ge-rtsp-bin = pkgs.proton-ge-bin.overrideAttrs (_prevAttrs: rec {
             pname = "proton-ge-rtsp-bin";
-            version = "GE-Proton9-20-rtsp16";
+            version = "GE-Proton9-22-rtsp17";
             src = pkgs.fetchzip {
               url = "https://github.com/SpookySkeletons/proton-ge-rtsp/releases/download/${version}/${version}.tar.gz";
-              hash = "sha256-iq7oiDW5+51wzqYwASOGSV922c/pg1k29MdkIXlT34k=";
+              hash = "sha256-1zj0y7E9JWrnPC9HllFXos33rsdAt3q+NamoxNTmHHM=";
             };
           });
 
