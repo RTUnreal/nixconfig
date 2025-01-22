@@ -86,6 +86,7 @@ in
       settings = mkMerge [
         {
           logDestinations = [ "syslog" ];
+          writeQueueSize = 2048;
 
           api = cfg.api != null;
 
