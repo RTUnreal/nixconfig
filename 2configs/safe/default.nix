@@ -42,8 +42,8 @@ in
         enable = true;
         https = true;
         hostName = "safe.user-sites.de";
-        package = pkgs."nextcloud${builtins.toString version}";
-        datadir = "/${storageMountPoint}/nextcloud";
+        package = pkgs."nextcloud${toString version}";
+        datadir = "${storageMountPoint}/nextcloud";
         config = {
           dbtype = "pgsql";
           dbuser = "nextcloud";
@@ -52,6 +52,7 @@ in
           adminuser = "root";
           adminpassFile = "/var/lib/nextcloud/adminpw";
         };
+        database.createLocally = true;
         extraApps = with pkgs."nextcloud${toString version}Packages".apps; {
           inherit
             calendar
@@ -82,15 +83,12 @@ in
   systemd.services."nextcloud-setup" = {
     requires = [
       "mnt-storagebox.mount"
-      "postgresql.service"
     ];
     wants = [
       "mnt-storagebox.mount"
-      "postgresql.service"
     ];
     after = [
       "mnt-storagebox.mount"
-      "postgresql.service"
     ];
   };
 }
