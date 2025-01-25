@@ -46,10 +46,6 @@ in
         datadir = "${storageMountPoint}/nextcloud";
         config = {
           dbtype = "pgsql";
-          dbuser = "nextcloud";
-          dbhost = "/run/postgresql"; # nextcloud will add /.s.PGSQL.5432 by itself
-          dbname = "nextcloud";
-          adminuser = "root";
           adminpassFile = "/var/lib/nextcloud/adminpw";
         };
         database.createLocally = true;
@@ -64,17 +60,6 @@ in
             ;
         };
       };
-    postgresql = {
-      enable = true;
-      ensureDatabases = [ "nextcloud" ];
-      ensureUsers = [
-        {
-          name = "nextcloud";
-          #ensurePermissions."DATABASE nextcloud" = "ALL PRIVILEGES";
-          ensureDBOwnership = true;
-        }
-      ];
-    };
   };
   networking.firewall.allowedTCPPorts = [
     80
