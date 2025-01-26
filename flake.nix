@@ -267,6 +267,11 @@
               url = "https://github.com/SpookySkeletons/proton-ge-rtsp/releases/download/${version}/${version}.tar.gz";
               hash = "sha256-1zj0y7E9JWrnPC9HllFXos33rsdAt3q+NamoxNTmHHM=";
             };
+            postBuild = ''
+              # prevents steam from resetting compatability settings
+              sed -i -r 's|GE-Proton-rtsp[0-9]*|GE-Proton-rtsp|' $steamcompattool/compatibilitytool.vdf
+              sed -i -r 's|GE-Proton-rtsp[0-9]*|GE-Proton-rtsp|' $steamcompattool/proton
+            '';
           });
 
           jmusicbot = pkgs.callPackage (
