@@ -56,30 +56,32 @@ in
       # Select internationalisation properties.
       i18n.defaultLocale = "de_DE.UTF-8";
       console.font = "Lat2-Terminus16";
-      environment.systemPackages = with pkgs; [
-        # shell utils
-        wget
-        file
-        findutils
-        tree
-        lsof
-        xxd
-        jq
-        qrencode
-        bat
-        colmena
+      environment.systemPackages = builtins.attrValues {
+        inherit (pkgs)
+          # shell utils
+          wget
+          file
+          findutils
+          tree
+          lsof
+          xxd
+          jq
+          qrencode
+          bat
+          colmena
 
-        # net utils
-        bind
-        whois
-        iperf
-        nmap
+          # net utils
+          bind
+          whois
+          iperf
+          nmap
 
-        # system utils
-        inxi
-        pciutils
-        usbutils
-      ];
+          # system utils
+          inxi
+          pciutils
+          usbutils
+          ;
+      };
 
       programs = {
         bash.shellAliases = {
@@ -137,13 +139,19 @@ in
         };
       };
 
-      fonts.packages = with pkgs; [ (nerdfonts.override { fonts = [ "SourceCodePro" ]; }) ];
+      fonts.packages = [ (pkgs.nerdfonts.override { fonts = [ "SourceCodePro" ]; }) ];
 
       networking.networkmanager.enable = true;
 
       users.users.trr.extraGroups = [ "networkmanager" ];
 
-      environment.systemPackages = with pkgs; [ lazygit ];
+      environment.systemPackages = builtins.attrValues {
+        inherit (pkgs)
+          lazygit
+          ffmpeg
+          btop
+          ;
+      };
 
       hardware.graphics = {
         enable = true;
@@ -258,24 +266,28 @@ in
       };
     })
     (mkIf cfg.additionalPrograms {
-      environment.systemPackages = with pkgs; [
-        thunderbird
-        keepassxc
-        mumble
-        element-desktop
-        xournalpp
-        #texlive.combined.scheme-full
-        #texstudio
-        hexchat
-        vlc
-        nextcloud-client
-        tdesktop
-        nixpkgs-unstable.libreoffice-fresh
-        ghidra
+      environment.systemPackages = builtins.attrValues {
+        inherit (pkgs)
+          thunderbird
+          keepassxc
+          mumble
+          element-desktop
+          xournalpp
+          #texlive.combined.scheme-full
+          #texstudio
+          hexchat
+          vlc
+          nextcloud-client
+          tdesktop
+          ghidra
+          discord
+          ;
 
-        discord
-        nixpkgs-unstable.anydesk
-      ];
+        inherit (nixpkgs-unstable)
+          libreoffice-fresh
+          anydesk
+          ;
+      };
     })
   ];
 }
