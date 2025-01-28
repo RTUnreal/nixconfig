@@ -2,7 +2,7 @@
   config,
   pkgs,
   lib,
-  selfpkgs,
+  nixpkgs-unstable,
   ...
 }:
 let
@@ -75,7 +75,7 @@ in
         extraPackages = [
           ovrasStarter
         ];
-        extraCompatPackages = [ selfpkgs.proton-ge-rtsp-bin ];
+        extraCompatPackages = [ nixpkgs-unstable.proton-ge-rtsp-bin ];
         platformOptimizations.enable = true;
       };
       gamemode.enable = true;

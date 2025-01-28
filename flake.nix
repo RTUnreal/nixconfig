@@ -17,6 +17,7 @@
     srvos.url = "github:nix-community/srvos";
     colmena.url = "github:zhaofengli/colmena";
     nix-gaming.url = "github:fufexan/nix-gaming";
+    nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
   };
 
   outputs =
@@ -32,6 +33,7 @@
       srvos,
       nix-gaming,
       colmena,
+      nixpkgs-xr,
       ...
     }:
     let
@@ -63,6 +65,9 @@
                     inherit system;
                     config.allowUnfreePredicate =
                       pkg: builtins.elem (nixpkgs-unstable.legacyPackages."${system}".lib.getName pkg) allowedUnfree;
+                    overlays = [
+                      nixpkgs-xr.overlays.default
+                    ];
                   };
                 };
                 imports = [
@@ -250,20 +255,6 @@
 
           slimevr = pkgs.callPackage ./5pkgs/slimevr/default.nix { };
           slimevr-appimage = pkgs.callPackage ./5pkgs/slimevr/appimage.nix { };
-
-          proton-ge-rtsp-bin = pkgs.proton-ge-bin.overrideAttrs (_prevAttrs: rec {
-            pname = "proton-ge-rtsp-bin";
-            version = "GE-Proton9-22-rtsp17";
-            src = pkgs.fetchzip {
-              url = "https://github.com/SpookySkeletons/proton-ge-rtsp/releases/download/${version}/${version}.tar.gz";
-              hash = "sha256-1zj0y7E9JWrnPC9HllFXos33rsdAt3q+NamoxNTmHHM=";
-            };
-            postBuild = ''
-              # prevents steam from resetting compatability settings
-              sed -i -r 's|GE-Proton-rtsp[0-9]*|GE-Proton-rtsp|' $steamcompattool/compatibilitytool.vdf
-              sed -i -r 's|GE-Proton-rtsp[0-9]*|GE-Proton-rtsp|' $steamcompattool/proton
-            '';
-          });
 
           jmusicbot = pkgs.callPackage (
             { fetchurl }:
