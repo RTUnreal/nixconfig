@@ -194,7 +194,7 @@
                 ];
               };
               imports = [
-                (common system { allowedUnfree = [ "factorio-headless" ]; })
+                (common system {})
                 srvos.nixosModules.server
                 ./1systems/devel.rtinf.net/config.nix
               ];
