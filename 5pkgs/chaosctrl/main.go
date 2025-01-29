@@ -149,9 +149,11 @@ var (
 							if stream.Type == StreamTypeRTMPS {
 								typeString = "rtmpsconns"
 							}
+							log.Printf("kicking %s (%s)", stream.Name, stream.Id)
 
 							_, err := http.PostForm(fmt.Sprintf("%s/%s/kick/%s", StreamApiBaseUrl, typeString, stream.Id), url.Values{})
 							if err == nil {
+								log.Printf("%s (%s) was kicked", stream.Name, stream.Id)
 								response = fmt.Sprintf("%s was kicked", toLook)
 							} else {
 								response = fmt.Sprintf("%s could not be kicked", toLook)
@@ -184,32 +186,38 @@ var (
 			case discordgo.InteractionApplicationCommandAutocomplete:
 				data := i.ApplicationCommandData()
 				for _, opt := range data.Options {
-					if opt.Focused {
-						switch opt.Name {
-						case "name":
-							streams, err := getRtmpStreams()
-							// If err just don't send anything back
-							if err == nil {
-								res := make([]*discordgo.ApplicationCommandOptionChoice, len(streams))
-								for i, stream := range streams {
-									res[i] = &discordgo.ApplicationCommandOptionChoice{
-										Name:  stream.Name,
-										Value: stream.Name,
-									}
-								}
+					switch opt.Name {
+					case "kick":
+						for _, opt := range opt.Options {
+							if opt.Focused {
+								switch opt.Name {
+								case "name":
+									streams, err := getRtmpStreams()
+									// If err just don't send anything back
+									if err == nil {
+										res := make([]*discordgo.ApplicationCommandOptionChoice, len(streams))
+										for i, stream := range streams {
+											res[i] = &discordgo.ApplicationCommandOptionChoice{
+												Name:  stream.Name,
+												Value: stream.Name,
+											}
+										}
 
-								err = s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
-									Type: discordgo.InteractionApplicationCommandAutocompleteResult,
-									Data: &discordgo.InteractionResponseData{Choices: res},
-								})
-								if err != nil {
-									panic(err)
+										err = s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+											Type: discordgo.InteractionApplicationCommandAutocompleteResult,
+											Data: &discordgo.InteractionResponseData{Choices: res},
+										})
+										if err != nil {
+											panic(err)
+										}
+									}
+									break
+								default:
+									log.Fatalf("unknown opt name: %s", opt.Name)
 								}
 							}
-							break
-						default:
-							log.Fatalf("unknown opt name: %s", opt.Name)
 						}
+						break
 					}
 				}
 			}
@@ -314,7 +322,7 @@ func getRtmpStreams() ([]*rtmpStreamInfo, error) {
 func main() {
 	s.AddHandler(func(s *discordgo.Session, r *discordgo.Ready) { log.Println("Bot is up!") })
 	s.AddHandler(func(s *discordgo.Session, i *discordgo.InteractionCreate) {
-		if slices.Index(AdminIds, i.User.ID) == -1 {
+		if slices.Index(AdminIds, i.Interaction.Member.User.ID) == -1 {
 			err := s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 				Type: discordgo.InteractionResponseChannelMessageWithSource,
 				Data: &discordgo.InteractionResponseData{Content: "Nope"},

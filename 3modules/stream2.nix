@@ -236,7 +236,7 @@ in
 
       serviceConfig = {
         LoadCredential = [
-          "EXTRA_ENV_FILE:${cfg.extraEnvFile}"
+          "EXTRA_ENV_FILE:${cfg.api.chaosctrl.extraEnvFile}"
         ];
         # Hardening
         DynamicUser = true;

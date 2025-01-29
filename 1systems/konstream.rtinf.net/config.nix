@@ -21,6 +21,11 @@ in
       enable = true;
       hls = { };
       openFirewall = true;
+      api = {
+        chaosctrl = {
+          extraEnvFile = "/root/chaosctrlEnv";
+        };
+      };
     };
     mofongo = {
       enable = true;
