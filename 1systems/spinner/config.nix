@@ -47,6 +47,12 @@
       };
       egressInterfaceName = "enp2s0f1";
     };
+    flix = {
+      enable = true;
+      magnet = {
+        wgConfPath = "/root/airvpn.conf";
+      };
+    };
   };
 
   services.grafana = {

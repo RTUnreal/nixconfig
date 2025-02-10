@@ -17,5 +17,6 @@
     ./stream2.nix
     ./mofongo.nix
     ./dirtickvpn.nix
+    ./flix.nix
   ];
 }
