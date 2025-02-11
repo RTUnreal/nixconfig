@@ -2,131 +2,64 @@
   lib,
   fetchurl,
   fetchgit,
-  buildNpmPackage,
   rustPlatform,
   wrapGAppsHook,
   makeWrapper,
+  substituteAll,
   pkg-config,
   jq,
-  cargo,
-  rustc,
+  cargo-tauri,
+  nodejs,
+  pnpm_9,
   jdk17_headless,
-  dbus,
-  openssl,
+  glib,
   gtk3,
-  glib-networking,
+  libayatana-appindicator,
   webkitgtk_4_1,
   gst_all_1,
   withDebug ? false,
+
 }:
 let
-  pname = "SlimeVR";
-  version = "0.11.0";
+  pnpm = pnpm_9;
+in
+let
+  version = "0.13.2";
 
   src = fetchgit {
     url = "https://github.com/SlimeVR/SlimeVR-Server.git";
     rev = "v${version}";
-    hash = "sha256-W1POuIuhKv8/QCMr47O1l1Bjvbceg/yg3TgF/3+2xC4=";
+    hash = "sha256-XQDbP+LO/brpl7viSxuV3H4ALN0yIkj9lwr5eS1txNs=";
     fetchSubmodules = true;
   };
 
   serverJar = fetchurl {
     url = "https://github.com/SlimeVR/SlimeVR-Server/releases/download/v${version}/slimevr.jar";
-    hash = "sha256-bOSF5NQLUgu0yaIC3q9aQ+uIWjWdyw3wON9/UEEUPJQ=";
+    hash = "sha256-s6uznJtsa1bQAM1QIdBMey+m9Q/v2OfKQPXjD5RAR78=";
   };
 
-  solarxr = buildNpmPackage {
-    pname = "${pname}-solarxr";
-    inherit version;
-    src = src + "/solarxr-protocol";
-
-    npmDepsHash = "sha256-jHd0yf1eO5fCre59IOjvadI14Rulfd978wAAkD5MurY=";
-
-    postPatch = ''
-      tmp=$(mktemp)
-      ${lib.getExe jq} '.dependencies += .devDependencies' package.json > "$tmp"
-      mv "$tmp" package.json
-    '';
-
-    installPhase = "mkdir $out && mv * $out";
-  };
-
-  frontend = buildNpmPackage {
-    pname = "${pname}-ui";
-    inherit src version;
-
-    npmDepsHash = "sha256-fgt2c5o48zmCAvXrxAKQbZmIKyDD777GCz3u62bu5MA=";
-    nativeBuildInputs = [
-      rustc
-      cargo
-    ];
-
-    postPatch = ''
-      rm -rf solarxr-protocol
-      cp -R ${solarxr} solarxr-protocol
-      chmod -R u+w solarxr-protocol
-
-      tmp=$(mktemp)
-      ${lib.getExe jq} '.scripts.febuild = "cd gui && npm run build"' package.json > "$tmp"
-      mv "$tmp" package.json
-
-      sed '/git --no-pager tag /{n;N;N;d}' -i gui/vite.config.ts
-      substituteInPlace gui/vite.config.ts \
-        --replace "const commitHash = execSync('git rev-parse --verify --short HEAD').toString().trim();" 'const commitHash = "NOT AVAILABLE";' \
-        --replace "const versionTag = execSync('git --no-pager tag --sort -taggerdate --points-at HEAD')" 'const versionTag = "v${version}";' \
-        --replace "const gitClean = execSync('git status --porcelain').toString() ? false : true;" 'const gitClean = true;'
-    '';
-
-    npmBuildScript = "febuild";
-
-    installPhase = ''
-      runHook preInstall
-
-      cp -r gui/dist $out
-
-      runHook postInstall
-    '';
-  };
 in
-rustPlatform.buildRustPackage {
-  inherit pname;
-  inherit version src;
-  cargoLock = {
-    lockFile = src + "/Cargo.lock";
-  };
-  postPatch =
-    ''
-      tmp=$(mktemp)
-      ${lib.getExe jq} '.build.distDir = "${frontend}"' gui/src-tauri/tauri.conf.json > "$tmp"
-      mv "$tmp" gui/src-tauri/tauri.conf.json
-    ''
-    + lib.optionalString withDebug ''
-      substituteInPlace gui/src-tauri/src/main.rs \
-        --replace "if window_state.is_old()" "window.open_devtools();if window_state.is_old()"
-    '';
-
-  passthru = {
-    inherit
-      src
-      serverJar
-      solarxr
-      frontend
-      ;
-  };
+rustPlatform.buildRustPackage rec {
+  pname = "SlimeVR";
+  inherit src version;
 
   nativeBuildInputs = [
-    makeWrapper
+    cargo-tauri.hook
+    pnpm.configHook
     wrapGAppsHook
+
     pkg-config
+    nodejs
+
+    makeWrapper
   ];
 
   buildInputs =
     [
-      dbus
-      openssl
+      glib
       gtk3
-      glib-networking
       webkitgtk_4_1
+      libayatana-appindicator
       jdk17_headless
     ]
     ++ (with gst_all_1; [
@@ -137,12 +70,45 @@ rustPlatform.buildRustPackage {
       gst-plugins-ugly
     ]);
 
+  cargoHash = "sha256-Y3ajrtIFb2gdU1zuZyIA8+XDB8JSdBdE8Vo+5gYVYrM=";
+
+  pnpmDeps = pnpm.fetchDeps {
+    inherit pname version src;
+    hash = "sha256-5IqIUwVvufrws6/xpCAilmgRNG4mUGX8NXajZcVZypM=";
+  };
+
+  patches = [
+    (substituteAll {
+      src = ./version-fix.patch;
+      env = {
+        inherit version;
+      };
+    })
+  ];
+
+  cargoBuildType = lib.optionalString withDebug "debug";
+
+  postPatch = ''
+    tmp=$(mktemp)
+    ${lib.getExe jq} '.main = "protocol/typescript/src/all_generated.ts"' solarxr-protocol/package.json > "$tmp"
+    mv "$tmp" solarxr-protocol/package.json
+
+    tmp=$(mktemp)
+    ${lib.getExe jq} '.bundle.linux.deb.files."/usr/share/slimevr/slimevr.jar" = "/build/SlimeVR-Server/server/desktop/build/libs/server.jar"' gui/src-tauri/tauri.conf.json > "$tmp"
+    mv "$tmp" gui/src-tauri/tauri.conf.json
+
+
+    mkdir -p server/desktop/build/libs
+    cp ${serverJar} server/desktop/build/libs/server.jar
+  '';
+
+  buildAndTestSubdir = "gui/src-tauri";
+
   postInstall = ''
-    mkdir -p $out/share/java
-    ln -s ${serverJar} $out/share/java/slimevr.jar
     wrapProgram $out/bin/slimevr \
+      --set LD_LIBRARY_PATH "${lib.makeLibraryPath [ libayatana-appindicator ]}" \
       --set JAVA_HOME "${jdk17_headless}" \
-      --add-flags "--launch-from-path $out/share/java"
+      --add-flags "--launch-from-path $out/share/slimevr"
   '';
 
   meta = {
