@@ -254,7 +254,6 @@
           };
 
           slimevr = pkgs.callPackage ./5pkgs/slimevr/default.nix { };
-          slimevr-appimage = pkgs.callPackage ./5pkgs/slimevr/appimage.nix { };
 
           jmusicbot = pkgs.callPackage ./5pkgs/jmusicbot.nix { };
 
