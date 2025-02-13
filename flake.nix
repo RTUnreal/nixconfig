@@ -18,6 +18,8 @@
     colmena.url = "github:zhaofengli/colmena";
     nix-gaming.url = "github:fufexan/nix-gaming";
     nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
+    disko.url = "github:nix-community/disko";
+    garrysmod.url = "github:TGRCdev/nix-garrys-mod";
   };
 
   outputs =
@@ -34,6 +36,8 @@
       nix-gaming,
       colmena,
       nixpkgs-xr,
+      disko,
+      garrysmod,
       ...
     }:
     let
@@ -220,6 +224,68 @@
                 (common system { })
                 srvos.nixosModules.server
                 ./1systems/konstream.rtinf.net/config.nix
+              ];
+            };
+          ttt =
+            let
+              system = "x86_64-linux";
+            in
+            {
+              deployment = {
+                targetUser = "trr";
+                buildOnTarget = true;
+                targetHost = "ttt.rtinf.net";
+                tags = [
+                  "remote"
+                  "servers"
+                ];
+              };
+              imports = [
+                (common system {
+                  allowedUnfree = [
+                    "steam-runtime"
+                    "steam-sdk-redist"
+                    "garrys-mod-dedicated-server-linux-bins-unpatched"
+                    "garrys-mod-dedicated-server-content"
+                  ];
+                })
+                srvos.nixosModules.server
+                srvos.nixosModules.hardware-hetzner-cloud
+                ./1systems/ttt.rtinf.net/config.nix
+                disko.nixosModules.disko
+                garrysmod.nixosModules.default
+                {
+                  disko.devices = {
+                    disk = {
+                      main = {
+                        device = "/dev/sda";
+                        type = "disk";
+                        content = {
+                          type = "gpt";
+                          partitions = {
+                            ESP = {
+                              type = "EF00";
+                              size = "1000M";
+                              content = {
+                                type = "filesystem";
+                                format = "vfat";
+                                mountpoint = "/boot";
+                              };
+                            };
+                            root = {
+                              size = "100%";
+                              content = {
+                                type = "filesystem";
+                                format = "ext4";
+                                mountpoint = "/";
+                              };
+                            };
+                          };
+                        };
+                      };
+                    };
+                  };
+                }
               ];
             };
         };
