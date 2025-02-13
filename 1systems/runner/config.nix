@@ -4,7 +4,6 @@
 {
   config,
   pkgs,
-  nixpkgs-unstable,
   ...
 }:
 {

@@ -72,7 +72,7 @@ let
               { allowedIPs = [ "${peerCfg.ip}/32" ]; };
 
           egress =
-            peerName: peerCfg:
+            peerName: _peerCfg:
             if peerName == meta.ingress then
               {
                 allowedIPs = [ meta.base ];
@@ -83,7 +83,7 @@ let
               null;
 
           default =
-            peerName: peerCfg:
+            peerName: _peerCfg:
             if peerName == meta.ingress then
               {
                 allowedIPs = [ meta.base ];

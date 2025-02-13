@@ -52,7 +52,8 @@ in
     };
   };
 
-  systemd.services.buildbot-master.environment.SSL_CERT_DIR = "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
+  systemd.services.buildbot-master.environment.SSL_CERT_DIR =
+    "${pkgs.cacert}/etc/ssl/certs/ca-bundle.crt";
   services.nginx.virtualHosts."${domain}" = {
     locations."/" = {
       proxyPass = "http://127.0.0.1:${toString config.services.buildbot-master.port}";

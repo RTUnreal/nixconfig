@@ -9,10 +9,8 @@ let
   inherit (lib)
     mkEnableOption
     mkOption
-    mkPackageOption
     mkIf
     mkMerge
-    optionalAttrs
     types
     ;
   cfg = config.rtinf.flix;
