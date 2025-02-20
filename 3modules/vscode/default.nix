@@ -1,14 +1,14 @@
 {
   config,
   lib,
-  nixpkgs-unstable,
+  pkgs,
   ...
 }:
 let
   inherit (lib) mkEnableOption mkIf;
   cfg = config.rtinf.vscode;
 
-  extFromPkgs = with nixpkgs-unstable.vscode-extensions; [
+  extFromPkgs = with pkgs.vscode-extensions; [
     ms-vscode.cpptools
     ms-toolsai.jupyter
     ms-toolsai.jupyter-renderers
@@ -21,7 +21,7 @@ let
     map
       (
         extension:
-        nixpkgs-unstable.vscode-utils.buildVscodeMarketplaceExtension {
+        pkgs.vscode-utils.buildVscodeMarketplaceExtension {
           mktplcRef = {
             inherit (extension)
               name
@@ -42,8 +42,8 @@ in
   };
   config = mkIf cfg.enable {
     environment.systemPackages = [
-      (nixpkgs-unstable.vscode-with-extensions.override {
-        vscode = nixpkgs-unstable.vscodium;
+      (pkgs.vscode-with-extensions.override {
+        vscode = pkgs.vscodium;
         vscodeExtensions = extFromFile ++ extFromPkgs;
       })
     ];
