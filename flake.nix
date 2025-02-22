@@ -205,27 +205,6 @@
                 ./1systems/devel.rtinf.net/config.nix
               ];
             };
-          konstream =
-            let
-              system = "aarch64-linux";
-            in
-            {
-              deployment = {
-                targetUser = "trr";
-                buildOnTarget = true;
-                targetHost = "konstream.rtinf.net";
-                tags = [
-                  "remote"
-                  "servers"
-                  "koncert"
-                ];
-              };
-              imports = [
-                (common system { })
-                srvos.nixosModules.server
-                ./1systems/konstream.rtinf.net/config.nix
-              ];
-            };
           ttt =
             let
               system = "x86_64-linux";
