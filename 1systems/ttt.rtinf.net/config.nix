@@ -15,8 +15,11 @@
     enable = true;
     openFirewall = true;
     gamemode = "terrortown";
-    #map = "ttt_mc_skyislands";
+    map = "ttt_delayed";
     workshopCollection = 864555069;
+    extraArgs = {
+      hostname = "\"RTs TTT Server\"";
+    };
   };
   boot.kernel.sysctl."dev.tty.legacy_tiocsti" = 0;
 
