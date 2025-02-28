@@ -278,7 +278,7 @@ in
           hexchat
           vlc
           nextcloud-client
-          tdesktop
+          telegram-desktop
           ghidra
           discord
           ;
