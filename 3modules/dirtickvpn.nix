@@ -1,3 +1,4 @@
+# based on: https://www.procustodibus.com/blog/2022/06/multi-hop-wireguard/#internet-gateway-as-a-spoke
 {
   config,
   pkgs,
