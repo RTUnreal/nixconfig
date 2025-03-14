@@ -100,6 +100,11 @@ in
       options.desc = "Toggle spell checking";
     }
   ];
+  filetype = {
+    extension = {
+      typst = "typst";
+    };
+  };
 
   clipboard.providers.xclip.enable = enableDesktop;
   clipboard.register = [ "unnamed" ];
