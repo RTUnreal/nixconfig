@@ -122,7 +122,7 @@ in
           apiAddress = ":${toString cfg.api.port}";
         })
         (mkIf (cfg.hls != null) {
-          hlsVariant = "lowLatency";
+          hlsVariant = "mpegts";
           hlsAlwaysRemux = true;
           hlsAddress = ":${toString cfg.hls.port}";
         })
