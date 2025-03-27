@@ -32,7 +32,7 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    kernelPackages = pkgs.linuxKernel.packages.linux_6_11;
+    kernelPackages = pkgs.linuxKernel.packages.linux_6_13;
   };
 
   services.fwupd.enable = true;
