@@ -209,10 +209,6 @@ in
         "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIMjWrChmpKdOSmzKghxh5c4UURnetbUsxwLS2l8TLfJW trr@worker"
       ];
       nix = {
-        settings.trusted-users = [
-          "root"
-          "@wheel"
-        ];
         gc = {
           automatic = true;
           persistent = true;
