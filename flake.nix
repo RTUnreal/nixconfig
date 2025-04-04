@@ -27,6 +27,10 @@
       url = "github:hercules-ci/flake-parts";
       inputs.nixpkgs-lib.follows = "nixpkgs";
     };
+    search = {
+      url = "github:NuschtOS/search";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -57,11 +61,32 @@
           {
             pkgs,
             inputs',
+            self',
             config,
             ...
           }:
           {
             treefmt = import ./treefmt.nix;
+
+            apps = {
+              search = {
+                type = "app";
+                program = "${pkgs.lib.getExe (
+                  pkgs.writeShellApplication {
+                    name = "rtinf-search";
+
+                    runtimeInputs = [
+                      pkgs.http-server
+                    ];
+
+                    text = # sh
+                      ''
+                        http-server "${self'.packages.rtinf-search}" -p0 -o/ &
+                      '';
+                  }
+                )}";
+              };
+            };
 
             packages =
               let
@@ -88,6 +113,18 @@
                 jmusicbot = pkgs.callPackage ./5pkgs/jmusicbot.nix { };
 
                 chaosctrl = pkgs.callPackage ./5pkgs/chaosctrl { };
+
+                rtinf-search = inputs'.search.packages.mkMultiSearch {
+                  title = "RTUnreal's Search";
+                  scopes = [
+                    {
+                      optionsJSON =
+                        (import "${inputs.nixpkgs}/nixos/release.nix" { }).options + "/share/doc/nixos/options.json";
+                      name = "NixOS";
+                      urlPrefix = "https://github.com/NixOS/nixpkgs/tree/${inputs.nixpkgs.rev}/";
+                    }
+                  ];
+                };
               };
             devShells.default = pkgs.mkShell { packages = [ inputs'.clan-core.packages.clan-cli ]; };
           };
