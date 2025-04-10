@@ -15,7 +15,6 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     srvos.url = "github:nix-community/srvos";
-    colmena.url = "github:zhaofengli/colmena";
     nix-gaming.url = "github:fufexan/nix-gaming";
     nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
     disko.url = "github:nix-community/disko";
@@ -301,8 +300,6 @@
             devel-forge = import ./2configs/devel/forge.nix;
             devel-ci = import ./2configs/devel/ci.nix;
           };
-
-          # nixosConfigurations = (colmena.lib.makeHive self.colmena).nodes;
 
           lib = import ./4lib;
         };

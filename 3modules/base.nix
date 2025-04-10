@@ -68,7 +68,6 @@ in
           jq
           qrencode
           bat
-          colmena
 
           # net utils
           bind
