@@ -1,7 +1,7 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
-    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-24.11";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs?ref=nixpkgs-unstable";
     retiolum.url = "github:Mic92/retiolum";
     flake-compat = {
       url = "github:edolstra/flake-compat";
@@ -21,7 +21,7 @@
     disko.url = "github:nix-community/disko";
     clan-core = {
       url = "https://git.clan.lol/clan/clan-core/archive/main.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     flake-parts = {
       url = "github:hercules-ci/flake-parts";

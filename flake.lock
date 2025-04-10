@@ -41,7 +41,7 @@
         "nix-darwin": "nix-darwin",
         "nixos-facter-modules": "nixos-facter-modules",
         "nixpkgs": [
-          "nixpkgs"
+          "nixpkgs-unstable"
         ],
         "sops-nix": "sops-nix",
         "systems": "systems",
