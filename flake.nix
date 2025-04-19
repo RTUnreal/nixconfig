@@ -19,7 +19,9 @@
     nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
     disko.url = "github:nix-community/disko";
     clan-core = {
-      url = "https://git.clan.lol/clan/clan-core/archive/main.tar.gz";
+      # TODO: Restore when this is fixed: https://git.clan.lol/clan/clan-core/issues/3340
+      # url = "https://git.clan.lol/clan/clan-core/archive/main.tar.gz";
+      url = "https://git.clan.lol/clan/clan-core/archive/bfdf40869d42c6fa2beed559f8600113ff45cd88.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     flake-parts = {

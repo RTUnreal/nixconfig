@@ -48,15 +48,15 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1745001614,
-        "narHash": "sha256-NAADglNN3lh/3hgTbkynbYC2JuQCCGvv3Yizm9I64ns=",
-        "rev": "779d28577de180c60ed4774c002cc5814162a0f9",
+        "lastModified": 1744590038,
+        "narHash": "sha256-q5CkZ0rPL3TXwjTX9dZOGbprUMOFF93a+/wNxIYuuHQ=",
+        "rev": "bfdf40869d42c6fa2beed559f8600113ff45cd88",
         "type": "tarball",
-        "url": "https://git.clan.lol/api/v1/repos/clan/clan-core/archive/779d28577de180c60ed4774c002cc5814162a0f9.tar.gz"
+        "url": "https://git.clan.lol/api/v1/repos/clan/clan-core/archive/bfdf40869d42c6fa2beed559f8600113ff45cd88.tar.gz"
       },
       "original": {
         "type": "tarball",
-        "url": "https://git.clan.lol/clan/clan-core/archive/main.tar.gz"
+        "url": "https://git.clan.lol/clan/clan-core/archive/bfdf40869d42c6fa2beed559f8600113ff45cd88.tar.gz"
       }
     },
     "data-mesher": {
