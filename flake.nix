@@ -128,7 +128,7 @@
             devShells.default = pkgs.mkShell { packages = [ inputs'.clan-core.packages.clan-cli ]; };
           };
         clan = {
-          meta.name = "net.rtinf";
+          meta.name = "net_rtinf";
           specialArgs = {
             self = {
               inherit (self) inputs nixosModules packages;
