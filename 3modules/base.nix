@@ -79,6 +79,7 @@ in
           inxi
           pciutils
           usbutils
+          binutils
           ;
       };
 
