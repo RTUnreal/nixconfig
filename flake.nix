@@ -186,7 +186,7 @@
               local =
                 { }:
                 {
-                  clan.deployment.requireExplicitUpdate = true;
+                  clan.core.deployment.requireExplicitUpdate = true;
                 };
               remote =
                 { targetHost }:
