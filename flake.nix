@@ -285,7 +285,7 @@
                 in
                 {
                   imports = [
-                    (common system { allowedUnfree = [ "factorio-headless" ]; })
+                    (common system { })
                     inputs.srvos.nixosModules.server
                     ./1systems/devel.rtinf.net/config.nix
                     (remote { targetHost = "trr@devel.rtinf.net"; })
