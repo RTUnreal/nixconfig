@@ -166,7 +166,7 @@ in
           cmake.enable = true;
           clangd.enable = true;
           pylsp.enable = true;
-          elixirls.enable = true;
+          #elixirls.enable = true;
           phpactor = {
             enable = true;
             cmd = [
