@@ -26,11 +26,9 @@ in
       };
     };
 
-    environment.systemPackages = with pkgs; [
-      kcalc
-      okteta
-      filelight
-      qpwgraph
-    ];
+    environment.systemPackages = lib.attrValues {
+      inherit (pkgs.kdePackages) kcalc filelight;
+      inherit (pkgs) qpwgraph okteta;
+    };
   };
 }

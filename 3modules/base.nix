@@ -142,7 +142,7 @@ in
         };
       };
 
-      fonts.packages = [ (pkgs.nerdfonts.override { fonts = [ "SourceCodePro" ]; }) ];
+      fonts.packages = [ (pkgs.nerd-fonts.sauce-code-pro) ];
 
       networking.networkmanager.enable = true;
 
