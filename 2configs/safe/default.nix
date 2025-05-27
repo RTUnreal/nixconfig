@@ -36,7 +36,7 @@ in
     };
     nextcloud =
       let
-        version = 30;
+        version = 31;
       in
       {
         enable = true;
