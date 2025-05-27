@@ -30,6 +30,7 @@
       url = "github:NuschtOS/search";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-router.url = "github:chayleaf/nixos-router";
   };
 
   outputs =
@@ -121,6 +122,10 @@
                         (import "${inputs.nixpkgs}/nixos/release.nix" { }).options + "/share/doc/nixos/options.json";
                       name = "NixOS";
                       urlPrefix = "https://github.com/NixOS/nixpkgs/tree/${inputs.nixpkgs.rev}/";
+                    }
+                    {
+                      optionsJSON = inputs'.nixos-router.packages.optionsJSON + "/share/doc/nixos/options.json";
+                      urlPrefix = "https://github.com/chayleaf/nixos-router/blob/${inputs.nixos-router.rev}/";
                     }
                   ];
                 };
