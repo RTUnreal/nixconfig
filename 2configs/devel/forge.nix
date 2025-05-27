@@ -6,7 +6,8 @@
 }:
 let
   cfg = config.services.forgejo;
-  domain = config.networking.fqdn;
+  DOMAIN = config.networking.fqdn;
+  HTTP_PORT = 3002;
 in
 {
   users.users.git = {
@@ -24,11 +25,10 @@ in
     user = "git";
     database.type = "sqlite3";
     settings = {
-      default.APP_NAME = "${domain}: My Dumbest Gitea instance";
+      default.APP_NAME = "${DOMAIN}: My Dumbest Gitea instance";
       server = {
-        PROTOCOL = "http+unix";
-        DOMAIN = domain;
-        ROOT_URL = "https://${domain}/";
+        inherit DOMAIN HTTP_PORT;
+        ROOT_URL = "https://${DOMAIN}/";
       };
       service = {
         DISABLE_REGISTRATION = lib.mkForce true;
@@ -36,13 +36,33 @@ in
       security = {
         IMPORT_LOCAL_PATHS = "true";
       };
+      repository = {
+        DISABLE_DOWNLOAD_SOURCE_ARCHIVES = true;
+        ENABLE_ARCHIVE = false;
+      };
       log.LEVEL = "Error";
       webhook.ALLOWED_HOST_LIST = "*.devel.rtinf.net";
     };
   };
-  services.nginx.virtualHosts."${domain}" = {
+  services.anubis = {
+    defaultOptions.settings = {
+      USER_DEFINED_DEFAULT = true;
+    };
+    instances = {
+      "anubis".settings = {
+        TARGET = "http://localhost:${toString config.services.forgejo.settings.server.HTTP_PORT}";
+        DIFFICULTY = 4;
+        USER_DEFINED_INSTANCE = true;
+        OG_PASSTHROUGH = true;
+        SERVE_ROBOTS_TXT = true;
+      };
+
+    };
+  };
+  users.users.nginx.extraGroups = [ config.users.groups.anubis.name ];
+  services.nginx.virtualHosts."${DOMAIN}" = {
     locations."/" = {
-      proxyPass = "http://unix:/run/forgejo/forgejo.sock";
+      proxyPass = "http://unix:${config.services.anubis.instances."anubis".settings.BIND}";
       proxyWebsockets = true;
     };
     forceSSL = true;
