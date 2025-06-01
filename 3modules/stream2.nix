@@ -102,7 +102,6 @@ in
           webrtc = false;
           srt = false;
 
-          # reroute to rtsp
           paths = {
             "~^live/(\\w+)$" = { };
           };

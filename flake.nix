@@ -296,6 +296,47 @@
                     (remote { targetHost = "trr@devel.rtinf.net"; })
                   ];
                 };
+              konstream =
+                let
+                  system = "x86_64-linux";
+                in
+                {
+                  imports = [
+                    (common system { })
+                    inputs.srvos.nixosModules.server
+                    inputs.srvos.nixosModules.hardware-hetzner-cloud
+                    inputs.disko.nixosModules.default
+                    ./1systems/konstream.rtinf.net/config.nix
+                    (remote { targetHost = "trr@konstream.rtinf.net"; })
+                    {
+                      disko.devices = {
+                        disk = {
+                          main = {
+                            device = "/dev/sda";
+                            type = "disk";
+                            content = {
+                              type = "gpt";
+                              partitions = {
+                                ESP = {
+                                  type = "EF02";
+                                  size = "1M";
+                                };
+                                root = {
+                                  size = "100%";
+                                  content = {
+                                    type = "filesystem";
+                                    format = "ext4";
+                                    mountpoint = "/";
+                                  };
+                                };
+                              };
+                            };
+                          };
+                        };
+                      };
+                    }
+                  ];
+                };
             };
         };
         flake = {

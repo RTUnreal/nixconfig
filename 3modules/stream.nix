@@ -67,7 +67,7 @@ let
           }
           listen_addr, exists := os.LookupEnv("LISTEN_ADDR")
           if !exists {
-            log.Fatal("AUTH_DIR not set")
+            log.Fatal("LISTEN_ADDR not set")
             os.Exit(1)
           }
 
