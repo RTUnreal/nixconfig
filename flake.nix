@@ -2,6 +2,10 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-25.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs?ref=nixpkgs-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager/release-25.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     retiolum.url = "github:Mic92/retiolum";
     flake-compat = {
       url = "github:edolstra/flake-compat";
@@ -53,6 +57,7 @@
         systems = [ "x86_64-linux" ];
 
         imports = [
+          inputs.home-manager.flakeModules.home-manager
           inputs.treefmt-nix.flakeModule
           inputs.clan-core.flakeModules.default
         ];
@@ -252,6 +257,12 @@
                     inputs.nixos-hardware.nixosModules.framework-13-7040-amd
                     ./1systems/worker/config.nix
                     (local { })
+                    inputs.home-manager.nixosModules.home-manager
+                    {
+                      home-manager.useGlobalPkgs = true;
+                      home-manager.useUserPackages = true;
+                      home-manager.users.trr = self.homeConfigurations.default;
+                    }
                   ];
                 };
               spinner =
@@ -345,6 +356,11 @@
 
             devel-forge = import ./2configs/devel/forge.nix;
             devel-ci = import ./2configs/devel/ci.nix;
+          };
+
+          homeModules = { };
+          homeConfigurations = {
+            default = ./6home/default.nix;
           };
 
           lib = import ./4lib;
