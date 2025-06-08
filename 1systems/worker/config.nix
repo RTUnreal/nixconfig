@@ -42,6 +42,9 @@
 
   time.timeZone = "Europe/Berlin";
 
+  # The state version is required and should stay at the version you
+  # originally installed.
+  home-manager.users.trr.home.stateVersion = "25.05";
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave

@@ -186,6 +186,7 @@
                           nixpkgs-xr.overlays.default
                         ];
                       };
+                      inherit inputs;
                     };
                     imports = [
                       nix-gaming.nixosModules.platformOptimizations
@@ -197,6 +198,16 @@
                 { }:
                 {
                   clan.core.deployment.requireExplicitUpdate = true;
+                  imports = [
+                    inputs.home-manager.nixosModules.home-manager
+                    {
+                      home-manager.useGlobalPkgs = true;
+                      home-manager.useUserPackages = true;
+                      home-manager.backupFileExtension = "hm-bak";
+                      # TODO: I don't like it being here
+                      home-manager.users.trr = self.homeConfigurations.default;
+                    }
+                  ];
                 };
               remote =
                 { targetHost }:
@@ -257,12 +268,6 @@
                     inputs.nixos-hardware.nixosModules.framework-13-7040-amd
                     ./1systems/worker/config.nix
                     (local { })
-                    inputs.home-manager.nixosModules.home-manager
-                    {
-                      home-manager.useGlobalPkgs = true;
-                      home-manager.useUserPackages = true;
-                      home-manager.users.trr = self.homeConfigurations.default;
-                    }
                   ];
                 };
               spinner =
