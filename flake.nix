@@ -19,7 +19,10 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     srvos.url = "github:nix-community/srvos";
-    nix-gaming.url = "github:fufexan/nix-gaming";
+    nix-gaming = {
+      url = "github:fufexan/nix-gaming";
+      inputs.flake-parts.follows = "flake-parts";
+    };
     nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
     disko.url = "github:nix-community/disko";
     clan-core = {
