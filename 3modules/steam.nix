@@ -67,23 +67,83 @@ in
 {
   options.rtinf.steam = {
     enable = mkEnableOption "steam";
+    enableMonado = mkEnableOption "monado integration for steam";
   };
-  config = mkIf cfg.enable {
-    programs = {
-      steam = {
-        enable = true;
-        extraPackages = [
+
+  config = mkIf cfg.enable (
+    lib.mkMerge [
+      {
+        programs = {
+          steam = {
+            enable = true;
+            extraPackages = [
+              ovrasStarter
+            ];
+            extraCompatPackages = [
+              nixpkgs-unstable.proton-ge-rtsp-bin
+              nixpkgs-unstable.proton-ge-bin
+            ];
+            platformOptimizations.enable = true;
+          };
+          gamemode.enable = true;
+        };
+
+        environment.systemPackages = [
           ovrasStarter
+          clear_cache
+          delete_vrc_eac
         ];
-        extraCompatPackages = [ nixpkgs-unstable.proton-ge-rtsp-bin ];
-        platformOptimizations.enable = true;
-      };
-      gamemode.enable = true;
-    };
-    environment.systemPackages = [
-      ovrasStarter
-      clear_cache
-      delete_vrc_eac
-    ];
-  };
+      }
+      (lib.mkIf cfg.enableMonado {
+        # TODO: it doesnt work correctly yet
+        services.monado = {
+          enable = true;
+          defaultRuntime = true;
+        };
+        systemd.user.services."monado".environment = {
+          STEAMVR_LH_ENABLE = "true";
+          XRT_COMPOSITOR_COMPUTE = "1";
+        };
+        environment.systemPackages = [
+          pkgs.wlx-overlay-s
+          pkgs.libsurvive
+          pkgs.xrgears
+        ];
+        home-manager.users.trr = {
+          home.file = {
+            ".local/share/monado/hand-tracking-models".source = pkgs.fetchgit {
+              url = "https://gitlab.freedesktop.org/monado/utilities/hand-tracking-models.git";
+              fetchLFS = true;
+              sha256 = "sha256-x/X4HyyHdQUxn3CdMbWj5cfLvV7UyQe1D01H93UCk+M=";
+            };
+          };
+          xdg.configFile = {
+            "openvr/openvrpaths.vrpath".text = ''
+              {
+                "config" :
+                [
+                  "${config.home-manager.users.trr.xdg.dataHome}/Steam/config"
+                ],
+                "external_drivers" : null,
+                "jsonid" : "vrpathreg",
+                "log" :
+                [
+                  "${config.home-manager.users.trr.xdg.dataHome}/Steam/logs"
+                ],
+                "runtime" :
+                [
+                  "${pkgs.opencomposite}/lib/opencomposite",
+                  "${config.home-manager.users.trr.xdg.dataHome}/Steam/steamapps/common/SteamVR"
+                ],
+                "version" : 1
+              }
+            '';
+            "openxr/1/active_runtime.json".source =
+              config.environment.etc."xdg/openxr/1/active_runtime.json".source;
+          };
+        };
+
+      })
+    ]
+  );
 }

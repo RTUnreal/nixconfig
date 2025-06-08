@@ -22,7 +22,10 @@
     neovim.type = "full";
     gpu.type = "amd";
     kde.enable = true;
-    steam.enable = true;
+    steam = {
+      enable = true;
+      enableMonado = true;
+    };
     vscode.enable = true;
     misc = {
       docker = true;
