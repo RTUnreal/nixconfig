@@ -321,7 +321,7 @@
                 in
                 {
                   imports = [
-                    (common system { })
+                    (common system { allowedUnfree = [ "factorio-headless" ]; })
                     inputs.srvos.nixosModules.server
                     inputs.srvos.nixosModules.hardware-hetzner-cloud
                     inputs.disko.nixosModules.default
