@@ -48,7 +48,6 @@
       treefmt-nix,
       systems,
       nixvim,
-      nix-gaming,
       nixpkgs-xr,
       disko,
       flake-parts,
@@ -192,7 +191,8 @@
                       inherit inputs;
                     };
                     imports = [
-                      nix-gaming.nixosModules.platformOptimizations
+                      inputs.nix-gaming.nixosModules.platformOptimizations
+                      inputs.home-manager.nixosModules.home-manager
                       ./3modules/modules.nix
                     ];
                   }
@@ -202,7 +202,6 @@
                 {
                   clan.core.deployment.requireExplicitUpdate = true;
                   imports = [
-                    inputs.home-manager.nixosModules.home-manager
                     {
                       home-manager.useGlobalPkgs = true;
                       home-manager.useUserPackages = true;
