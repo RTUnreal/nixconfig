@@ -48,7 +48,6 @@
       treefmt-nix,
       systems,
       nixvim,
-      nixpkgs-xr,
       disko,
       flake-parts,
       ...
@@ -185,7 +184,7 @@
                         config.allowUnfreePredicate =
                           pkg: builtins.elem (nixpkgs-unstable.legacyPackages."${system}".lib.getName pkg) allowedUnfree;
                         overlays = [
-                          nixpkgs-xr.overlays.default
+                          inputs.nixpkgs-xr.overlays.default
                         ];
                       };
                       inherit inputs;
