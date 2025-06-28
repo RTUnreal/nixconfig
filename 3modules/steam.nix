@@ -506,12 +506,7 @@ in
                     corner_radius = 4;
                     fg_color = "#24273a";
                     font_size = 15;
-                    rect = [
-                      0
-                      236
-                      400
-                      36
-                    ];
+                    rect = rect 0 236 400 36;
                     type = "WayVRDisplayList";
                   }
                   {
