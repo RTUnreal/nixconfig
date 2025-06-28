@@ -5,7 +5,7 @@
   rustPlatform,
   wrapGAppsHook,
   makeWrapper,
-  substituteAll,
+  replaceVars,
   pkg-config,
   jq,
   cargo-tauri,
@@ -24,18 +24,18 @@ let
   pnpm = pnpm_9;
 in
 let
-  version = "0.13.2";
+  version = "0.15.0";
 
   src = fetchgit {
     url = "https://github.com/SlimeVR/SlimeVR-Server.git";
     rev = "v${version}";
-    hash = "sha256-XQDbP+LO/brpl7viSxuV3H4ALN0yIkj9lwr5eS1txNs=";
+    hash = "sha256-Sc51fGUXc9FCTO7wVy9hkZiOe0RYefVasp+jCeWl844=";
     fetchSubmodules = true;
   };
 
   serverJar = fetchurl {
     url = "https://github.com/SlimeVR/SlimeVR-Server/releases/download/v${version}/slimevr.jar";
-    hash = "sha256-s6uznJtsa1bQAM1QIdBMey+m9Q/v2OfKQPXjD5RAR78=";
+    hash = "sha256-zXnFUecF1Z5yzDiUal0m1+A0jvFin1EvRnb1fne98yA=";
   };
 
 in
@@ -70,19 +70,16 @@ rustPlatform.buildRustPackage rec {
       gst-plugins-ugly
     ]);
 
-  cargoHash = "sha256-Y3ajrtIFb2gdU1zuZyIA8+XDB8JSdBdE8Vo+5gYVYrM=";
+  cargoHash = "sha256-+WrBVL4/XslJSOwuxs4IzqXG9l1/lMSbKil/8OHc9Xw=";
 
   pnpmDeps = pnpm.fetchDeps {
     inherit pname version src;
-    hash = "sha256-5IqIUwVvufrws6/xpCAilmgRNG4mUGX8NXajZcVZypM=";
+    hash = "sha256-xCID9JOFEswsTbE5Dh6ZAkhhyy4eMuqkme54IdWfcks=";
   };
 
   patches = [
-    (substituteAll {
-      src = ./version-fix.patch;
-      env = {
-        inherit version;
-      };
+    (replaceVars ./version-fix.patch {
+      inherit version;
     })
   ];
 
