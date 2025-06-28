@@ -3,6 +3,7 @@
   pkgs,
   lib,
   nixpkgs-unstable,
+  selfpkgs,
   inputs,
   ...
 }:
@@ -103,6 +104,7 @@ in
           enable = true;
           defaultRuntime = true;
           highPriority = true;
+          package = selfpkgs.monado;
         };
         systemd.user.services."monado".environment = {
           STEAMVR_LH_ENABLE = "true";
@@ -112,6 +114,8 @@ in
           U_PACING_APP_USE_MIN_FRAME_PERIOD = "1";
           XRT_COMPOSITOR_DESIRED_MODE = "0";
           XRT_COMPOSITOR_SCALE_PERCENTAGE = "140";
+
+          LH_LOAD_SLIMEVR = "TRUE";
         };
         environment.systemPackages = [
           pkgs.wlx-overlay-s
@@ -156,7 +160,7 @@ in
               config.environment.etc."xdg/openxr/1/active_runtime.json".source;
 
             # reference: https://raw.githubusercontent.com/galister/wlx-overlay-s/main/src/backend/openxr/openxr_actions.json5
-            "wlxoverlay/openxr_actions.json5".text = (pkgs.formats.json { }).generate [
+            "wlxoverlay/openxr_actions.json5".source = (pkgs.formats.json { }).generate "openxr_actions.json5" [
               # Fallback controller, intended for testing
               {
                 profile = "/interaction_profiles/khr/simple_controller";
@@ -258,7 +262,7 @@ in
               }
             ];
             # reference: https://github.com/galister/wlx-overlay-s/blob/main/src/res/wayvr.yaml
-            "wlxoverlay/wayvr.yaml".text = (pkgs.formats.yaml { }).generate {
+            "wlxoverlay/wayvr.yaml".source = (pkgs.formats.yaml { }).generate "wayvr.yaml" {
               version = 1;
 
               # If your gpu has some issues with zero-copy textures, you can set this option to "software".
@@ -353,358 +357,287 @@ in
               };
             };
             # reference: https://github.com/galister/wlx-overlay-s/blob/main/contrib/wayvr/watch_wayvr_example.yaml
-            "wlxoverlay/watch.yaml".text = {
-              elements = [
-                {
-                  bg_color = "#24273a";
-                  corner_radius = 20;
-                  rect = [
-                    0
-                    30
-                    400
-                    130
-                  ];
-                  type = "Panel";
-                }
-                {
-                  bg_color = "#c6a0f6";
-                  click_up = [
-                    {
-                      action = "ShowUi";
-                      target = "settings";
-                      type = "Window";
-                    }
-                    {
-                      action = "Destroy";
-                      target = "settings";
-                      type = "Window";
-                    }
-                  ];
-                  corner_radius = 4;
-                  fg_color = "#24273a";
-                  font_size = 15;
-                  rect = [
-                    2
-                    162
-                    26
-                    36
-                  ];
-                  text = "C";
-                  type = "Button";
-                }
-                {
-                  bg_color = "#2288FF";
-                  click_up = [
-                    {
-                      action = "ToggleDashboard";
-                      type = "WayVR";
-                    }
-                  ];
-                  corner_radius = 4;
-                  fg_color = "#24273a";
-                  font_size = 15;
-                  rect = [
-                    32
-                    162
-                    48
-                    36
-                  ];
-                  text = "Dash";
-                  type = "Button";
-                }
-                {
-                  bg_color = "#a6da95";
-                  click_up = [
-                    {
-                      action = "ToggleVisible";
-                      target = "kbd";
-                      type = "Overlay";
-                    }
-                  ];
-                  corner_radius = 4;
-                  fg_color = "#24273a";
-                  font_size = 15;
-                  long_click_up = [
-                    {
-                      action = "Reset";
-                      target = "kbd";
-                      type = "Overlay";
-                    }
-                  ];
-                  middle_up = [
-                    {
-                      action = "ToggleInteraction";
-                      target = "kbd";
-                      type = "Overlay";
-                    }
-                  ];
-                  rect = [
-                    84
-                    162
-                    48
-                    36
-                  ];
-                  right_up = [
-                    {
-                      action = "ToggleImmovable";
-                      target = "kbd";
-                      type = "Overlay";
-                    }
-                  ];
-                  scroll_down = [
-                    {
-                      action = {
-                        Opacity = {
-                          delta = -0.025;
+            "wlxoverlay/watch.yaml".source =
+              let
+                rect = l: r: w: h: [
+                  l
+                  r
+                  w
+                  h
+                ];
+              in
+              (pkgs.formats.yaml { }).generate "watch.yaml" {
+                elements = [
+                  {
+                    bg_color = "#24273a";
+                    corner_radius = 20;
+                    rect = rect 0 30 400 130;
+                    type = "Panel";
+                  }
+                  {
+                    bg_color = "#c6a0f6";
+                    click_up = [
+                      {
+                        action = "ShowUi";
+                        target = "settings";
+                        type = "Window";
+                      }
+                      {
+                        action = "Destroy";
+                        target = "settings";
+                        type = "Window";
+                      }
+                    ];
+                    corner_radius = 4;
+                    fg_color = "#24273a";
+                    font_size = 15;
+                    rect = rect 2 162 26 36;
+                    text = "C";
+                    type = "Button";
+                  }
+                  {
+                    bg_color = "#2288FF";
+                    click_up = [
+                      {
+                        action = "ToggleDashboard";
+                        type = "WayVR";
+                      }
+                    ];
+                    corner_radius = 4;
+                    fg_color = "#24273a";
+                    font_size = 15;
+                    rect = rect 32 162 48 36;
+                    text = "Dash";
+                    type = "Button";
+                  }
+                  {
+                    bg_color = "#a6da95";
+                    click_up = [
+                      {
+                        action = "ToggleVisible";
+                        target = "kbd";
+                        type = "Overlay";
+                      }
+                    ];
+                    corner_radius = 4;
+                    fg_color = "#24273a";
+                    font_size = 15;
+                    long_click_up = [
+                      {
+                        action = "Reset";
+                        target = "kbd";
+                        type = "Overlay";
+                      }
+                    ];
+                    middle_up = [
+                      {
+                        action = "ToggleInteraction";
+                        target = "kbd";
+                        type = "Overlay";
+                      }
+                    ];
+                    rect = rect 84 162 48 36;
+                    right_up = [
+                      {
+                        action = "ToggleImmovable";
+                        target = "kbd";
+                        type = "Overlay";
+                      }
+                    ];
+                    scroll_down = [
+                      {
+                        action = {
+                          Opacity = {
+                            delta = -0.025;
+                          };
                         };
-                      };
-                      target = "kbd";
-                      type = "Overlay";
-                    }
-                  ];
-                  scroll_up = [
-                    {
-                      action = {
-                        Opacity = {
-                          delta = 0.025;
+                        target = "kbd";
+                        type = "Overlay";
+                      }
+                    ];
+                    scroll_up = [
+                      {
+                        action = {
+                          Opacity = {
+                            delta = 0.025;
+                          };
                         };
+                        target = "kbd";
+                        type = "Overlay";
+                      }
+                    ];
+                    text = "Kbd";
+                    type = "Button";
+                  }
+                  {
+                    bg_color = "#1e2030";
+                    click_up = "ToggleVisible";
+                    corner_radius = 4;
+                    fg_color = "#cad3f5";
+                    font_size = 15;
+                    layout = "Horizontal";
+                    long_click_up = "Reset";
+                    middle_up = "ToggleInteraction";
+                    rect = rect 134 160 266 40;
+                    right_up = "ToggleImmovable";
+                    scroll_down = {
+                      Opacity = {
+                        delta = -0.025;
                       };
-                      target = "kbd";
-                      type = "Overlay";
-                    }
-                  ];
-                  text = "Kbd";
-                  type = "Button";
-                }
-                {
-                  bg_color = "#1e2030";
-                  click_up = "ToggleVisible";
-                  corner_radius = 4;
-                  fg_color = "#cad3f5";
-                  font_size = 15;
-                  layout = "Horizontal";
-                  long_click_up = "Reset";
-                  middle_up = "ToggleInteraction";
-                  rect = [
-                    134
-                    160
-                    266
-                    40
-                  ];
-                  right_up = "ToggleImmovable";
-                  scroll_down = {
-                    Opacity = {
-                      delta = -0.025;
                     };
-                  };
-                  scroll_up = {
-                    Opacity = {
-                      delta = 0.025;
+                    scroll_up = {
+                      Opacity = {
+                        delta = 0.025;
+                      };
                     };
-                  };
-                  type = "OverlayList";
-                }
-                {
-                  bg_color = "#e590c4";
-                  catalog_name = "default_catalog";
-                  corner_radius = 4;
-                  fg_color = "#24273a";
-                  font_size = 15;
-                  rect = [
-                    0
-                    200
-                    400
-                    36
-                  ];
-                  type = "WayVRLauncher";
-                }
-                {
-                  bg_color = "#ca68a4";
-                  corner_radius = 4;
-                  fg_color = "#24273a";
-                  font_size = 15;
-                  rect = [
-                    0
-                    236
-                    400
-                    36
-                  ];
-                  type = "WayVRDisplayList";
-                }
-                {
-                  corner_radius = 4;
-                  fg_color = "#cad3f5";
-                  font_size = 46;
-                  format = "%H:%M";
-                  rect = [
-                    19
-                    90
-                    200
-                    50
-                  ];
-                  source = "Clock";
-                  type = "Label";
-                }
-                {
-                  corner_radius = 4;
-                  fg_color = "#cad3f5";
-                  font_size = 14;
-                  format = "%x";
-                  rect = [
-                    20
-                    117
-                    200
-                    20
-                  ];
-                  source = "Clock";
-                  type = "Label";
-                }
-                {
-                  corner_radius = 4;
-                  fg_color = "#cad3f5";
-                  font_size = 14;
-                  format = "%A";
-                  rect = [
-                    20
-                    137
-                    200
-                    50
-                  ];
-                  source = "Clock";
-                  type = "Label";
-                }
-                {
-                  corner_radius = 4;
-                  fg_color = "#8bd5ca";
-                  font_size = 24;
-                  format = "%H:%M";
-                  rect = [
-                    210
-                    90
-                    200
-                    50
-                  ];
-                  source = "Clock";
-                  timezone = 0;
-                  type = "Label";
-                }
-                {
-                  corner_radius = 4;
-                  fg_color = "#8bd5ca";
-                  font_size = 14;
-                  rect = [
-                    210
-                    60
-                    200
-                    50
-                  ];
-                  source = "Timezone";
-                  timezone = 0;
-                  type = "Label";
-                }
-                {
-                  corner_radius = 4;
-                  fg_color = "#b7bdf8";
-                  font_size = 24;
-                  format = "%H:%M";
-                  rect = [
-                    210
-                    150
-                    200
-                    50
-                  ];
-                  source = "Clock";
-                  timezone = 1;
-                  type = "Label";
-                }
-                {
-                  corner_radius = 4;
-                  fg_color = "#b7bdf8";
-                  font_size = 14;
-                  rect = [
-                    210
-                    120
-                    200
-                    50
-                  ];
-                  source = "Timezone";
-                  timezone = 1;
-                  type = "Label";
-                }
-                {
-                  corner_radius = 4;
-                  fg_color = "#8bd5ca";
-                  fg_color_charging = "#6080A0";
-                  fg_color_low = "#B06060";
-                  font_size = 16;
-                  layout = "Horizontal";
-                  low_threshold = 33;
-                  num_devices = 9;
-                  rect = [
-                    0
-                    5
-                    400
-                    30
-                  ];
-                  type = "BatteryList";
-                }
-                {
-                  bg_color = "#5b6078";
-                  click_down = [
-                    {
-                      command = [
-                        "pactl"
-                        "set-sink-volume"
-                        "@DEFAULT_SINK@"
-                        "+5%"
-                      ];
-                      type = "Exec";
-                    }
-                  ];
-                  corner_radius = 4;
-                  fg_color = "#cad3f5";
-                  font_size = 13;
-                  rect = [
-                    315
-                    52
-                    70
-                    32
-                  ];
-                  text = "Vol +";
-                  type = "Button";
-                }
-                {
-                  bg_color = "#5b6078";
-                  click_down = [
-                    {
-                      command = [
-                        "pactl"
-                        "set-sink-volume"
-                        "@DEFAULT_SINK@"
-                        "-5%"
-                      ];
-                      type = "Exec";
-                    }
-                  ];
-                  corner_radius = 4;
-                  fg_color = "#cad3f5";
-                  font_size = 13;
-                  rect = [
-                    315
-                    116
-                    70
-                    32
-                  ];
-                  text = "Vol -";
-                  type = "Button";
-                }
-              ];
-              size = [
-                400
-                272
-              ];
-              width = 0.115;
-            };
+                    type = "OverlayList";
+                  }
+                  {
+                    bg_color = "#e590c4";
+                    catalog_name = "default_catalog";
+                    corner_radius = 4;
+                    fg_color = "#24273a";
+                    font_size = 15;
+                    rect = rect 0 200 400 36;
+                    type = "WayVRLauncher";
+                  }
+                  {
+                    bg_color = "#ca68a4";
+                    corner_radius = 4;
+                    fg_color = "#24273a";
+                    font_size = 15;
+                    rect = [
+                      0
+                      236
+                      400
+                      36
+                    ];
+                    type = "WayVRDisplayList";
+                  }
+                  {
+                    corner_radius = 4;
+                    fg_color = "#cad3f5";
+                    font_size = 46;
+                    format = "%H:%M";
+                    rect = rect 19 90 200 50;
+                    source = "Clock";
+                    type = "Label";
+                  }
+                  {
+                    corner_radius = 4;
+                    fg_color = "#cad3f5";
+                    font_size = 14;
+                    format = "%x";
+                    rect = rect 20 117 200 20;
+                    source = "Clock";
+                    type = "Label";
+                  }
+                  {
+                    corner_radius = 4;
+                    fg_color = "#cad3f5";
+                    font_size = 14;
+                    format = "%A";
+                    rect = rect 20 137 200 50;
+                    source = "Clock";
+                    type = "Label";
+                  }
+                  {
+                    corner_radius = 4;
+                    fg_color = "#8bd5ca";
+                    font_size = 24;
+                    format = "%H:%M";
+                    rect = rect 210 90 200 50;
+                    source = "Clock";
+                    timezone = 0;
+                    type = "Label";
+                  }
+                  {
+                    corner_radius = 4;
+                    fg_color = "#8bd5ca";
+                    font_size = 14;
+                    rect = rect 210 60 200 50;
+                    source = "Timezone";
+                    timezone = 0;
+                    type = "Label";
+                  }
+                  {
+                    corner_radius = 4;
+                    fg_color = "#b7bdf8";
+                    font_size = 24;
+                    format = "%H:%M";
+                    rect = rect 210 150 200 50;
+                    source = "Clock";
+                    timezone = 1;
+                    type = "Label";
+                  }
+                  {
+                    corner_radius = 4;
+                    fg_color = "#b7bdf8";
+                    font_size = 14;
+                    rect = rect 210 120 200 50;
+                    source = "Timezone";
+                    timezone = 1;
+                    type = "Label";
+                  }
+                  {
+                    corner_radius = 4;
+                    fg_color = "#8bd5ca";
+                    fg_color_charging = "#6080A0";
+                    fg_color_low = "#B06060";
+                    font_size = 16;
+                    layout = "Horizontal";
+                    low_threshold = 33;
+                    num_devices = 9;
+                    rect = rect 0 5 400 30;
+                    type = "BatteryList";
+                  }
+                  {
+                    bg_color = "#5b6078";
+                    click_down = [
+                      {
+                        command = [
+                          "pactl"
+                          "set-sink-volume"
+                          "@DEFAULT_SINK@"
+                          "+5%"
+                        ];
+                        type = "Exec";
+                      }
+                    ];
+                    corner_radius = 4;
+                    fg_color = "#cad3f5";
+                    font_size = 13;
+                    rect = rect 315 52 70 32;
+                    text = "Vol +";
+                    type = "Button";
+                  }
+                  {
+                    bg_color = "#5b6078";
+                    click_down = [
+                      {
+                        command = [
+                          "pactl"
+                          "set-sink-volume"
+                          "@DEFAULT_SINK@"
+                          "-5%"
+                        ];
+                        type = "Exec";
+                      }
+                    ];
+                    corner_radius = 4;
+                    fg_color = "#cad3f5";
+                    font_size = 13;
+                    rect = rect 315 116 70 32;
+                    text = "Vol -";
+                    type = "Button";
+                  }
+                ];
+                size = [
+                  400
+                  272
+                ];
+                width = 0.115;
+              };
           };
         };
 
