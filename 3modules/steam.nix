@@ -539,44 +539,6 @@ in
                   {
                     corner_radius = 4;
                     fg_color = "#8bd5ca";
-                    font_size = 24;
-                    format = "%H:%M";
-                    rect = rect 210 90 200 50;
-                    source = "Clock";
-                    timezone = 0;
-                    type = "Label";
-                  }
-                  {
-                    corner_radius = 4;
-                    fg_color = "#8bd5ca";
-                    font_size = 14;
-                    rect = rect 210 60 200 50;
-                    source = "Timezone";
-                    timezone = 0;
-                    type = "Label";
-                  }
-                  {
-                    corner_radius = 4;
-                    fg_color = "#b7bdf8";
-                    font_size = 24;
-                    format = "%H:%M";
-                    rect = rect 210 150 200 50;
-                    source = "Clock";
-                    timezone = 1;
-                    type = "Label";
-                  }
-                  {
-                    corner_radius = 4;
-                    fg_color = "#b7bdf8";
-                    font_size = 14;
-                    rect = rect 210 120 200 50;
-                    source = "Timezone";
-                    timezone = 1;
-                    type = "Label";
-                  }
-                  {
-                    corner_radius = 4;
-                    fg_color = "#8bd5ca";
                     fg_color_charging = "#6080A0";
                     fg_color_low = "#B06060";
                     font_size = 16;
@@ -635,7 +597,6 @@ in
               };
           };
         };
-
       })
     ]
   );
