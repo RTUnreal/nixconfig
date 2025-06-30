@@ -151,6 +151,7 @@ in
           bashls.enable = true;
           gopls.enable = true;
           tinymist.enable = true;
+          jqls.enable = true;
           rust_analyzer = {
             enable = true;
             installCargo = false;
