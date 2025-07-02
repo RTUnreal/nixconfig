@@ -35,6 +35,11 @@
     kernelPackages = pkgs.linuxKernel.packages.linux_6_13;
   };
 
+  boot.binfmt = {
+    emulatedSystems = [ "riscv64-linux" ];
+    addEmulatedSystemsToNixSandbox = true;
+  };
+
   services.fwupd.enable = true;
 
   networking.hostName = "worker";
