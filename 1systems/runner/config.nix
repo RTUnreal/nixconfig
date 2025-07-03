@@ -81,6 +81,11 @@
   };
   services.flatpak.enable = true;
 
+  boot.binfmt = {
+    emulatedSystems = [ "riscv64-linux" ];
+    addEmulatedSystemsToNixSandbox = true;
+  };
+
   # The state version is required and should stay at the version you
   # originally installed.
   home-manager.users.trr.home.stateVersion = "25.05";
