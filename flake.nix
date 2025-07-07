@@ -160,17 +160,22 @@
             };
             selflib = self.lib;
           };
-          inventory = {
-            tags = {
-              "servers" = [
-                "spinner"
-                "safe"
-                "devel"
-              ];
-              "remote" = [
-                "safe"
-                "devel"
-              ];
+          inventory.machines = {
+            "devel" = {
+              tags = [ "server" ];
+              deploy.targetHost = "trr@devel.rtinf.net";
+            };
+            "spinner" = {
+              tags = [ "server" ];
+              deploy.targetHost = "trr@192.168.0.101";
+            };
+            "safe" = {
+              tags = [ "server" ];
+              deploy.targetHost = "trr@safe.user-sites.de";
+            };
+            "konstream" = {
+              tags = [ "server" ];
+              deploy.targetHost = "trr@konstream.rtinf.net";
             };
           };
           inherit self;
@@ -225,11 +230,8 @@
                   ];
                 };
               remote =
-                { targetHost }:
+                { }:
                 {
-                  clan.core.networking = {
-                    inherit targetHost;
-                  };
                 };
             in
             {
@@ -299,7 +301,7 @@
                     })
                     inputs.retiolum.nixosModules.retiolum
                     ./1systems/spinner/config.nix
-                    (remote { targetHost = "trr@192.168.0.101"; })
+                    (remote { })
                   ];
                 };
               safe =
@@ -312,7 +314,7 @@
                     inputs.srvos.nixosModules.server
                     inputs.srvos.nixosModules.hardware-hetzner-cloud
                     ./1systems/safe.user-sites.de/config.nix
-                    (remote { targetHost = "trr@safe.user-sites.de"; })
+                    (remote { })
                   ];
                 };
               devel =
@@ -324,7 +326,7 @@
                     (common system { })
                     inputs.srvos.nixosModules.server
                     ./1systems/devel.rtinf.net/config.nix
-                    (remote { targetHost = "trr@devel.rtinf.net"; })
+                    (remote { })
                   ];
                 };
               konstream =
@@ -338,7 +340,7 @@
                     inputs.srvos.nixosModules.hardware-hetzner-cloud
                     inputs.disko.nixosModules.default
                     ./1systems/konstream.rtinf.net/config.nix
-                    (remote { targetHost = "trr@konstream.rtinf.net"; })
+                    (remote { })
                     {
                       disko.devices = {
                         disk = {
