@@ -153,6 +153,7 @@ in
           lazygit
           ffmpeg
           btop
+          nix-output-monitor
           ;
       };
 
