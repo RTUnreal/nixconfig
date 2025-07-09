@@ -175,7 +175,7 @@
             };
             "konstream" = {
               tags = [ "server" ];
-              deploy.targetHost = "trr@konstream.rtinf.net";
+              targetHost = "trr@konstream.rtinf.net";
             };
           };
           inherit self;
