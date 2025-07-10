@@ -2,6 +2,7 @@
 {
   services.harmonia = {
     enable = true;
+    signKeyPaths = [ "/var/lib/secrets/harmonia.secret" ];
   };
 
   services.nginx.virtualHosts."cache.rtinf.net" = {
