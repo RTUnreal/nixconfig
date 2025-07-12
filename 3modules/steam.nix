@@ -119,6 +119,7 @@ in
         };
         environment.systemPackages = [
           pkgs.wlx-overlay-s
+          selfpkgs.libsurvive
           pkgs.xrgears
         ];
         boot.kernelPatches = [

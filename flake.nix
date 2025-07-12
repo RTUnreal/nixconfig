@@ -135,20 +135,23 @@
                     }
                   ];
                 };
-                monado = pkgs.monado.overrideAttrs (prevAttrs: {
-                  pname = "monado-solarxr"; # optional but helps distinguishing between packages
+                monado =
+                  (pkgs.monado.overrideAttrs (prevAttrs: {
+                    pname = "monado-solarxr"; # optional but helps distinguishing between packages
 
-                  src = pkgs.fetchFromGitLab {
-                    domain = "gitlab.freedesktop.org";
-                    owner = "rcelyte";
-                    repo = "monado";
-                    rev = "af2f39fbe0f8e3f9b2d207ac430f1bb54ce95391";
-                    hash = "sha256-OupR3eKeDBQ3qApIDl4L2fVNE8hoXWdaqbAmwadPndI=";
-                  };
-                  patches = builtins.filter (
-                    patch: patch.name != "2a6932d46dad9aa957205e8a47ec2baa33041076.patch"
-                  ) prevAttrs.patches or [ ];
-                });
+                    src = pkgs.fetchFromGitLab {
+                      domain = "gitlab.freedesktop.org";
+                      owner = "rcelyte";
+                      repo = "monado";
+                      rev = "af2f39fbe0f8e3f9b2d207ac430f1bb54ce95391";
+                      hash = "sha256-OupR3eKeDBQ3qApIDl4L2fVNE8hoXWdaqbAmwadPndI=";
+                    };
+                    patches = builtins.filter (
+                      patch: patch.name != "2a6932d46dad9aa957205e8a47ec2baa33041076.patch"
+                    ) prevAttrs.patches or [ ];
+                  })).override
+                    { inherit (self'.packages) libsurvive; };
+                libsurvive = pkgs.callPackage ./5pkgs/libsurvive.nix { };
               };
             devShells.default = pkgs.mkShell { packages = [ inputs'.clan-core.packages.clan-cli ]; };
           };
