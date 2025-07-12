@@ -68,7 +68,6 @@
             pkgs,
             inputs',
             self',
-            config,
             ...
           }:
           {

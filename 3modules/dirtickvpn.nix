@@ -209,7 +209,7 @@ in
         allowedUDPPorts = map (i: i.meta.meta.listenPort) (builtins.attrValues cfg.interfaces);
       };
       wireguard = {
-      useNetworkd = false;
+        useNetworkd = false;
         interfaces = builtins.mapAttrs wireguardConfig cfg.interfaces;
       };
     };
