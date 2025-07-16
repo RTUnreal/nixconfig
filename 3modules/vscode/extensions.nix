@@ -30,18 +30,6 @@
     hash = "sha256-DCh6SG7nckDxWLQvHZzkg3fH0V0KFzmryzSB7XTCj6s=";
   }
   {
-    name = "haskell";
-    publisher = "haskell";
-    version = "2.6.0";
-    hash = "sha256-2lvG7yZ+QAoafwyWQkVwyl2MsP8zWWQkTw8hBtib+C0=";
-  }
-  {
-    name = "elixir-ls";
-    publisher = "jakebecker";
-    version = "0.28.0";
-    hash = "sha256-pHLAA7i2HJC523lPotUy5Zwa3BTSTurC2BA+eevdH38=";
-  }
-  {
     name = "nix-ide";
     publisher = "jnoortheen";
     version = "0.4.22";
@@ -108,12 +96,6 @@
     hash = "sha256-gyyl379atZLgtabbeo26xspdPjLvNud3cZ6kEmAbAjU=";
   }
   {
-    name = "phoenix";
-    publisher = "phoenixframework";
-    version = "0.1.3";
-    hash = "sha256-UuGqYLz/4lc5WngrRLkAbEXnOW5pvTlDhHO0aB+LRgk=";
-  }
-  {
     name = "even-better-toml";
     publisher = "tamasfe";
     version = "0.21.2";
@@ -124,12 +106,6 @@
     publisher = "tchayen";
     version = "0.8.0";
     hash = "sha256-YnxRmdc4R2AzYxAheKcPfduETz+sfdhxEgRFTj6HjCM=";
-  }
-  {
-    name = "cmake";
-    publisher = "twxs";
-    version = "0.0.17";
-    hash = "sha256-CFiva1AO/oHpszbpd7lLtDzbv1Yi55yQOQPP/kCTH4Y=";
   }
   {
     name = "markdown-all-in-one";
