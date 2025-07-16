@@ -9,7 +9,6 @@ let
   cfg = config.rtinf.vscode;
 
   extFromPkgs = with pkgs.vscode-extensions; [
-    ms-vscode.cpptools
     ms-toolsai.jupyter
     ms-toolsai.jupyter-renderers
     elmtooling.elm-ls-vscode
@@ -27,7 +26,7 @@ let
               name
               publisher
               version
-              sha256
+              hash
               ;
           };
         }
