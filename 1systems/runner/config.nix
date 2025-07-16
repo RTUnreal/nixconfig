@@ -79,7 +79,6 @@
     kdeconnect.enable = true;
     dconf.enable = true;
   };
-  services.flatpak.enable = true;
 
   boot.binfmt = {
     emulatedSystems = [ "riscv64-linux" ];
