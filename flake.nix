@@ -251,8 +251,6 @@
                         "steam-run"
 
                         "anydesk"
-
-                        "vscode-extension-ms-vscode-cpptools"
                       ];
                     })
                     ./1systems/runner/config.nix
@@ -277,8 +275,6 @@
                         "steam-run"
 
                         "anydesk"
-
-                        "vscode-extension-ms-vscode-cpptools"
                       ];
                     })
                     inputs.retiolum.nixosModules.retiolum
