@@ -250,7 +250,6 @@
                         "steam-original"
                         "steam-run"
 
-                        "discord"
                         "anydesk"
 
                         "vscode-extension-ms-vscode-cpptools"
@@ -277,7 +276,6 @@
                         "steam-original"
                         "steam-run"
 
-                        "discord"
                         "anydesk"
 
                         "vscode-extension-ms-vscode-cpptools"

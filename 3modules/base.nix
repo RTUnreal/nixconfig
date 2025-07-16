@@ -281,7 +281,6 @@ in
           nextcloud-client
           telegram-desktop
           ghidra
-          discord
           ;
 
         inherit (nixpkgs-unstable)
