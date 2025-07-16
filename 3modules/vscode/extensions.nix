@@ -18,12 +18,6 @@
     hash = "sha256-g+LfgjAnSuSj/nSmlPdB0t29kqTmegZB5B1cYzP8kCI=";
   }
   {
-    name = "elm-ls-vscode";
-    publisher = "elmtooling";
-    version = "2.8.0";
-    hash = "sha256-81tHgNjYc0LJjsgsQfo5xyh20k/i3PKcgYp9GZTvwfs=";
-  }
-  {
     name = "terminal";
     publisher = "formulahendry";
     version = "0.0.10";
@@ -118,12 +112,6 @@
     publisher = "phoenixframework";
     version = "0.1.3";
     hash = "sha256-UuGqYLz/4lc5WngrRLkAbEXnOW5pvTlDhHO0aB+LRgk=";
-  }
-  {
-    name = "rust-analyzer";
-    publisher = "rust-lang";
-    version = "0.4.2541";
-    hash = "sha256-PqaHrn2LrAMH0Fe1lihFmZq2YXWLpSI/F1W9f86sX54=";
   }
   {
     name = "even-better-toml";

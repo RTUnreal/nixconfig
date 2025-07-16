@@ -11,8 +11,6 @@ let
   extFromPkgs = with pkgs.vscode-extensions; [
     ms-toolsai.jupyter
     ms-toolsai.jupyter-renderers
-    elmtooling.elm-ls-vscode
-    rust-lang.rust-analyzer
     ms-ceintl.vscode-language-pack-de
   ];
   extFilter = map (e: e.vscodeExtUniqueId) extFromPkgs;
