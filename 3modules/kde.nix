@@ -28,7 +28,7 @@ in
 
     environment.systemPackages = lib.attrValues {
       inherit (pkgs.kdePackages) kcalc filelight;
-      inherit (pkgs) qpwgraph okteta;
+      inherit (pkgs) qpwgraph imhex;
     };
   };
 }
