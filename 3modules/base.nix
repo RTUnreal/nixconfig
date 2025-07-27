@@ -280,7 +280,6 @@ in
           vlc
           nextcloud-client
           telegram-desktop
-          ghidra
           ;
 
         inherit (nixpkgs-unstable)
@@ -288,6 +287,7 @@ in
           anydesk
           ;
       };
+      programs.ghidra.enable = true;
     })
   ];
 }
