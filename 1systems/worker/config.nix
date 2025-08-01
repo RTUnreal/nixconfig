@@ -32,7 +32,7 @@
       systemd-boot.enable = true;
       efi.canTouchEfiVariables = true;
     };
-    kernelPackages = pkgs.linuxKernel.packages.linux_6_13;
+    kernelPackages = pkgs.linuxKernel.packages.linux_6_16;
   };
 
   boot.binfmt = {
