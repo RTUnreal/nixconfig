@@ -32,9 +32,7 @@
   services.factorio = {
     enable = true;
     openFirewall = true;
-    package = nixpkgs-unstable.factorio-headless.override {
-      versionsJson = ./versions.json;
-    };
+    package = nixpkgs-unstable.factorio-headless;
     extraSettingsFile = "/var/lib/factorio/extraSettings.json";
   };
 
