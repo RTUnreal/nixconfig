@@ -54,21 +54,20 @@ rustPlatform.buildRustPackage rec {
     makeWrapper
   ];
 
-  buildInputs =
-    [
-      glib
-      gtk3
-      webkitgtk_4_1
-      libayatana-appindicator
-      jdk17_headless
-    ]
-    ++ (with gst_all_1; [
-      gstreamer
-      gst-plugins-base
-      gst-plugins-good
-      gst-plugins-bad
-      gst-plugins-ugly
-    ]);
+  buildInputs = [
+    glib
+    gtk3
+    webkitgtk_4_1
+    libayatana-appindicator
+    jdk17_headless
+  ]
+  ++ (with gst_all_1; [
+    gstreamer
+    gst-plugins-base
+    gst-plugins-good
+    gst-plugins-bad
+    gst-plugins-ugly
+  ]);
 
   cargoHash = "sha256-+WrBVL4/XslJSOwuxs4IzqXG9l1/lMSbKil/8OHc9Xw=";
 
