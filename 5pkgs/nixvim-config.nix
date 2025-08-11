@@ -129,7 +129,7 @@ in
     (mkIf enableIDEFeatures {
       nvim-tree = {
         enable = true;
-        hijackCursor = true;
+        settings.hijack_cursor = true;
       };
       bufferline = {
         enable = true;
