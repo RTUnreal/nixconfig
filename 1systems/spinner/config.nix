@@ -40,9 +40,14 @@
       wacom = true;
     };
     dirtickvpn = {
-      interfaces.wg0 = {
-        meta = selflib.homevpn;
-        privateKeyFile = "/var/lib/wireguard/private";
+      interfaces = {
+        wg0 = {
+          meta = selflib.homevpn;
+          privateKeyFile = "/var/lib/wireguard/private";
+        };
+        panopticon = {
+          privateKeyFile = "/var/lib/wireguard/panopticon-pk";
+        };
       };
       egressInterfaceName = "enp2s0f1";
     };
@@ -51,6 +56,10 @@
       magnet = {
         wgConfPath = "/root/airvpn.conf";
       };
+    };
+    panopticon = {
+      meta = selflib.panopticon;
+      scrapper.enable = true;
     };
   };
 
@@ -74,6 +83,9 @@
         3000
         8888
         9997
+
+        # prometheus
+        9090
       ];
     };
 

@@ -18,5 +18,6 @@
     ./mofongo.nix
     ./dirtickvpn.nix
     ./flix.nix
+    ./panopticon.nix
   ];
 }

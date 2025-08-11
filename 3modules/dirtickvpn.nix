@@ -67,7 +67,7 @@ let
         let
           ingress =
             peerName: peerCfg:
-            if peerName == meta.egress then
+            if !meta.isLocal && peerName == meta.egress then
               { allowedIPs = [ "0.0.0.0/0" ]; }
             else
               { allowedIPs = [ "${peerCfg.ip}/32" ]; };
@@ -143,6 +143,10 @@ in
 
                     base = mkOption {
                       type = types.str;
+                    };
+                    isLocal = mkOption {
+                      type = types.bool;
+                      default = false;
                     };
                   };
                   hosts = mkOption {

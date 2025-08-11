@@ -14,9 +14,17 @@
   ];
   rtinf = {
     base.systemType = "server";
-    dirtickvpn.interfaces.wg0 = {
-      meta = selflib.homevpn;
-      privateKeyFile = "/var/lib/wireguard/private";
+    dirtickvpn.interfaces = {
+      wg0 = {
+        meta = selflib.homevpn;
+        privateKeyFile = "/var/lib/wireguard/private";
+      };
+      panopticon = {
+        privateKeyFile = "/var/lib/wireguard/panopticon-pk";
+      };
+    };
+    panopticon = {
+      meta = selflib.panopticon;
     };
   };
 
