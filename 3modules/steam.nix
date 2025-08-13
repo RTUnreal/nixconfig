@@ -336,26 +336,22 @@ in
                 };
               };
 
-              catalogs = {
-                default_catalog = {
-                  apps = [
-                    {
-                      name = "Calc";
-                      target_display = "disp1";
-                      exec = "kcalc";
-                      env = [ "FOO=bar" ];
-                      shown_at_start = false;
-                    }
+              catalogs.default_catalog.apps = [
+                {
+                  name = "Calc";
+                  target_display = "disp1";
+                  exec = "kcalc";
+                  env = [ "FOO=bar" ];
+                  shown_at_start = false;
+                }
 
-                    {
-                      name = "htop";
-                      target_display = "watch";
-                      exec = "konsole";
-                      args = "-e htop";
-                    }
-                  ];
-                };
-              };
+                {
+                  name = "htop";
+                  target_display = "watch";
+                  exec = "konsole";
+                  args = "-e htop";
+                }
+              ];
             };
             # reference: https://github.com/galister/wlx-overlay-s/blob/main/contrib/wayvr/watch_wayvr_example.yaml
             "wlxoverlay/watch.yaml".source =
@@ -447,22 +443,14 @@ in
                     ];
                     scroll_down = [
                       {
-                        action = {
-                          Opacity = {
-                            delta = -0.025;
-                          };
-                        };
+                        action.Opacity.delta = -0.025;
                         target = "kbd";
                         type = "Overlay";
                       }
                     ];
                     scroll_up = [
                       {
-                        action = {
-                          Opacity = {
-                            delta = 0.025;
-                          };
-                        };
+                        action.Opacity.delta = 0.025;
                         target = "kbd";
                         type = "Overlay";
                       }
@@ -481,16 +469,8 @@ in
                     middle_up = "ToggleInteraction";
                     rect = rect 134 160 266 40;
                     right_up = "ToggleImmovable";
-                    scroll_down = {
-                      Opacity = {
-                        delta = -0.025;
-                      };
-                    };
-                    scroll_up = {
-                      Opacity = {
-                        delta = 0.025;
-                      };
-                    };
+                    scroll_down.Opacity.delta = -0.025;
+                    scroll_up.Opacity.delta = 0.025;
                     type = "OverlayList";
                   }
                   {
