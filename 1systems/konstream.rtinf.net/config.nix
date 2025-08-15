@@ -36,6 +36,25 @@
     extraSettingsFile = "/var/lib/factorio/extraSettings.json";
   };
 
+  services.copyparty = {
+    enable = true;
+    accounts = {
+      user.passwordFile = "/var/lib/copyparty/pwfiles/user";
+    };
+    volumes = {
+      "/" = {
+        path = "/var/lib/copyparty/data";
+        access.rw = [ "user" ];
+      };
+    };
+  };
+
+  services.nginx.virtualHosts."koncopy.rtinf.net" = {
+    enableACME = true;
+    forceSSL = true;
+    locations."/".proxyPass = "http://127.0.0.1:3923";
+  };
+
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
   # on your system were taken. It‘s perfectly fine and recommended to leave

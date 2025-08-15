@@ -38,6 +38,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nixos-router.url = "github:chayleaf/nixos-router";
+    copyparty = {
+      url = "github:9001/copyparty";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -197,6 +201,9 @@
                       config.allowUnfreePredicate = lib.mkIf (allowedUnfree != [ ]) (
                         pkg: builtins.elem (lib.getName pkg) allowedUnfree
                       );
+                      overlays = [
+                        inputs.copyparty.overlays.default
+                      ];
                     };
                     _module.args = {
                       selfpkgs = self.packages.${system};
@@ -212,6 +219,7 @@
                     };
                     imports = [
                       inputs.nix-gaming.nixosModules.platformOptimizations
+                      inputs.copyparty.nixosModules.default
                       inputs.home-manager.nixosModules.home-manager
                       ./3modules/modules.nix
                     ];
@@ -334,7 +342,6 @@
                     (common system { allowedUnfree = [ "factorio-headless" ]; })
                     inputs.srvos.nixosModules.server
                     inputs.srvos.nixosModules.hardware-hetzner-cloud
-                    inputs.disko.nixosModules.default
                     ./1systems/konstream.rtinf.net/config.nix
                     (remote { })
                     {

@@ -60,6 +60,27 @@
         "url": "https://git.clan.lol/clan/clan-core/archive/main.tar.gz"
       }
     },
+    "copyparty": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1755208437,
+        "narHash": "sha256-FYKbAR2xHmnvS6GKBRtja28WG0ZDZhWse7N2WL5Sk/E=",
+        "owner": "9001",
+        "repo": "copyparty",
+        "rev": "f4a3fba29c9e58ca76d92e8e0a70d3083406b048",
+        "type": "github"
+      },
+      "original": {
+        "owner": "9001",
+        "repo": "copyparty",
+        "type": "github"
+      }
+    },
     "data-mesher": {
       "inputs": {
         "flake-parts": [
@@ -235,6 +256,21 @@
       }
     },
     "flake-utils": {
+      "locked": {
+        "lastModified": 1678901627,
+        "narHash": "sha256-U02riOqrKKzwjsxc/400XnElV+UtPUQWpANPlyazjH0=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "93a2b84fc4b70d9e089d029deacc3583435c2ed6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "flake-utils_2": {
       "inputs": {
         "systems": "systems_3"
       },
@@ -252,7 +288,7 @@
         "type": "github"
       }
     },
-    "flake-utils_2": {
+    "flake-utils_3": {
       "inputs": {
         "systems": "systems_4"
       },
@@ -270,7 +306,7 @@
         "type": "github"
       }
     },
-    "flake-utils_3": {
+    "flake-utils_4": {
       "inputs": {
         "systems": "systems_6"
       },
@@ -803,7 +839,7 @@
     "nixpkgs-xr": {
       "inputs": {
         "flake-compat": "flake-compat_3",
-        "flake-utils": "flake-utils",
+        "flake-utils": "flake-utils_2",
         "nixpkgs": "nixpkgs_6",
         "treefmt-nix": "treefmt-nix_2"
       },
@@ -974,7 +1010,7 @@
     },
     "nuschtosSearch": {
       "inputs": {
-        "flake-utils": "flake-utils_2",
+        "flake-utils": "flake-utils_3",
         "ixx": "ixx",
         "nixpkgs": [
           "nixvim",
@@ -1040,6 +1076,7 @@
     "root": {
       "inputs": {
         "clan-core": "clan-core",
+        "copyparty": "copyparty",
         "disko": "disko_2",
         "flake-compat": "flake-compat",
         "flake-parts": "flake-parts_2",
@@ -1061,7 +1098,7 @@
     },
     "search": {
       "inputs": {
-        "flake-utils": "flake-utils_3",
+        "flake-utils": "flake-utils_4",
         "ixx": "ixx_2",
         "nixpkgs": [
           "nixpkgs"
