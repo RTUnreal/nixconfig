@@ -74,6 +74,9 @@
             self',
             ...
           }:
+          let
+            pkgs-unstable = inputs'.nixpkgs-unstable.legacyPackages;
+          in
           {
             treefmt = import ./treefmt.nix;
 
@@ -139,7 +142,7 @@
                   ];
                 };
                 monado =
-                  (pkgs.monado.overrideAttrs (prevAttrs: {
+                  (pkgs-unstable.monado.overrideAttrs (prevAttrs: {
                     pname = "monado-solarxr"; # optional but helps distinguishing between packages
 
                     src = pkgs.fetchFromGitLab {
@@ -154,7 +157,7 @@
                     ) prevAttrs.patches or [ ];
                   })).override
                     { inherit (self'.packages) libsurvive; };
-                libsurvive = pkgs.callPackage ./5pkgs/libsurvive.nix { };
+                libsurvive = pkgs-unstable.callPackage ./5pkgs/libsurvive.nix { };
               };
             devShells.default = pkgs.mkShell { packages = [ inputs'.clan-core.packages.clan-cli ]; };
           };

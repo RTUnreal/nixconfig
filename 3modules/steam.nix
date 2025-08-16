@@ -141,6 +141,7 @@ in
             };
           };
           xdg.configFile = {
+            # to use the correct openvr comp prepend: "PRESSURE_VESSEL_FILESYSTEMS_RW=$XDG_RUNTIME_DIR/monado_comp_ipc"
             "openvr/openvrpaths.vrpath".text = ''
               {
                 "config": [
@@ -206,7 +207,7 @@ in
                 };
                 alt_click = {
                   # left trackpad is space_drag
-                  right = "/user/hand/right/input/trackpad/force";
+                  #right = "/user/hand/right/input/trackpad/force";
                 };
                 # used to manipulate position, size, orientation of overlays in 3D space
                 grab = {
@@ -233,7 +234,9 @@ in
                 };
                 # move your stage (playspace drag)
                 space_drag = {
-                  left = "/user/hand/left/input/trackpad/force";
+                  #left = "/user/hand/left/input/trackpad/force";
+                  left = "/user/hand/left/input/trackpad/touch";
+                  right = "/user/hand/right/input/trackpad/touch";
                   # right trackpad is alt_click
                 };
                 # rotate your stage (playspace rotate, WIP)
