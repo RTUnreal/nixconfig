@@ -1,4 +1,5 @@
 {
+  pkgs,
   nixpkgs-unstable,
   ...
 }:
@@ -38,6 +39,13 @@
 
   services.copyparty = {
     enable = true;
+    settings = {
+      i = "127.0.0.1";
+      p = 3923;
+      rproxy = 1;
+      hist = "/var/cache/copyparty";
+      no-reload = true;
+    };
     accounts = {
       user.passwordFile = "/var/lib/copyparty/pwfiles/user";
     };
@@ -54,6 +62,7 @@
     forceSSL = true;
     locations."/".proxyPass = "http://127.0.0.1:3923";
   };
+  environment.systemPackages = [ pkgs.copyparty ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
