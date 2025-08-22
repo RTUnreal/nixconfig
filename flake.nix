@@ -158,6 +158,8 @@
                   })).override
                     { inherit (self'.packages) libsurvive; };
                 libsurvive = pkgs-unstable.callPackage ./5pkgs/libsurvive.nix { };
+
+                overte-vr = pkgs.callPackage ./5pkgs/overte-vr { };
               };
             devShells.default = pkgs.mkShell { packages = [ inputs'.clan-core.packages.clan-cli ]; };
           };
