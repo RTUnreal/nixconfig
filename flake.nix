@@ -160,6 +160,7 @@
                 libsurvive = pkgs-unstable.callPackage ./5pkgs/libsurvive.nix { };
 
                 overte-vr = pkgs.callPackage ./5pkgs/overte-vr { };
+                overte-vr-appimage = pkgs.callPackage ./5pkgs/overte-vr-appimage.nix { };
               };
             devShells.default = pkgs.mkShell { packages = [ inputs'.clan-core.packages.clan-cli ]; };
           };
