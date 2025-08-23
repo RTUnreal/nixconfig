@@ -162,109 +162,70 @@ in
               config.environment.etc."xdg/openxr/1/active_runtime.json".source;
 
             # reference: https://raw.githubusercontent.com/galister/wlx-overlay-s/main/src/backend/openxr/openxr_actions.json5
-            "wlxoverlay/openxr_actions.json5".source = (pkgs.formats.json { }).generate "openxr_actions.json5" [
-              # Fallback controller, intended for testing
-              {
-                profile = "/interaction_profiles/khr/simple_controller";
-                pose = {
-                  left = "/user/hand/left/input/aim/pose";
-                  right = "/user/hand/right/input/aim/pose";
+            "wlxoverlay/openxr_actions.json5".source =
+              let
+                map_paths = prefixes: path: builtins.mapAttrs (name: val: val + path) prefixes;
+                left = map_paths { left = "/user/hand/left"; };
+                right = map_paths { right = "/user/hand/right"; };
+                both = map_paths {
+                  left = "/user/hand/left";
+                  right = "/user/hand/right";
                 };
-                haptic = {
-                  left = "/user/hand/left/output/haptic";
-                  right = "/user/hand/right/output/haptic";
+                double_click = {
+                  double_click = true;
                 };
-                click = {
+              in
+              (pkgs.formats.json { }).generate "openxr_actions.json5" [
+                # Fallback controller, intended for testing
+                {
+                  profile = "/interaction_profiles/khr/simple_controller";
+                  pose = both "/input/aim/pose";
+                  haptic = both "/output/haptic";
                   # left trigger is click
-                  left = "/user/hand/left/input/select/click";
-                };
-                grab = {
+                  click = left "/input/select/click";
                   # right trigger is grab
-                  right = "/user/hand/right/input/select/click";
-                };
-                show_hide = {
-                  left = "/user/hand/left/input/menu/click";
-                };
-              }
+                  grab = right "/input/select/click";
+                  show_hide = left "/input/menu/click";
+                }
 
-              # Index controller
-              {
-                profile = "/interaction_profiles/valve/index_controller";
-                # -- pose, haptic --
-                # do not mess with these, unless you know what you're doing
-                pose = {
-                  left = "/user/hand/left/input/aim/pose";
-                  right = "/user/hand/right/input/aim/pose";
-                };
-                haptic = {
-                  left = "/user/hand/left/output/haptic";
-                  right = "/user/hand/right/output/haptic";
-                };
-                # primary click to interact with the watch or overlays. required
-                click = {
-                  left = "/user/hand/left/input/trigger/value";
-                  right = "/user/hand/right/input/trigger/value";
-                };
-                alt_click = {
+                # Index controller
+                {
+                  profile = "/interaction_profiles/valve/index_controller";
+                  # -- pose, haptic --
+                  # do not mess with these, unless you know what you're doing
+                  pose = both "/input/aim/pose";
+                  haptic = both "/output/haptic";
+                  # primary click to interact with the watch or overlays. required
+                  click = both "/input/trigger/value";
                   # left trackpad is space_drag
-                  #right = "/user/hand/right/input/trackpad/force";
-                };
-                # used to manipulate position, size, orientation of overlays in 3D space
-                grab = {
-                  left = "/user/hand/left/input/squeeze/force";
-                  right = "/user/hand/right/input/squeeze/force";
-                };
-                scroll = {
-                  left = "/user/hand/left/input/thumbstick/y";
-                  right = "/user/hand/right/input/thumbstick/y";
-                };
-                scroll_horizontal = {
-                  left = "/user/hand/left/input/thumbstick/x";
-                  right = "/user/hand/right/input/thumbstick/x";
-                };
-                # run or toggle visibility of a previously configured WayVR-compatible dashboard
-                toggle_dashboard = {
-                  double_click = false;
-                  right = "/user/hand/right/input/system/click";
-                };
-                # used to quickly hide and show your last selection of screens + keyboard
-                show_hide = {
-                  double_click = true;
-                  left = "/user/hand/left/input/b/click";
-                };
-                # move your stage (playspace drag)
-                space_drag = {
-                  #left = "/user/hand/left/input/trackpad/force";
-                  left = "/user/hand/left/input/trackpad/touch";
-                  right = "/user/hand/right/input/trackpad/touch";
-                  # right trackpad is alt_click
-                };
-                # rotate your stage (playspace rotate, WIP)
-                space_rotate = {
-                };
-                # reset your stage (reset the offset from playspace drag)
-                space_reset = {
-                  left = "/user/hand/left/input/trackpad/force";
-                  double_click = true;
-                };
-                # while this is held, your pointer will turn ORANGE and your mouse clicks will be RIGHT clicks
-                click_modifier_right = {
-                  left = "/user/hand/left/input/b/touch";
-                  right = "/user/hand/right/input/b/touch";
-                };
-                # while this is held, your pointer will turn PURPLE and your mouse clicks will be MIDDLE clicks
-                click_modifier_middle = {
-                  left = "/user/hand/left/input/a/touch";
-                  right = "/user/hand/right/input/a/touch";
-                };
-                # when using `focus_follows_mouse_mode`, you need to hold this for the mouse to move
-                move_mouse = {
-                  # used with focus_follows_mouse_mode
-                  left = "/user/hand/left/input/trigger/touch";
-                  right = "/user/hand/right/input/trigger/touch";
-                };
-              }
-            ];
+                  #alt_click = right "/input/trackpad/force";
+                  alt_click = { };
+                  # used to manipulate position, size, orientation of overlays in 3D space
+                  grab = both "/input/squeeze/force";
+                  scroll = both "/input/thumbstick/y";
+                  scroll_horizontal = both "/input/thumbstick/x";
+                  # run or toggle visibility of a previously configured WayVR-compatible dashboard
+                  toggle_dashboard = right "/input/system/click";
+                  # used to quickly hide and show your last selection of screens + keyboard
+                  #show_hide = left "/input/b/click" // double_click;
+                  show_hide = { };
+                  # move your stage (playspace drag)
+                  #space_drag = left "/input/trackpad/force"; # right trackpad is alt_click
+                  space_drag = both "/input/trackpad/touch";
+                  # rotate your stage (playspace rotate, WIP)
+                  space_rotate = { };
+                  # reset your stage (reset the offset from playspace drag)
+                  #space_reset = left "/input/trackpad/force";
+                  space_reset = left "/input/b/click" // double_click;
+                  # while this is held, your pointer will turn ORANGE and your mouse clicks will be RIGHT clicks
+                  click_modifier_right = both "/input/b/touch";
+                  # while this is held, your pointer will turn PURPLE and your mouse clicks will be MIDDLE clicks
+                  click_modifier_middle = both "/input/a/touch";
+                  # when using `focus_follows_mouse_mode`, you need to hold this for the mouse to move
+                  #move_mouse = both "/input/trigger/touch";
+                  move_mouse = { };
+                }
+              ];
             # reference: https://github.com/galister/wlx-overlay-s/blob/main/src/res/wayvr.yaml
             "wlxoverlay/wayvr.yaml".source = (pkgs.formats.yaml { }).generate "wayvr.yaml" {
               version = 1;
