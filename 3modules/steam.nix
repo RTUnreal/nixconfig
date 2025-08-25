@@ -164,7 +164,7 @@ in
             # reference: https://raw.githubusercontent.com/galister/wlx-overlay-s/main/src/backend/openxr/openxr_actions.json5
             "wlxoverlay/openxr_actions.json5".source =
               let
-                map_paths = prefixes: path: builtins.mapAttrs (name: val: val + path) prefixes;
+                map_paths = prefixes: path: builtins.mapAttrs (_name: val: val + path) prefixes;
                 left = map_paths { left = "/user/hand/left"; };
                 right = map_paths { right = "/user/hand/right"; };
                 both = map_paths {
