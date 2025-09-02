@@ -153,7 +153,7 @@ in
                   "${config.home-manager.users.trr.xdg.dataHome}/Steam/logs"
                 ],
                 "runtime": [
-                  "${pkgs.opencomposite}/lib/opencomposite"
+                  "${nixpkgs-unstable.opencomposite}/lib/opencomposite"
                 ],
                 "version" : 1
               }
