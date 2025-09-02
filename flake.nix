@@ -155,6 +155,9 @@
                     patches = builtins.filter (
                       patch: patch.name != "2a6932d46dad9aa957205e8a47ec2baa33041076.patch"
                     ) prevAttrs.patches or [ ];
+                    cmakeFlags = prevAttrs.cmakeFlags ++ [
+                      (pkgs.lib.cmakeBool "XRT_HAVE_OPENCV" false)
+                    ];
                   })).override
                     { inherit (self'.packages) libsurvive; };
                 libsurvive = pkgs-unstable.callPackage ./5pkgs/libsurvive.nix { };
