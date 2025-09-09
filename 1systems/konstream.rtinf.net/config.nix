@@ -30,12 +30,14 @@
     acceptTerms = true;
   };
 
-  services.factorio = {
-    enable = true;
-    openFirewall = true;
-    package = nixpkgs-unstable.factorio-headless;
-    extraSettingsFile = "/var/lib/factorio/extraSettings.json";
-  };
+  /*
+    services.factorio = {
+      enable = true;
+      openFirewall = true;
+      package = nixpkgs-unstable.factorio-headless;
+      extraSettingsFile = "/var/lib/factorio/extraSettings.json";
+    };
+  */
 
   services.copyparty = {
     enable = true;
