@@ -70,6 +70,7 @@ in
   options.rtinf.steam = {
     enable = mkEnableOption "steam";
     enableMonado = mkEnableOption "monado integration for steam";
+    enableKernelPatch = mkEnableOption "AMD gpu kernel patches";
   };
 
   config = mkIf cfg.enable (
@@ -122,7 +123,7 @@ in
           selfpkgs.libsurvive
           pkgs.xrgears
         ];
-        boot.kernelPatches = [
+        boot.kernelPatches = mkIf cfg.enableKernelPatch [
           {
             name = "amdgpu-ignore-ctx-privileges";
             patch = pkgs.fetchpatch {
