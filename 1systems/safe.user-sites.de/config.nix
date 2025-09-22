@@ -11,6 +11,7 @@
     ./../../2configs/mango.nix
     ./../../2configs/ffsync.nix
     ./../../2configs/cryboard.nix
+    ./../../2configs/pinger.nix
   ];
   rtinf = {
     base.systemType = "server";
