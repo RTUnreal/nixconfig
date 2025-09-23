@@ -55,9 +55,12 @@ in
         enable = true;
         enabledCollectors = [ "systemd" ];
       };
-      systemd.services.prometheus-node-exporter.serviceConfig.NetworkNamespacePath = mkIf (
-        cfg.meta.network.meta.ingress == config.rtinf.dirtickvpn.interfaces."${netiface}".hostName
-      ) "/run/netns/${netiface}";
+      systemd.services.prometheus-node-exporter = {
+        after = [ "wireguard-${netiface}" ];
+        serviceConfig.NetworkNamespacePath = mkIf (
+          cfg.meta.network.meta.ingress == config.rtinf.dirtickvpn.interfaces."${netiface}".hostName
+        ) "/run/netns/${netiface}";
+      };
       networking.firewall.interfaces."${netiface}".allowedTCPPorts = [
         config.services.prometheus.exporters.node.port
       ];
