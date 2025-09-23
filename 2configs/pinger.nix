@@ -36,8 +36,11 @@ in
       behind-proxy = true;
       auth-default-access = "deny-all";
       inherit template-dir;
+      metrics-listen-http = ":9199";
     };
   };
+
+  networking.firewall.interfaces."veth1".allowedTCPPorts = [ 9199 ];
   services.nginx = {
     enable = true;
     virtualHosts.${domain} = {

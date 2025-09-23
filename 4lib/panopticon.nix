@@ -30,5 +30,6 @@
         }
       ];
     }
+    #{ job_name = "pinger"; static_configs = [ { targets = [ "10.70.0.1:9199" ]; } ]; }
   ];
 }

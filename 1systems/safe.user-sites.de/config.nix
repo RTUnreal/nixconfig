@@ -22,6 +22,9 @@
       };
       panopticon = {
         privateKeyFile = "/var/lib/wireguard/panopticon-pk";
+        connectOutside = {
+          forwardedTcpPorts = [ 9199 ];
+        };
       };
     };
     panopticon = {
