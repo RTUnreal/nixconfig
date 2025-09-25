@@ -26,7 +26,8 @@
     nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
     disko.url = "github:nix-community/disko";
     clan-core = {
-      url = "https://git.clan.lol/clan/clan-core/archive/main.tar.gz";
+      #url = "https://git.clan.lol/clan/clan-core/archive/main.tar.gz";
+      url = "https://git.clan.lol/clan/clan-core/archive/5de0d37f0ea6f76db29a2c2d9df2d6985157b447.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
     flake-parts = {
