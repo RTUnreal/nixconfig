@@ -60,9 +60,9 @@ let
               ip netns exec ${name} ip addr add ${vethInsideAddress}/${toString vethPrefixLength} dev ${vethInside} || true
               ip addr add ${vethOutsideAddress}/${toString vethPrefixLength} dev ${vethOutside} || true
               ip route add ${wgConf.meta.meta.base} dev ${name} || true
-              ip netns exec ${name} iptables -t nat -A POSTROUTING -o ${name} -j MASQUERADE || true
+              ip netns exec ${name} ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -o ${name} -j MASQUERADE || true
               ${concatMapStrings (v: ''
-                iptables -t nat -A PREROUTING -p tcp -i ${name} --dport 6000 -j DNAT --to-destination 192.168.0.2:8080
+                ip netns exec ${name} ${pkgs.iptables}/bin/iptables -t nat -A PREROUTING -p tcp -i ${name} --dport ${toString v} -j DNAT --to-destination ${vethOutsideAddress}:${toString v}
               '') forwardedTcpPorts}
             ''
           )
