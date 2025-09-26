@@ -20,16 +20,7 @@
     };
   };
   scrapeConfigs = [
-    {
-      job_name = "node";
-      static_configs = [
-        {
-          targets = [
-            "10.70.0.1:9100"
-          ];
-        }
-      ];
-    }
+    #{ job_name = "node_safe"; static_configs = [ { targets = [ "10.70.0.1:9100" ]; } ]; }
     #{ job_name = "pinger"; static_configs = [ { targets = [ "10.70.0.1:9199" ]; } ]; }
   ];
 }
