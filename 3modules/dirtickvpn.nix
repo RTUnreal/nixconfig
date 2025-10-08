@@ -42,30 +42,6 @@ let
           ''
             ip netns add ${name} || true
           ''
-          + optionalString (wgConf.connectOutside != null) (
-            let
-              inherit (wgConf.connectOutside)
-                vethInside
-                vethOutside
-                vethInsideAddress
-                vethOutsideAddress
-                vethPrefixLength
-                forwardedTcpPorts
-                ;
-            in
-            # sh
-            ''
-              ip link add ${vethInside} type veth peer name ${vethOutside} || true
-              ip link set ${vethInside} netns ${name} || true
-              ip netns exec ${name} ip addr add ${vethInsideAddress}/${toString vethPrefixLength} dev ${vethInside} || true
-              ip addr add ${vethOutsideAddress}/${toString vethPrefixLength} dev ${vethOutside} || true
-              ip route add ${wgConf.meta.meta.base} dev ${name} || true
-              ip netns exec ${name} ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -o ${name} -j MASQUERADE || true
-              ${concatMapStrings (v: ''
-                ip netns exec ${name} ${pkgs.iptables}/bin/iptables -t nat -A PREROUTING -p tcp -i ${name} --dport ${toString v} -j DNAT --to-destination ${vethOutsideAddress}:${toString v}
-              '') forwardedTcpPorts}
-            ''
-          )
         else if isEgress then
           # sh
           ''
@@ -75,13 +51,50 @@ let
         else
           "";
 
-      postShutdown =
-        if isIngress then
+      postSetup =
+        if isIngress && wgConf.connectOutside != null then
+          let
+            inherit (wgConf.connectOutside)
+              vethInside
+              vethOutside
+              vethInsideAddress
+              vethOutsideAddress
+              vethNetwork
+              vethPrefixLength
+              forwardedTcpPorts
+              ;
+          in
           # sh
           ''
-            ip netns del ${name} || true
+            echo "add veth"
+            ip link add ${vethInside} type veth peer name ${vethOutside} || true
+            echo "set veth netns"
+            ip link set dev ${vethInside} netns ${name} || true
+            echo "add vethinside addr"
+            ip netns exec ${name} ip addr add ${vethInsideAddress}/${toString vethPrefixLength} dev ${vethInside} || true
+            echo "set vethoutside addr"
+            ip addr add ${vethOutsideAddress}/${toString vethPrefixLength} dev ${vethOutside} || true
+            echo "vetinside up"
+            ip netns exec ${name} ip link set dev ${vethInside} up || true
+            echo "vetoutside up"
+            ip link set ${vethOutside} up || true
+            echo "add vethinside route"
+            #ip netns exec ${name} ip route add ${vethNetwork}/${toString vethPrefixLength} dev ${vethInside} || true
+            echo "set vethoutside route"
+            ip route add ${wgConf.meta.meta.base} via ${vethOutsideAddress} dev ${vethOutside} src ${vethInsideAddress} || true
+            ip netns exec ${name} ${pkgs.iptables}/bin/iptables -t nat -A PREROUTING -j LOG --log-level 4 --log-prefix "[PREROUTING]"
+            ip netns exec ${name} ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -j LOG --log-level 4 --log-prefix "[POSTROUTING]"
+            ip netns exec ${name} ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -p tcp -o ${name} -s ${vethOutsideAddress} -j SNAT --to ${ownCfg.ip}
+            ${concatMapStrings (v: ''
+              ip netns exec ${name} ${pkgs.iptables}/bin/iptables -t nat -A PREROUTING -p tcp -i ${name} -d ${ownCfg.ip} --dport ${toString v} -j DNAT --to-destination ${vethOutsideAddress}:${toString v}
+            '') forwardedTcpPorts}
           ''
-          + optionalString (wgConf.connectOutside != null) (
+        else
+          "";
+
+      postShutdown =
+        if isIngress then
+          optionalString (wgConf.connectOutside != null) (
             let
               inherit (wgConf.connectOutside) vethInside vethOutside;
             in
@@ -91,6 +104,10 @@ let
               ip link del ${vethOutside} down || true
             ''
           )
+          # sh
+          + ''
+            ip netns del ${name} || true
+          ''
         else if isEgress then
           # sh
           ''
@@ -251,6 +268,13 @@ in
                       default = "192.168.0.2";
                       description = ''
                         IPv4 address of the interface.
+                      '';
+                    };
+                    vethNetwork = mkOption {
+                      type = types.str;
+                      default = "192.168.0.0";
+                      description = ''
+                        IPv4 prefix of the interface.
                       '';
                     };
                     # https://github.com/NixOS/nixpkgs/blob/b2a3852bd078e68dd2b3dfa8c00c67af1f0a7d20/nixos/modules/tasks/network-interfaces.nix#L83-L89
