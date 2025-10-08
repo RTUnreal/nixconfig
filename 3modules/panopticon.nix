@@ -57,9 +57,7 @@ in
       };
       systemd.services.prometheus-node-exporter = {
         after = [ "wireguard-${netiface}.service" ];
-        serviceConfig.NetworkNamespacePath = mkIf (
-          cfg.meta.network.meta.ingress == config.rtinf.dirtickvpn.interfaces."${netiface}".hostName
-        ) "/run/netns/${netiface}";
+        serviceConfig.NetworkNamespacePath = "/run/netns/${netiface}";
       };
       networking.firewall.interfaces."${netiface}".allowedTCPPorts = [
         config.services.prometheus.exporters.node.port
