@@ -189,10 +189,6 @@
               tags = [ "server" ];
               deploy.targetHost = "trr@safe.user-sites.de";
             };
-            "konstream" = {
-              tags = [ "server" ];
-              deploy.targetHost = "trr@konstream.rtinf.net";
-            };
           };
           inherit self;
           machines =
@@ -341,46 +337,6 @@
                     inputs.srvos.nixosModules.server
                     ./1systems/devel.rtinf.net/config.nix
                     (remote { })
-                  ];
-                };
-              konstream =
-                let
-                  system = "x86_64-linux";
-                in
-                {
-                  imports = [
-                    (common system { allowedUnfree = [ "factorio-headless" ]; })
-                    inputs.srvos.nixosModules.server
-                    inputs.srvos.nixosModules.hardware-hetzner-cloud
-                    ./1systems/konstream.rtinf.net/config.nix
-                    (remote { })
-                    {
-                      disko.devices = {
-                        disk = {
-                          main = {
-                            device = "/dev/sda";
-                            type = "disk";
-                            content = {
-                              type = "gpt";
-                              partitions = {
-                                ESP = {
-                                  type = "EF02";
-                                  size = "1M";
-                                };
-                                root = {
-                                  size = "100%";
-                                  content = {
-                                    type = "filesystem";
-                                    format = "ext4";
-                                    mountpoint = "/";
-                                  };
-                                };
-                              };
-                            };
-                          };
-                        };
-                      };
-                    }
                   ];
                 };
             };
