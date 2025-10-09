@@ -143,7 +143,11 @@ in
         flatpak.enable = true;
       };
 
-      fonts.packages = [ (pkgs.nerd-fonts.sauce-code-pro) ];
+      fonts.packages = [
+        pkgs.nerd-fonts.sauce-code-pro
+        pkgs.iosevka
+        pkgs.fira-mono
+      ];
 
       networking.networkmanager.enable = true;
 
