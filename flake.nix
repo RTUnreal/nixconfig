@@ -43,6 +43,14 @@
       url = "github:9001/copyparty";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    buildbot-nix = {
+      url = "github:nix-community/buildbot-nix";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+        flake-parts.follows = "flake-parts";
+        treefmt-nix.follows = "treefmt-nix";
+      };
+    };
   };
 
   outputs =
@@ -335,6 +343,8 @@
                   imports = [
                     (common system { })
                     inputs.srvos.nixosModules.server
+                    inputs.buildbot-nix.nixosModules.buildbot-master
+                    inputs.buildbot-nix.nixosModules.buildbot-worker
                     ./1systems/devel.rtinf.net/config.nix
                     (remote { })
                   ];
