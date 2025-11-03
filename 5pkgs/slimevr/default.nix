@@ -24,18 +24,18 @@ let
   pnpm = pnpm_9;
 in
 let
-  version = "0.16.2";
+  version = "0.16.3";
 
   src = fetchgit {
     url = "https://github.com/SlimeVR/SlimeVR-Server.git";
     rev = "v${version}";
-    hash = "sha256-g0SDienJX7ZUbypeIAWSwjxgu40AFd3jVALuMhHj6mQ=";
+    hash = "sha256-RYHt0njzzom1wrHTP/7ch/D+YZcixqOeLMcfsGi+Kg8=";
     fetchSubmodules = true;
   };
 
   serverJar = fetchurl {
     url = "https://github.com/SlimeVR/SlimeVR-Server/releases/download/v${version}/slimevr.jar";
-    hash = "sha256-u5Ou337o5YshVzDMDNaxj+7a5GABGc2scfbUFOqIQlk=";
+    hash = "sha256-4HVWKUAmoEFZrC48pi7K5MeEzHaCRUzY3FYRTk6EMHs=";
   };
 
 in
