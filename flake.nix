@@ -158,8 +158,8 @@
                       domain = "gitlab.freedesktop.org";
                       owner = "rcelyte";
                       repo = "monado";
-                      rev = "a5a33cd31395113c9ac26d9c18a06393daebabe6";
-                      hash = "sha256-Lt7u+jqSX8gImPqatZdQ+X4ZoBQTKW8YGEe05Vm5c30=";
+                      rev = "691dc6c1030d94e5e4e528896576d5ab9c8d7980";
+                      hash = "sha256-HNJngUjerve97QO2L1hZDgcGcjI4Qc+dShSe2h6yI6Y=";
                     };
                     patches = builtins.filter (
                       patch: patch.name != "2a6932d46dad9aa957205e8a47ec2baa33041076.patch"
