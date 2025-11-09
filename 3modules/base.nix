@@ -233,7 +233,7 @@ in
           # also adds ssh filters
           enable = cfg.laptopServer == null;
           ignoreIP = [
-            "95.88.0.0/14" # Kabel Deutschland (Alex)
+            "178.25.128.0/17" # Kabel Deutschland (Alex)
           ];
           jails = mkIf config.services.nginx.enable {
             nginx-botsearch.settings.port = mkDefault (
