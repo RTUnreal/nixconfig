@@ -12,7 +12,6 @@
       flake = false;
     };
     treefmt-nix.url = "github:numtide/treefmt-nix";
-    hyprland.url = "github:hyprwm/Hyprland";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     nixvim = {
       url = "github:nix-community/nixvim";
