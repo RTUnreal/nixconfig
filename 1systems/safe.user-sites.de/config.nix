@@ -20,6 +20,10 @@
         meta = selflib.homevpn;
         privateKeyFile = "/var/lib/wireguard/private";
       };
+      wg1 = {
+        meta = selflib.wbnet;
+        privateKeyFile = "/var/lib/wireguard/wbnet-pk";
+      };
       panopticon = {
         privateKeyFile = "/var/lib/wireguard/panopticon-pk";
         connectOutside = {
