@@ -10,6 +10,7 @@
     ../../2configs/nvidia-prime.nix
     ../../2configs/alexandria.nix
     ../../2configs/wanze.nix
+    ../../2configs/trail.nix
     ../../2configs/grafana-json-api.nix
   ];
   rtinf = {
