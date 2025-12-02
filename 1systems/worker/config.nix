@@ -19,7 +19,7 @@
     hyprland.enable = true;
     misc = {
       bluetooth = true;
-      docker = true;
+      #docker = true;
       wacom = true;
     };
   };
@@ -32,6 +32,16 @@
       efi.canTouchEfiVariables = true;
     };
     kernelPackages = pkgs.linuxKernel.packages.linux_6_17;
+  };
+
+  environment.systemPackages = [
+    pkgs.perf
+    pkgs.distrobox
+  ];
+
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
   };
 
   boot.binfmt = {
