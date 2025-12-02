@@ -14,15 +14,9 @@ in
     # Enable the Plasma 5 Desktop Environment.
     services = {
       displayManager.sddm.enable = true;
-      desktopManager.plasma6.enable = true;
-      xserver = {
-        desktopManager.plasma5 = {
-          kdeglobals = {
-            KDE = {
-              SingleClick = false;
-            };
-          };
-        };
+      desktopManager.plasma6 = {
+        enable = true;
+        enableQt5Integration = true;
       };
     };
 

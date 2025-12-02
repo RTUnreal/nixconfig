@@ -8,6 +8,7 @@ let
     name:
     {
       go ? pkgs.go,
+      gcc ? pkgs.gcc,
       makeWrapperArgs ? [ ],
       goBuildArgs ? [ ],
       strip ? true,
@@ -20,6 +21,7 @@ let
 
         echo "package main" > main.go
         cat "$contentPath" >> main.go
+        export PATH="${gcc}/bin:$PATH"
         ${lib.getExe go} build ${lib.escapeShellArgs goBuildArgs} main.go
         mv main $out
       '';
