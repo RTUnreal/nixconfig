@@ -3,8 +3,7 @@
   fetchurl,
   fetchgit,
   rustPlatform,
-  wrapGAppsHook,
-  makeWrapper,
+  wrapGAppsHook3,
   replaceVars,
   pkg-config,
   jq,
@@ -24,18 +23,18 @@ let
   pnpm = pnpm_9;
 in
 let
-  version = "0.16.3";
+  version = "0.17.0";
 
   src = fetchgit {
     url = "https://github.com/SlimeVR/SlimeVR-Server.git";
     rev = "v${version}";
-    hash = "sha256-RYHt0njzzom1wrHTP/7ch/D+YZcixqOeLMcfsGi+Kg8=";
+    hash = "sha256-/7SQstUWnQcdzRZjY64PL2gfdstUqXhDmwUkCd6bhY4=";
     fetchSubmodules = true;
   };
 
   serverJar = fetchurl {
     url = "https://github.com/SlimeVR/SlimeVR-Server/releases/download/v${version}/slimevr.jar";
-    hash = "sha256-4HVWKUAmoEFZrC48pi7K5MeEzHaCRUzY3FYRTk6EMHs=";
+    hash = "sha256-n2sYbtSQNorovMPbVgqx8mfhxcDKS7fyKo+UbZgtZxo=";
   };
 
 in
@@ -46,12 +45,10 @@ rustPlatform.buildRustPackage rec {
   nativeBuildInputs = [
     cargo-tauri.hook
     pnpm.configHook
-    wrapGAppsHook
+    wrapGAppsHook3
 
     pkg-config
     nodejs
-
-    makeWrapper
   ];
 
   buildInputs = [
@@ -69,11 +66,12 @@ rustPlatform.buildRustPackage rec {
     gst-plugins-ugly
   ]);
 
-  cargoHash = "sha256-w2z+EQqkVGLmXQS+AzeJwkGG4ovpz9+ovmLOcUks734=";
+  cargoHash = "sha256-E825/tkIGphqSPHplDglQPHxPaz8+ZAICuQ/eYZuez4=";
 
   pnpmDeps = pnpm.fetchDeps {
     inherit pname version src;
-    hash = "sha256-b0oCOjxrUQqWmUR6IzTEO75pvJZB7MQD14DNbQm95sA=";
+    fetcherVersion = 2;
+    hash = "sha256-mUdoRy6qHyv1A21jcuzntG3ZnFuCHg6qwwzKm+uPiKA=";
   };
 
   patches = [
@@ -100,11 +98,13 @@ rustPlatform.buildRustPackage rec {
 
   buildAndTestSubdir = "gui/src-tauri";
 
-  postInstall = ''
-    wrapProgram $out/bin/slimevr \
-      --set LD_LIBRARY_PATH "${lib.makeLibraryPath [ libayatana-appindicator ]}" \
-      --set JAVA_HOME "${jdk17_headless}" \
-      --add-flags "--launch-from-path $out/share/slimevr"
+  preFixup = ''
+    gappsWrapperArgs+=(
+        --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath [ libayatana-appindicator ]}"
+        --set JAVA_HOME "${jdk17_headless}"
+        --add-flag "--launch-from-path"
+        --add-flag "$out/share/slimevr"
+    )
   '';
 
   meta = {
