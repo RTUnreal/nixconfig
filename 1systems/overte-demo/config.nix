@@ -30,7 +30,7 @@
     };
   };
 
-  networking.hostName = "runner";
+  networking.hostName = "overte-demo";
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
