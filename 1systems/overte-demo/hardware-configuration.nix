@@ -3,11 +3,11 @@
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   boot.kernelModules = [ "kvm-amd" ];
-  fileSysyems."/" = {
+  fileSystems."/" = {
     device = "/dev/disk/by-name/nixos";
     fsType = "ext4";
   };
-  fileSysyems."/boot" = {
+  fileSystems."/boot" = {
     device = "/dev/disk/by-name/boot";
     fsType = "vfat";
     options = [
