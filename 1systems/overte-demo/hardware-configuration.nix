@@ -7,12 +7,13 @@
     "xhci_pci"
     "thunderbold"
     "uas"
-    "ahci"
     "usb_storage"
-    "usbhid"
     "sd_mod"
   ];
+  boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
+  boot.extraModulePackages = [ ];
+
   fileSystems."/" = {
     device = "/dev/disk/by-uuid/0e4e8a12-9890-4f12-a2f8-d66ca596c5bf";
     fsType = "ext4";
