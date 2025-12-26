@@ -239,7 +239,10 @@
                   }
                 );
               local =
-                { }:
+                {
+                  hm ? true,
+                }:
+                { lib, ... }:
                 {
                   clan.core.deployment.requireExplicitUpdate = true;
                   imports = [
@@ -248,7 +251,7 @@
                       home-manager.useUserPackages = true;
                       home-manager.backupFileExtension = "hm-bak";
                       # TODO: I don't like it being here
-                      home-manager.users.trr = self.homeConfigurations.default;
+                      home-manager.users.trr = lib.mkIf hm self.homeConfigurations.default;
                     }
                   ];
                 };
@@ -302,6 +305,25 @@
                     inputs.nixos-hardware.nixosModules.framework-13-7040-amd
                     ./1systems/worker/config.nix
                     (local { })
+                  ];
+                };
+              overte-demo =
+                let
+                  system = "x86_64-linux";
+                in
+                {
+                  imports = [
+                    (common system {
+                      allowedUnfree = [
+                        "steam"
+                        "steam-unwrapped"
+                        "steam-original"
+                        "steam-run"
+                      ];
+                    })
+                    inputs.nixos-hardware.nixosModules.framework-desktop-amd-ai-max-300-series
+                    ./1systems/overte-demo/config.nix
+                    (local { hm = true; })
                   ];
                 };
               spinner =
