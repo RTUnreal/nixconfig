@@ -4,11 +4,11 @@
 
   boot.kernelModules = [ "kvm-amd" ];
   fileSystems."/" = {
-    device = "/dev/disk/by-name/nixos";
+    device = "/dev/disk/by-label/nixos";
     fsType = "ext4";
   };
   fileSystems."/boot" = {
-    device = "/dev/disk/by-name/boot";
+    device = "/dev/disk/by-label/boot";
     fsType = "vfat";
     options = [
       "fmask=0077"
