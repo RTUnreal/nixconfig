@@ -57,8 +57,6 @@ in
       i18n.defaultLocale = "de_DE.UTF-8";
       console.font = "Lat2-Terminus16";
 
-      nix.package = pkgs.nixVersions.nix_2_28;
-
       environment.systemPackages = builtins.attrValues {
         inherit (pkgs)
           # shell utils
