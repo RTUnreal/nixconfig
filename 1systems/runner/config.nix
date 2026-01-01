@@ -44,7 +44,7 @@
     };
     #extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
     kernelModules = [ "rtw88_8822bu" ];
-    kernelPackages = pkgs.linuxKernel.packages.linux_6_17;
+    kernelPackages = pkgs.linuxKernel.packages.linux_6_18;
   };
 
   networking.hostName = "runner";
