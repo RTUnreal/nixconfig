@@ -306,7 +306,8 @@
                       ];
                     })
                     inputs.retiolum.nixosModules.retiolum
-                    inputs.nixos-hardware.nixosModules.framework-13-7040-amd
+                    #inputs.nixos-hardware.nixosModules.framework-13-7040-amd
+                    inputs.nixos-hardware.nixosModules.framework-amd-ai-300-series
                     ./1systems/worker/config.nix
                     (local { })
                   ];
