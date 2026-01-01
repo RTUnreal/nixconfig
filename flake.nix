@@ -204,6 +204,7 @@
                 system:
                 {
                   allowedUnfree ? [ ],
+                  allowedInsecure ? [ ],
                 }:
                 (
                   { lib, ... }:
@@ -214,6 +215,9 @@
                       config.allowUnfreePredicate = lib.mkIf (allowedUnfree != [ ]) (
                         pkg: builtins.elem (lib.getName pkg) allowedUnfree
                       );
+                      config.permittedInsecurePackages = lib.mkIf (allowedUnfree != [ ]) (
+                        pkg: builtins.elem (lib.getName pkg) allowedInsecure
+                      );
                       overlays = [
                         inputs.copyparty.overlays.default
                       ];
@@ -222,8 +226,8 @@
                       selfpkgs = self.packages.${system};
                       nixpkgs-unstable = import nixpkgs-unstable {
                         inherit system;
-                        config.allowUnfreePredicate =
-                          pkg: builtins.elem (nixpkgs-unstable.legacyPackages."${system}".lib.getName pkg) allowedUnfree;
+                        config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) allowedUnfree;
+                        config.permittedInsecurePackages = pkg: builtins.elem (lib.getName pkg) allowedInsecure;
                         overlays = [
                           inputs.nixpkgs-xr.overlays.default
                         ];
