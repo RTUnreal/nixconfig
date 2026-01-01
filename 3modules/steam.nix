@@ -324,7 +324,7 @@ in
                   args = "-e htop";
                 }
               ]
-              ++ lib.optional (cfg.overtePackage) {
+              ++ lib.optional (cfg.overtePackage != null) {
                 name = "overte";
                 exec = "overte-client";
               };
