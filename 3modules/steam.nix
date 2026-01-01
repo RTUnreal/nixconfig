@@ -8,7 +8,7 @@
   ...
 }:
 let
-  inherit (lib) mkEnableOption mkIf;
+  inherit (lib) mkEnableOption mkIf mkPackageOption;
 
   cfg = config.rtinf.steam;
 
@@ -71,6 +71,10 @@ in
     enable = mkEnableOption "steam";
     enableMonado = mkEnableOption "monado integration for steam";
     enableKernelPatch = mkEnableOption "AMD gpu kernel patches";
+    overtePackage = mkPackageOption pkgs "overte" {
+      nullable = true;
+      default = null;
+    };
   };
 
   config = mkIf cfg.enable (
@@ -99,6 +103,9 @@ in
           delete_vrc_eac
         ];
       }
+      (lib.mkIf (cfg.overtePackage != null) {
+        environment.systemPackages = [ cfg.overtePackage ];
+      })
       (lib.mkIf cfg.enableMonado {
         # TODO: it doesnt work correctly yet
         services.monado = {
@@ -316,7 +323,11 @@ in
                   exec = "konsole";
                   args = "-e htop";
                 }
-              ];
+              ]
+              ++ lib.optional (cfg.overtePackage) {
+                name = "overte";
+                exec = "overte-client";
+              };
             };
             # reference: https://github.com/galister/wlx-overlay-s/blob/main/contrib/wayvr/watch_wayvr_example.yaml
             "wlxoverlay/watch.yaml".source =
