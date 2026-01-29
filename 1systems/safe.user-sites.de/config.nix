@@ -12,6 +12,7 @@
     ./../../2configs/ffsync.nix
     ./../../2configs/cryboard.nix
     ./../../2configs/pinger.nix
+    ./../../2configs/pad.nix
   ];
   rtinf = {
     base.systemType = "server";
