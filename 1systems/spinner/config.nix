@@ -12,6 +12,7 @@
     ../../2configs/wanze.nix
     ../../2configs/trail.nix
     ../../2configs/grafana-json-api.nix
+    ../../2configs/ghidra.nix
   ];
   rtinf = {
     base = {
