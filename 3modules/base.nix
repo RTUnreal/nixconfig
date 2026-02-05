@@ -245,7 +245,7 @@ in
       };
     })
     (mkIf (cfg.laptopServer != null) {
-      services.logind.lidSwitch = "ignore";
+      services.logind.settings.Login.HandleLidSwitch = "ignore";
       services.acpid = {
         enable = true;
         logEvents = true;
