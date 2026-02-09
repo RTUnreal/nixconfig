@@ -215,7 +215,7 @@
                       config.allowUnfreePredicate = lib.mkIf (allowedUnfree != [ ]) (
                         pkg: builtins.elem (lib.getName pkg) allowedUnfree
                       );
-                      config.permittedInsecurePackages = lib.mkIf (allowedUnfree != [ ]) (
+                      config.permittedInsecurePackages = lib.mkIf (allowedInsecure != [ ]) (
                         pkg: builtins.elem (lib.getName pkg) allowedInsecure
                       );
                       overlays = [
