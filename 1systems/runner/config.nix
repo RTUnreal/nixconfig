@@ -59,6 +59,7 @@
   environment.systemPackages = with pkgs; [
     prismlauncher
     obs-studio
+    nheko
 
     inkscape
     blender-hip
