@@ -287,6 +287,7 @@ in
         inherit (nixpkgs-unstable)
           libreoffice-fresh
           anydesk
+          rustdesk-flutter
           ;
       };
       programs.ghidra.enable = true;
