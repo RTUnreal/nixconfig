@@ -128,8 +128,6 @@
                   enableSillyFeatures = true;
                 };
 
-                slimevr = pkgs.callPackage ./5pkgs/slimevr/default.nix { };
-
                 jmusicbot = pkgs.callPackage ./5pkgs/jmusicbot.nix { };
 
                 chaosctrl = pkgs.callPackage ./5pkgs/chaosctrl { };
