@@ -69,6 +69,7 @@ in
           jq
           qrencode
           bat
+          rink
 
           # net utils
           bind
