@@ -12,9 +12,10 @@ in
 {
   services = {
     buildbot-nix.packages = {
-      buildbot = nixpkgs-unstable.buildbot;
-      buildbot-worker = nixpkgs-unstable.buildbot-worker;
-      buildbot-plugins = nixpkgs-unstable.buildbot-plugins;
+      # TODO: reenable when it works again
+      #buildbot = nixpkgs-unstable.buildbot;
+      #buildbot-worker = nixpkgs-unstable.buildbot-worker;
+      #buildbot-plugins = nixpkgs-unstable.buildbot-plugins;
     };
     buildbot-nix.master = {
       enable = true;

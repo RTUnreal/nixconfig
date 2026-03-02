@@ -51,6 +51,8 @@ in
     instances = {
       "anubis".settings = {
         TARGET = "http://localhost:${toString config.services.forgejo.settings.server.HTTP_PORT}";
+        BIND = "/run/anubis/anubis-anubis/anubis.sock";
+        METRICS_BIND = "/run/anubis/anubis-anubis/anubis-metrics.sock";
         DIFFICULTY = 4;
         USER_DEFINED_INSTANCE = true;
         OG_PASSTHROUGH = true;
