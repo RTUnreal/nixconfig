@@ -8,6 +8,9 @@
           rocblas
           hipblas
           clr
+          rocminfo
+          llvm.llvm
+          rocm-device-libs
         ];
       };
     in
