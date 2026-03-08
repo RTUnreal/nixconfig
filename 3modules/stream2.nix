@@ -91,7 +91,7 @@ in
           api = cfg.api != null;
 
           rtsp = true;
-          protocols = [ "tcp" ]; # "udp"];
+          rtspTransports = [ "tcp" ]; # "udp"];
           rtspAddress = ":554";
 
           rtmp = true;
@@ -111,7 +111,7 @@ in
           authHTTPAddress = "http://localhost:${toString config.rtinf.stream.auth.port}/mediamtx";
         })
         (mkIf enableTLS {
-          encryption = "optional";
+          rtspEncryption = "optional";
           rtspsAddress = ":322";
           rtmpEncryption = "optional";
           rtmpsAddress = ":1936";
@@ -183,8 +183,8 @@ in
         wants = [ "acme-finished-${cfg.domain}.target" ];
         after = [ "acme-finished-${cfg.domain}.target" ];
         environment = {
-          MTX_SERVERKEY = "%d/key.pem";
-          MTX_SERVERCERT = "%d/fullchain.pem";
+          MTX_RTSPSERVERKEY = "%d/key.pem";
+          MTX_RTSPSERVERCERT = "%d/fullchain.pem";
           MTX_RTMPSERVERKEY = "%d/key.pem";
           MTX_RTMPSERVERCERT = "%d/fullchain.pem";
         };

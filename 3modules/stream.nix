@@ -72,6 +72,21 @@ let
             log.Fatal("LISTEN_ADDR not set")
             os.Exit(1)
           }
+          allowed_cidrs_str, exists := os.LookupEnv("ALLOWED_CIDRS")
+          var allowed_cidrs []*net.IPNet
+          if exists && allowed_cidrs_str != "" {
+            allowed_cidrs_splits := strings.Split(allowed_cidrs_str, ",")
+            allowed_cidrs = make([]*net.IPNet, len(allowed_cidrs_splits))
+            for i, addr := range allowed_cidrs_splits {
+              _, ipnet, err := net.ParseCIDR(addr)
+              if err != nil {
+                log.Fatal(err)
+              }
+              allowed_cidrs[i] = ipnet
+            }
+          } else {
+            allowed_cidrs = []*net.IPNet{}
+          }
 
           http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
             var matched bool
@@ -145,7 +160,13 @@ let
 
             if req.Action == "read" { goto SUCCESS }
 
-            if ip = net.ParseIP(req.Ip); ip != nil && ip.IsLoopback() { goto SUCCESS }
+            ip = net.ParseIP(req.Ip)
+            if ip != nil {
+              if ip.IsLoopback() { goto SUCCESS }
+              for _, ipnet := range allowed_cidrs {
+                if ipnet.Contains(ip) { goto SUCCESS }
+              }
+            }
 
             if matched, _ = regexp.Match(`^live/`, []byte(req.Path)); !matched { goto DENY }
 
@@ -254,6 +275,11 @@ in
               type = types.port;
               default = 9001;
               description = lib.mdDoc "port of the auth service";
+            };
+            allowedCIDRS = mkOption {
+              type = types.listOf types.str;
+              default = [ ];
+              description = lib.mdDoc "cidrs, which blankly accepts all commands";
             };
           };
         }
@@ -379,6 +405,7 @@ in
         environment = {
           AUTH_DIR = cfg.auth.authDir;
           LISTEN_ADDR = ":${toString cfg.auth.port}";
+          ALLOWED_CIDRS = lib.concatStringsSep "," cfg.auth.allowedCIDRS;
         };
 
         serviceConfig = {
