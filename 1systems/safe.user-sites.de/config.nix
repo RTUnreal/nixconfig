@@ -20,6 +20,15 @@
       wg0 = {
         meta = selflib.homevpn;
         privateKeyFile = "/var/lib/wireguard/private";
+        connectOutside = {
+          vethInside = "veth2";
+          vethInsideAddress = "192.168.1.1";
+
+          vethOutside = "veth3";
+          vethOutsideAddress = "192.168.1.2";
+          vethNetwork = "192.168.1.0";
+          vethPrefixLength = 29;
+        };
       };
       wg1 = {
         meta = selflib.wbnet;
