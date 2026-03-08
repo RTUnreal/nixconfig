@@ -13,6 +13,7 @@
     ../../2configs/trail.nix
     ../../2configs/grafana-json-api.nix
     ../../2configs/ghidra.nix
+    ../../2configs/neko
   ];
   rtinf = {
     base = {

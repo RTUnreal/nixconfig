@@ -13,6 +13,7 @@
     ./../../2configs/cryboard.nix
     ./../../2configs/pinger.nix
     ./../../2configs/pad.nix
+    ./../../2configs/neko/proxy.nix
   ];
   rtinf = {
     base.systemType = "server";
@@ -28,6 +29,11 @@
           vethOutsideAddress = "192.168.1.2";
           vethNetwork = "192.168.1.0";
           vethPrefixLength = 29;
+
+          forwardedTcpPorts = [
+            1935
+            8888
+          ];
         };
       };
       wg1 = {
