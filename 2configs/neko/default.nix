@@ -1,3 +1,4 @@
+{ selflib, ... }:
 {
   virtualisation.oci-containers.containers = {
     neko = {
@@ -8,7 +9,7 @@
         "-l=homepage.group=Services"
         "-l=homepage.name=Neko"
         "-l=homepage.icon=neko.svg"
-        "-l=homepage.href=http://192.168.0.101:3023"
+        "-l=homepage.href=http://neko.rtinf.net:3023"
         "-l=homepage.description=Remote browser service with Firefox"
       ];
       ports = [
@@ -21,7 +22,7 @@
         NEKO_ICELITE = "0";
         NEKO_SERVER_PROXY = "true";
         NEKO_NAT1TO1 = "192.168.0.101";
-        NEKO_CAPTURE_BROADCAST_URL = "rtmp://10.69.0.1/live/neko";
+        NEKO_CAPTURE_BROADCAST_URL = "rtmp://${selflib.homevpn.hosts.safe.ip}/live/neko";
       };
       environmentFiles = [ "/var/lib/neko/.env" ];
     };
