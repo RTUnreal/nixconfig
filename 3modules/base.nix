@@ -282,11 +282,12 @@ in
           hexchat
           vlc
           nextcloud-client
-          telegram-desktop
           ;
 
         inherit (nixpkgs-unstable)
           libreoffice-fresh
+          # FIXME: use stable again, when fixed
+          telegram-desktop
           anydesk
           rustdesk-flutter
           ;
