@@ -81,10 +81,10 @@ let
             echo "add vethinside route"
             #ip netns exec ${name} ip route add ${vethNetwork}/${toString vethPrefixLength} dev ${vethInside} || true
             echo "set vethoutside route"
-            ip route add ${wgConf.meta.meta.base} via ${vethOutsideAddress} dev ${vethOutside} src ${vethInsideAddress} || true
+            ip route add ${wgConf.meta.meta.base} via ${vethInsideAddress} dev ${vethOutside} src ${vethOutsideAddress} || true
             ip netns exec ${name} ${pkgs.iptables}/bin/iptables -t nat -A PREROUTING -j LOG --log-level 4 --log-prefix "[PREROUTING]"
             ip netns exec ${name} ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -j LOG --log-level 4 --log-prefix "[POSTROUTING]"
-            ip netns exec ${name} ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -p tcp -o ${name} -s ${vethOutsideAddress} -j SNAT --to ${ownCfg.ip}
+            ip netns exec ${name} ${pkgs.iptables}/bin/iptables -t nat -A POSTROUTING -o ${name} -s ${vethOutsideAddress} -j SNAT --to-source ${ownCfg.ip}
             ${concatMapStrings (v: ''
               ip netns exec ${name} ${pkgs.iptables}/bin/iptables -t nat -A PREROUTING -p tcp -i ${name} -d ${ownCfg.ip} --dport ${toString v} -j DNAT --to-destination ${vethOutsideAddress}:${toString v}
             '') forwardedTcpPorts}
@@ -246,15 +246,12 @@ in
                     vethInside = mkOption {
                       type = types.str;
                       default = "veth0";
-                      example = "intel_backlight";
                       description = lib.mdDoc "interface name inside of netns";
                     };
                     vethInsideAddress = mkOption {
                       type = types.str;
                       default = "192.168.0.1";
-                      description = ''
-                        IPv4 address of the interface.
-                      '';
+                      description = "IPv4 address of the interface.";
                     };
 
                     vethOutside = mkOption {
@@ -266,16 +263,12 @@ in
                     vethOutsideAddress = mkOption {
                       type = types.str;
                       default = "192.168.0.2";
-                      description = ''
-                        IPv4 address of the interface.
-                      '';
+                      description = "IPv4 address of the interface.";
                     };
                     vethNetwork = mkOption {
                       type = types.str;
                       default = "192.168.0.0";
-                      description = ''
-                        IPv4 prefix of the interface.
-                      '';
+                      description = "IPv4 prefix of the interface.";
                     };
                     # https://github.com/NixOS/nixpkgs/blob/b2a3852bd078e68dd2b3dfa8c00c67af1f0a7d20/nixos/modules/tasks/network-interfaces.nix#L83-L89
                     vethPrefixLength = mkOption {
@@ -291,10 +284,7 @@ in
                         22
                         80
                       ];
-                      description = ''
-                        List of TCP ports on which incoming connections are
-                        forwarded.
-                      '';
+                      description = "List of TCP ports on which incoming connections are forwarded.";
                     };
                   };
                 }
