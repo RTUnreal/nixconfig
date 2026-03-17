@@ -1,6 +1,7 @@
 { pkgs, nixpkgs-unstable, ... }:
 let
   port = 3030;
+  metricsPort = 9199;
   domain = "pinger.rtinf.net";
 
   templates = {
@@ -36,11 +37,11 @@ in
       behind-proxy = true;
       auth-default-access = "deny-all";
       inherit template-dir;
-      metrics-listen-http = ":9199";
+      metrics-listen-http = ":${toString metricsPort}";
     };
   };
 
-  networking.firewall.interfaces."veth1".allowedTCPPorts = [ 9199 ];
+  networking.firewall.interfaces."veth1".allowedTCPPorts = [ metricsPort ];
   services.nginx = {
     enable = true;
     virtualHosts.${domain} = {
