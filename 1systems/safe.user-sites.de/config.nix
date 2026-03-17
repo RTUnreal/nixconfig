@@ -8,7 +8,7 @@
   imports = [
     ./../../2configs/safe
     ./../../2configs/news.nix
-    ./../../2configs/mango.nix
+    #./../../2configs/mango.nix
     ./../../2configs/ffsync.nix
     ./../../2configs/cryboard.nix
     ./../../2configs/pinger.nix
