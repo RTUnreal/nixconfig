@@ -25,5 +25,6 @@
     };
   };
 
+  # TODO: is that needed?
   networking.firewall.interfaces."veth3".allowedTCPPorts = [ 8888 ];
 }
