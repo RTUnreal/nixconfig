@@ -31,8 +31,8 @@
           vethPrefixLength = 29;
 
           forwardedTcpPorts = [
-            1935
-            8888
+            1935 # rtmp neko stream
+            8888 # hls passthrough
           ];
         };
       };
@@ -44,8 +44,8 @@
         privateKeyFile = "/var/lib/wireguard/panopticon-pk";
         connectOutside = {
           forwardedTcpPorts = [
-            9100
-            9199
+            config.services.prometheus.exporters.node.port
+            9199 # pinger
           ];
         };
       };
