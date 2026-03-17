@@ -13,6 +13,7 @@ let
     mkEnableOption
     ;
   cfg = config.rtinf.panopticon;
+  wgConf = config.rtinf.dirtickvpn.interfaces.${netiface};
 
   netiface = cfg.networkInterfaceName;
 in
@@ -48,21 +49,19 @@ in
 
   config = lib.mkIf (cfg != null) (mkMerge [
     {
-      rtinf.dirtickvpn.interfaces."${netiface}" = {
+      rtinf.dirtickvpn.interfaces.${netiface} = {
         meta = cfg.meta.network;
       };
       services.prometheus.exporters.node = {
         enable = true;
         enabledCollectors = [ "systemd" ];
       };
-      systemd.services.prometheus-node-exporter = {
-        after = [ "wireguard-${netiface}.service" ];
-        serviceConfig.NetworkNamespacePath = mkIf (!cfg.scrapper.enable) "/run/netns/${netiface}";
-      };
-      networking.firewall.interfaces."${netiface}".allowedTCPPorts = [
+    }
+    (mkIf (wgConf.hostName == wgConf.meta.meta.ingress) {
+      networking.firewall.interfaces.${wgConf.connectOutside.vethOutside}.allowedTCPPorts = [
         config.services.prometheus.exporters.node.port
       ];
-    }
+    })
     (mkIf cfg.scrapper.enable {
       services.prometheus = {
         enable = true;

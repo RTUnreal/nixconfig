@@ -19,8 +19,15 @@
       };
     };
   };
-  scrapeConfigs = [
-    #{ job_name = "node_safe"; static_configs = [ { targets = [ "10.70.0.1:9100" ]; } ]; }
-    #{ job_name = "pinger"; static_configs = [ { targets = [ "10.70.0.1:9199" ]; } ]; }
-  ];
+  scrapeConfigs =
+    let
+      single = job_name: target: {
+        inherit job_name;
+        static_configs = [ { targets = [ target ]; } ];
+      };
+    in
+    [
+      (single "node_safe" "10.70.0.1:9100")
+      (single "pinger" "10.70.0.1:9199")
+    ];
 }
