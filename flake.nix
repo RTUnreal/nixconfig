@@ -22,7 +22,8 @@
       url = "github:fufexan/nix-gaming";
       inputs.flake-parts.follows = "flake-parts";
     };
-    nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
+    #nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
+    nixpkgs-xr.url = "github:RTUnreal/nixpkgs-xr?ref=update_rtsp";
     disko.url = "github:nix-community/disko";
     clan-core = {
       #url = "https://git.clan.lol/clan/clan-core/archive/main.tar.gz";
