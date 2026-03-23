@@ -2,6 +2,7 @@
   config,
   lib,
   selfpkgs,
+  nixpkgs-unstable,
   ...
 }:
 let
@@ -82,6 +83,7 @@ in
 
     services.mediamtx = {
       enable = true;
+      package = nixpkgs-unstable.mediamtx;
       # https://github.com/bluenviron/mediamtx/blob/main/mediamtx.yml
       settings = mkMerge [
         {
@@ -121,8 +123,11 @@ in
           apiAddress = ":${toString cfg.api.port}";
         })
         (mkIf (cfg.hls != null) {
-          hlsVariant = "mpegts";
           hlsAlwaysRemux = true;
+          hlsVariant = lib.mkDefault "mpegts"; # VRChat works best with MPEG-TS segments
+          hlsSegmentDuration = lib.mkDefault "500ms"; # half-second segments
+          hlsSegmentCount = lib.mkDefault 3; # keep only 3 segments
+          hlsPartDuration = lib.mkDefault "100ms"; # fine-grained parts
           hlsAddress = ":${toString cfg.hls.port}";
         })
       ];
