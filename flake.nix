@@ -22,9 +22,7 @@
       url = "github:fufexan/nix-gaming";
       inputs.flake-parts.follows = "flake-parts";
     };
-    # TODO: switch back when proton-ge-rtsp update hits
-    #nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
-    nixpkgs-xr.url = "github:RTUnreal/nixpkgs-xr?ref=update_rtsp";
+    nixpkgs-xr.url = "github:nix-community/nixpkgs-xr";
     disko.url = "github:nix-community/disko";
     clan-core = {
       url = "https://git.clan.lol/clan/clan-core/archive/main.tar.gz";

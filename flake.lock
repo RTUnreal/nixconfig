@@ -571,16 +571,15 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1774284761,
+        "lastModified": 1774294174,
         "narHash": "sha256-/figgEf9bJgifAotR2z+KqAUSKriOL17DGkgwJqlI6w=",
-        "owner": "RTUnreal",
+        "owner": "nix-community",
         "repo": "nixpkgs-xr",
-        "rev": "24d68ed66784f0307519660e9bb8d55c7813b059",
+        "rev": "82adacd2ac84b353b98e9462be1e8af969a5c1f7",
         "type": "github"
       },
       "original": {
-        "owner": "RTUnreal",
-        "ref": "update_rtsp",
+        "owner": "nix-community",
         "repo": "nixpkgs-xr",
         "type": "github"
       }
