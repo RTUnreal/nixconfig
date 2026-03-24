@@ -29,10 +29,9 @@
         NEKO_MEMBER_PROVIDER = "multiuser";
         NEKO_SESSION_CONTROL_PROTECTION = "true";
 
+        NEKO_CAPTURE_BROADCAST_AUTOSTART = "false";
         NEKO_CAPTURE_BROADCAST_URL = "rtmp://${selflib.homevpn.hosts.safe.ip}/live/neko";
 
-        #NVIDIA_VISIBLE_DEVICES = "all";
-        #NVIDIA_DRIVER_CAPABILITIES = "all";
         # inspired by: https://github.com/jameskitt616/vrchat_streaming/blob/master/compose.yaml
         # and example from here: https://neko.m1k1o.net/docs/v3/configuration/capture#broadcast.pipeline
         NEKO_CAPTURE_VIDEO_CODEC = "h264";
