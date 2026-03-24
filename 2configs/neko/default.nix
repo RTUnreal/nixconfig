@@ -28,6 +28,7 @@
         NEKO_WEBRTC_NAT1TO1 = "192.168.0.101";
         NEKO_MEMBER_PROVIDER = "multiuser";
         NEKO_SESSION_CONTROL_PROTECTION = "true";
+
         NEKO_CAPTURE_BROADCAST_URL = "rtmp://${selflib.homevpn.hosts.safe.ip}/live/neko";
 
         #NVIDIA_VISIBLE_DEVICES = "all";
@@ -39,7 +40,7 @@
           videoconvert !
           videorate !
           videoscale !
-          video/x-raw,width=1920,height=1080,framerate=30/1 !
+          video/x-raw,width=1280,height=720,framerate=30/1 !
           vaapih264enc rate-control=cbr bitrate=6144 keyframe-period=30 !
           h264parse !
           queue !
@@ -59,14 +60,14 @@
           videoconvert !
           videorate !
           videoscale !
-          video/x-raw,width=1920,height=1080,framerate=30/1 !
+          video/x-raw,width=1280,height=720,framerate=30/1 !
           vaapih264enc rate-control=cbr bitrate=6144 keyframe-period=30 !
           h264parse !
           queue !
-          mpegtsmux name=mux alignment=7 !
-          udpsink host=mediamtx port=1234 sync=false buffer-size=524288
+          flvmux name=mux !
+          rtmpsink location={url}
 
-          pulsesrc device=audio_output.monitor !
+          pulsesrc device={device} !
           queue !
           audioconvert !
           audioresample !
