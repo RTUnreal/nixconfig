@@ -33,7 +33,8 @@
 
         #NVIDIA_VISIBLE_DEVICES = "all";
         #NVIDIA_DRIVER_CAPABILITIES = "all";
-        # taken from: https://github.com/jameskitt616/vrchat_streaming/blob/master/compose.yaml
+        # inspired by: https://github.com/jameskitt616/vrchat_streaming/blob/master/compose.yaml
+        # and example from here: https://neko.m1k1o.net/docs/v3/configuration/capture#broadcast.pipeline
         NEKO_CAPTURE_VIDEO_CODEC = "h264";
         NEKO_CAPTURE_VIDEO_PIPELINE = ''
           ximagesrc display-name={display} show-pointer=true use-damage=false !
