@@ -128,6 +128,51 @@ in
           pkgs.xrgears
           pkgs.corectrl
         ];
+        # https://networkmanager.dev/docs/api/latest/NetworkManager-dispatcher.html
+        # TODO: move all SlimeVR/all VR stuff to seperate module
+        networking.networkmanager.dispatcherScripts = [
+          {
+            type = "basic";
+            source = lib.getExe (
+              pkgs.writeShellApplication {
+                name = "slimevr-fw";
+                runtimeInputs = [
+                  pkgs.iptables
+                  pkgs.iproute2
+                  pkgs.logger
+                ];
+                text = ''
+                  if [ "$CONNECTION_ID" != "SLIMER" ]; then
+                      logger "$0: ignoring $1 for \`$2'"
+                      exit 0
+                  fi
+
+                  case "$2" in
+                      up)
+                          logger "$0: setting up firewall rules for $1"
+                          iptables -I nixos-fw -i "$1" -p udp --dport 67 -j nixos-fw-accept
+                          iptables -I nixos-fw -i "$1" -p udp --dport 35903 -j nixos-fw-accept
+                          iptables -I nixos-fw -i "$1" -p udp --dport 6969 -j nixos-fw-accept
+                          iptables -I nixos-fw -i "$1" -p udp --dport 8266 -j nixos-fw-accept
+                          ;;
+                      down)
+                          logger "$0: tearing down firewall rules for $1"
+                          iptables -D nixos-fw -i "$1" -p udp --dport 67 -j nixos-fw-accept
+                          iptables -D nixos-fw -i "$1" -p udp --dport 35903 -j nixos-fw-accept
+                          iptables -D nixos-fw -i "$1" -p udp --dport 6969 -j nixos-fw-accept
+                          iptables -D nixos-fw -i "$1" -p udp --dport 8266 -j nixos-fw-accept
+                          ;;
+                      *)
+                          logger "$0: nothing to do with $1 for \`$2'"
+                          ;;
+                  esac
+
+                  exit 0
+                '';
+              }
+            );
+          }
+        ];
         boot.kernelPatches = mkIf cfg.enableKernelPatch [
           {
             name = "amdgpu-ignore-ctx-privileges";
