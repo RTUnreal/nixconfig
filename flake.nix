@@ -49,6 +49,12 @@
         treefmt-nix.follows = "treefmt-nix";
       };
     };
+    wrappers = {
+      url = "github:lassulus/wrappers";
+      inputs = {
+        nixpkgs.follows = "nixpkgs-unstable";
+      };
+    };
   };
 
   outputs =
@@ -77,6 +83,7 @@
         perSystem =
           {
             pkgs,
+            lib,
             inputs',
             self',
             ...
@@ -126,6 +133,26 @@
                   enableIDEFeatures = true;
                   enableSillyFeatures = true;
                 };
+
+                helix =
+                  (inputs.wrappers.wrapperModules.helix.apply {
+                    inherit pkgs;
+                    languages = {
+                      language-server.nixd.command = lib.getExe pkgs.nixd;
+                      language = [
+                        {
+                          name = "nix";
+                          formatter.command = lib.getExe pkgs.nixfmt;
+                          auto-format = true;
+                        }
+                        {
+                          name = "cpp";
+                          formatter.command = "clang-format";
+                          auto-format = true;
+                        }
+                      ];
+                    };
+                  }).wrapper;
 
                 jmusicbot = pkgs.callPackage ./5pkgs/jmusicbot.nix { };
 
