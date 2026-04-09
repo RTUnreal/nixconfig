@@ -307,25 +307,7 @@
                     (local { })
                   ];
                 };
-              overte-demo =
-                let
-                  system = "x86_64-linux";
-                in
-                {
-                  imports = [
-                    (common system {
-                      allowedUnfree = [
-                        "steam"
-                        "steam-unwrapped"
-                        "steam-original"
-                        "steam-run"
-                      ];
-                    })
-                    inputs.nixos-hardware.nixosModules.framework-desktop-amd-ai-max-300-series
-                    ./1systems/overte-demo/config.nix
-                    (local { hm = true; })
-                  ];
-                };
+
               spinner =
                 let
                   system = "x86_64-linux";
