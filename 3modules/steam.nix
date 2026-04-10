@@ -4,7 +4,6 @@
   lib,
   nixpkgs-unstable,
   selfpkgs,
-  inputs,
   ...
 }:
 let

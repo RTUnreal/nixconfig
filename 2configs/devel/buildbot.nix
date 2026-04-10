@@ -1,12 +1,9 @@
 {
-  config,
-  nixpkgs-unstable,
   pkgs,
   ...
 }:
 let
   domain = "buildbot.rtinf.net";
-  cfg = config.services.buildbot-master;
   secretDir = "/home/buildbot/master/secrets";
 in
 {

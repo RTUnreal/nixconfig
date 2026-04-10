@@ -62,10 +62,6 @@
       self,
       nixpkgs,
       nixpkgs-unstable,
-      treefmt-nix,
-      systems,
-      nixvim,
-      disko,
       flake-parts,
       ...
     }@inputs:
