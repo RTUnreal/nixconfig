@@ -52,11 +52,6 @@
     kernelPackages = pkgs.linuxKernel.packages.linux_6_18;
   };
 
-  environment.systemPackages = [
-    pkgs.perf
-    pkgs.distrobox
-  ];
-
   virtualisation.podman = {
     enable = true;
     dockerCompat = true;
