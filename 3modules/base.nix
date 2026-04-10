@@ -158,6 +158,10 @@ in
           ffmpeg
           btop
           nix-output-monitor
+
+          # crypt tools
+          age
+          passage
           ;
       };
 
