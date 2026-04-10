@@ -196,11 +196,32 @@
 
                 overte-vr = pkgs.callPackage ./5pkgs/overte-vr { };
                 overte-vr-appimage = pkgs.callPackage ./5pkgs/overte-vr-appimage.nix { };
+
+                deploy-local = pkgs.writeShellApplication {
+                  name = "deploy-local";
+                  runtimeInputs = [
+                    pkgs.nixos-rebuild-ng
+                    pkgs.nix-output-monitor
+                    inputs'.clan-core.packages.clan-cli
+                  ];
+                  text = ''
+                    hostname="$(cat /etc/hostname)"
+                    tmpdir="$(mktemp -d)"
+                    clan vars upload "$hostname" --directory="$tmpdir"
+                    secretdir=/etc/secret-vars
+                    sudo rm -rf "$secretdir"
+                    sudo mkdir -p "$secretdir"
+                    sudo mv "$tmpdir"/* "$secretdir"
+                    sudo rm -rf "$tmpdir"
+                    sudo nixos-rebuild switch --flake . --log-format internal-json --show-trace -v |& nom --json
+                  '';
+                };
               };
             devShells.default = pkgs.mkShell { packages = [ inputs'.clan-core.packages.clan-cli ]; };
           };
         clan = {
           meta.name = "net_rtinf";
+          vars.settings.secretStore = "password-store";
           specialArgs = {
             self = {
               inherit (self) inputs nixosModules packages;
@@ -233,6 +254,7 @@
                 (
                   { lib, ... }:
                   {
+                    clan.core.vars.password-store.passCommand = "passage";
                     nix.registry.n.flake = nixpkgs;
                     nixpkgs = {
                       hostPlatform = system;

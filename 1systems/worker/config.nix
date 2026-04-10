@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ config, pkgs, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -23,6 +23,24 @@
       wacom = true;
     };
   };
+
+  clan.core.vars.generators."mkpasswd-generator" = {
+    files.test-password = {
+      owner = "pinpox";
+      group = "users";
+    };
+    runtimeInputs = with pkgs; [
+      coreutils
+      xkcdpass
+    ];
+    script = ''
+      mkdir -p $out
+      xkcdpass > $out/test-password
+    '';
+  };
+
+  environment.etc."test-password".source =
+    config.clan.core.vars.generators."mkpasswd-generator".files."test-password".path;
 
   hardware.enableRedistributableFirmware = true;
 
