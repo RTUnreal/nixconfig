@@ -8,8 +8,10 @@
           rocblas
           hipblas
           clr
+          clang
           rocminfo
           llvm.llvm
+          llvm.compiler-rt
           rocm-device-libs
         ];
       };
