@@ -3,7 +3,6 @@
   pkgs,
   lib,
   nixpkgs-unstable,
-  selfpkgs,
   ...
 }:
 let
@@ -70,7 +69,7 @@ in
     enable = mkEnableOption "steam";
     enableMonado = mkEnableOption "monado integration for steam";
     enableSlimeVR = mkEnableOption "SlimeVR" // {
-      default = cfg.enableModano;
+      default = cfg.enableMonado;
       defaultText = "cfg.enableMonado";
     };
     enableKernelPatch = mkEnableOption "AMD gpu kernel patches";
