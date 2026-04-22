@@ -84,9 +84,6 @@
             self',
             ...
           }:
-          let
-            pkgs-unstable = inputs'.nixpkgs-unstable.legacyPackages;
-          in
           {
             treefmt = import ./treefmt.nix;
 
