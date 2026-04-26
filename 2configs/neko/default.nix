@@ -11,7 +11,7 @@
         "-l=homepage.group=Services"
         "-l=homepage.name=Neko"
         "-l=homepage.icon=neko.svg"
-        "-l=homepage.href=http://neko.rtinf.net:3023"
+        "-l=homepage.href=http://neko.rtinf.net"
         "-l=homepage.description=Remote browser service with Firefox"
       ];
       devices = [ "/dev/dri:/dev/dri" ];
