@@ -234,7 +234,7 @@
                       config.allowUnfreePredicate = lib.mkIf (allowedUnfree != [ ]) (
                         pkg: builtins.elem (lib.getName pkg) allowedUnfree
                       );
-                      config.permittedInsecurePackages = lib.mkIf (allowedInsecure != [ ]) allowedInsecure;
+                      config.permittedInsecurePackages = allowedInsecure;
                       overlays = [
                         inputs.copyparty.overlays.default
                       ];
@@ -320,7 +320,9 @@
                         "steam-run"
 
                         "anydesk"
+                        "segger-jlink"
                       ];
+                      allowedInsecure = [ "segger-jlink-qt4-874" ];
                     })
                     inputs.retiolum.nixosModules.retiolum
                     #inputs.nixos-hardware.nixosModules.framework-13-7040-amd

@@ -26,7 +26,7 @@
 
   clan.core.vars.generators."mkpasswd-generator" = {
     files.test-password = {
-      owner = "pinpox";
+      owner = "trr";
       group = "users";
     };
     runtimeInputs = with pkgs; [
@@ -38,6 +38,10 @@
       xkcdpass > $out/test-password
     '';
   };
+
+  nixpkgs.config.segger-jlink.acceptLicense = true;
+  environment.systemPackages = [ pkgs.segger-jlink ];
+  services.udev.packages = [ pkgs.segger-jlink ];
 
   environment.etc."test-password".source =
     config.clan.core.vars.generators."mkpasswd-generator".files."test-password".path;
