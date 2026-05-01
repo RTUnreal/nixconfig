@@ -22,7 +22,6 @@ in
     relativenumber = true;
     number = true;
     mouse = if enableIDEFeatures then "a" else "";
-    spelllang = "en";
   };
   highlight = {
     ExtraWhitespace.bg = "red";
@@ -92,12 +91,6 @@ in
       # from lsp-format
       action = "<cmd>FormatToggle<CR>";
       options.desc = "Toggle formating on save";
-    }
-    {
-      key = "${l}ts";
-      # from lsp-format
-      action = "<cmd>set spell!<CR>";
-      options.desc = "Toggle spell checking";
     }
   ];
   filetype = {
@@ -214,7 +207,8 @@ in
       };
       nvim-lightbulb.enable = true;
       lsp-lines.enable = true;
-      lsp-format.enable = true;
+      # FIXME: uncomment, when license is added
+      #lsp-format.enable = true;
       fidget.enable = true;
       lualine = {
         enable = true;
@@ -232,7 +226,6 @@ in
           sources = [
             { name = "nvim_lsp"; }
             { name = "luasnip"; }
-            { name = "spell"; }
           ];
           snippet.expand = "function(args) require('luasnip').lsp_expand(args.body) end";
           mapping = {
