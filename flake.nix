@@ -45,7 +45,6 @@
       url = "github:nix-community/buildbot-nix";
       inputs = {
         nixpkgs.follows = "nixpkgs-unstable";
-        flake-parts.follows = "flake-parts";
         treefmt-nix.follows = "treefmt-nix";
       };
     };
