@@ -13,10 +13,7 @@
     };
     treefmt-nix.url = "github:numtide/treefmt-nix";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    nixvim = {
-      url = "github:nix-community/nixvim";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
+    nixvim.url = "github:nix-community/nixvim";
     srvos.url = "github:nix-community/srvos";
     nix-gaming = {
       url = "github:fufexan/nix-gaming";
