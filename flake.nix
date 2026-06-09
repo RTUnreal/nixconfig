@@ -1,9 +1,9 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs?ref=nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs?ref=nixpkgs-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     retiolum.url = "github:Mic92/retiolum";
@@ -175,14 +175,20 @@
                   ];
                   text = ''
                     hostname="$(cat /etc/hostname)"
+                    export tmpdir
                     tmpdir="$(mktemp -d)"
                     clan vars upload "$hostname" --directory="$tmpdir"
+                    export secretdir
                     secretdir=/etc/secret-vars
-                    sudo rm -rf "$secretdir"
-                    sudo mkdir -p "$secretdir"
-                    sudo mv "$tmpdir"/* "$secretdir"
-                    sudo rm -rf "$tmpdir"
-                    sudo nixos-rebuild switch --flake . --log-format internal-json --show-trace -v |& nom --json
+                    sudo bash <<EOF
+                    rm -rf "$secretdir"
+                    mkdir -p "$secretdir"
+                    mv "$tmpdir"/* "$secretdir"
+                    chmod 700 "$secretdir"
+                    chmod 400 "$secretdir"/secrets.tar.gz "$secretdir"/secrets_for_users.tar.gz
+                    rm -rf "$tmpdir"
+                    nixos-rebuild switch --flake . --log-format internal-json --show-trace -v |& nom --json
+                    EOF
                   '';
                 };
               };

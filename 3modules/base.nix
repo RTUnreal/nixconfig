@@ -100,6 +100,8 @@ in
       };
 
       rtinf.neovim.enable = true;
+      # Force vim off, bcs of srvos
+      programs.vim.defaultEditor = false;
 
       #system.copySystemConfiguration = true;
 
