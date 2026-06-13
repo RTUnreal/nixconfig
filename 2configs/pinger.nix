@@ -1,4 +1,4 @@
-{ pkgs, nixpkgs-unstable, ... }:
+{ pkgs, ... }:
 let
   port = 3030;
   metricsPort = 9199;
@@ -29,8 +29,6 @@ in
 {
   services.ntfy-sh = {
     enable = true;
-    # TODO: remove when 2.14.* hits stable
-    package = nixpkgs-unstable.ntfy-sh;
     settings = {
       listen-http = ":${toString port}";
       base-url = "https://${domain}";
