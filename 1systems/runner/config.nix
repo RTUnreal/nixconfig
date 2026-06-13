@@ -62,7 +62,7 @@
     fluffychat
 
     inkscape
-    blender-hip
+    (blender.override { rocmSupport = true; })
     krita
     gimp
     musescore
