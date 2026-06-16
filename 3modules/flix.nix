@@ -67,11 +67,11 @@ in
 
       # Transmission networking stuff
       # we need to set a namserver here that can be also be reached from the transmission network namespace
-      environment.etc."resolv.conf".text = ''
-        options edns0
-        nameserver 9.9.9.9
-      '';
-      services.resolved.enable = lib.mkForce false;
+      #environment.etc."resolv.conf".text = ''
+      #  options edns0
+      #  nameserver 9.9.9.9
+      #'';
+      #services.resolved.enable = lib.mkForce false;
 
       systemd.services."netns@" = {
         description = "%I network namespace";

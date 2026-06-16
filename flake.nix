@@ -344,6 +344,7 @@
                       allowedUnfree = [
                         "nvidia-x11"
                         "nvidia-settings"
+                        "nvidia-kernel-modules"
                       ];
                     })
                     inputs.retiolum.nixosModules.retiolum
