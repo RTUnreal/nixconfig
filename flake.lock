@@ -38,11 +38,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1782400024,
-        "narHash": "sha256-9BcAj3m0L0F8oG/VeQK7gWt3zfGRX+/oEUNVX58Ol38=",
-        "rev": "3193fac1d9d9b64d253a55e724826462dc3498b5",
+        "lastModified": 1782486423,
+        "narHash": "sha256-CGAF8/3GMbQ30ZNT4RbpnOaCNnNX6qZ/3xsVYiArkQQ=",
+        "rev": "fab106543851321fde491b0ab56b617041c022cd",
         "type": "tarball",
-        "url": "https://git.clan.lol/api/v1/repos/clan/clan-core/archive/3193fac1d9d9b64d253a55e724826462dc3498b5.tar.gz"
+        "url": "https://git.clan.lol/api/v1/repos/clan/clan-core/archive/fab106543851321fde491b0ab56b617041c022cd.tar.gz"
       },
       "original": {
         "type": "tarball",
@@ -570,11 +570,11 @@
         "treefmt-nix": "treefmt-nix_2"
       },
       "locked": {
-        "lastModified": 1782358290,
-        "narHash": "sha256-dsGOox39a9QAcauHZHzhFZ1OKnBHk1L4j8AXuzTQ4sw=",
+        "lastModified": 1782445207,
+        "narHash": "sha256-Bl75CUwqANtZyit5oXNQtpv6dlK72sDO8kPwvops9gI=",
         "owner": "nix-community",
         "repo": "nixpkgs-xr",
-        "rev": "7a02d2961d91c81f49858cd753d5f3ad2b8105cd",
+        "rev": "61bd4e8423bc8392fab399df029da43b814fd1a5",
         "type": "github"
       },
       "original": {
