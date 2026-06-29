@@ -1,6 +1,6 @@
 { ... }:
 {
-  services.harmonia = {
+  services.harmonia.cache = {
     enable = true;
     signKeyPaths = [ "/var/lib/secrets/harmonia.secret" ];
   };
