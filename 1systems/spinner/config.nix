@@ -90,7 +90,7 @@
   hardware.nvidia.open = false;
 
   boot.loader.grub.enable = true;
-  boot.loader.grub.device = "/dev/sdb";
+  boot.loader.grub.device = "/dev/disk/by-path/pci-0000:00:17.0-ata-3.0";
   boot.supportedFilesystems = [ "ntfs" ];
 
   networking.hostName = "spinner";
