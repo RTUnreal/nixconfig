@@ -40,7 +40,7 @@ in
     in
     {
       environment.systemPackages = [ pkg ];
-      environment.variables.EDITOR = "nvim";
+      # environment.variables.EDITOR = "nvim";
     }
   );
 }

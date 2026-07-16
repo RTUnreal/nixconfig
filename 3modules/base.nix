@@ -3,6 +3,7 @@
   pkgs,
   lib,
   nixpkgs-unstable,
+  selfpkgs,
   selflib,
   ...
 }:
@@ -84,7 +85,10 @@ in
           usbutils
           binutils
           ;
+        inherit (selfpkgs) helix;
       };
+
+      environment.variables.EDITOR = "hx";
 
       programs = {
         bash.shellAliases = {
