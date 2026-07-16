@@ -69,6 +69,7 @@ in
           jq
           qrencode
           bat
+          ripgrep
           rink
 
           # net utils
