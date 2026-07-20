@@ -210,7 +210,8 @@
             };
             "spinner" = {
               tags = [ "server" ];
-              deploy.targetHost = "trr@192.168.0.101";
+              # deploy.targetHost = "trr@192.168.0.101";
+              deploy.targetHost = "trr@192.168.0.99";
             };
             "safe" = {
               tags = [ "server" ];
