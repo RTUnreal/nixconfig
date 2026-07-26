@@ -22,10 +22,12 @@
       environment = {
         NEKO_SCREEN = "1280x720@30";
         #NEKO_SCREEN = "1920x1080@30";
+
         NEKO_SERVER_PROXY = "true";
         NEKO_WEBRTC_EPR = "52000-52100";
         NEKO_WEBRTC_ICELITE = "0";
-        NEKO_WEBRTC_NAT1TO1 = "192.168.0.101";
+        NEKO_WEBRTC_NAT1TO1 = "192.168.0.99";
+
         NEKO_MEMBER_PROVIDER = "multiuser";
         NEKO_SESSION_CONTROL_PROTECTION = "true";
 
