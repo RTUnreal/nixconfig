@@ -300,6 +300,7 @@ in
           telegram-desktop
           anydesk
           rustdesk-flutter
+          fluffychat
           ;
       };
       programs.ghidra.enable = true;
