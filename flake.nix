@@ -323,9 +323,8 @@
                         "steam-run"
 
                         "anydesk"
-                        "segger-jlink"
                       ];
-                      allowedInsecure = [ "segger-jlink-qt4-874" ];
+                      allowedInsecure = [ ];
                     })
                     inputs.retiolum.nixosModules.retiolum
                     #inputs.nixos-hardware.nixosModules.framework-13-7040-amd

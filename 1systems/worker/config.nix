@@ -4,7 +4,6 @@
     ./hardware-configuration.nix
     ./retiolum-cfg.nix
     ../../2configs/rocm.nix
-    ../../2configs/segger-jlink.nix
   ];
   rtinf = {
     base = {
