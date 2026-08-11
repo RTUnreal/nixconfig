@@ -42,6 +42,11 @@
   environment.etc."test-password".source =
     config.clan.core.vars.generators."mkpasswd-generator".files."test-password".path;
 
+  nix.settings = {
+    substituters = [ "http://cache.rtinf.net" ];
+    trusted-public-keys = [ "cache.rtinf.net-1:nx2FFKEn9fwvBZOlx+TpDRF2hTcR2KU1Kb3M7r1rquU=" ];
+  };
+
   hardware.enableRedistributableFirmware = true;
 
   boot = {
