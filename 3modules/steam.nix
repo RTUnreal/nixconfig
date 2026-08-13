@@ -241,6 +241,7 @@ in
         environment.systemPackages = [
           nixpkgs-unstable.slimevr
         ];
+        services.udev.packages = [ nixpkgs-unstable.slimevr ];
         networking.networkmanager.dispatcherScripts = [
           {
             type = "basic";
