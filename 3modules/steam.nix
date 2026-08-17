@@ -91,7 +91,7 @@ in
               ovrasStarter
             ];
             extraCompatPackages = [
-              nixpkgs-unstable.proton-ge-rtsp-bin
+              nixpkgs-unstable.proton-rtsp-bin
               nixpkgs-unstable.proton-ge-bin
             ];
             platformOptimizations.enable = true;
