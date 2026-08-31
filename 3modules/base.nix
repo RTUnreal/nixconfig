@@ -292,6 +292,7 @@ in
           hexchat
           vlc
           nextcloud-client
+          freerdp
           ;
 
         inherit (nixpkgs-unstable)

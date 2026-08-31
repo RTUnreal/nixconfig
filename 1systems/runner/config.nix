@@ -59,7 +59,6 @@
   environment.systemPackages = with pkgs; [
     prismlauncher
     obs-studio
-    freerdp
 
     inkscape
     (blender.override { rocmSupport = true; })
