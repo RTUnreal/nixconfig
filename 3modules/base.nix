@@ -296,7 +296,7 @@ in
           ;
 
         inherit (nixpkgs-unstable)
-          libreoffice-fresh
+          libreoffice-stable
           # FIXME: use stable again, when fixed
           telegram-desktop
           anydesk
