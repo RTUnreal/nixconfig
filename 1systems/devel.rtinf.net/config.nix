@@ -6,6 +6,7 @@
     ./../../2configs/devel/forge.nix
     ./../../2configs/devel/buildbot.nix
     ./../../2configs/devel/cache.nix
+    ./../../2configs/rtinf-net.nix
   ];
   rtinf.base.systemType = "server";
   # Use the GRUB 2 boot loader.
