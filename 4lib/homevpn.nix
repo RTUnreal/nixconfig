@@ -16,7 +16,7 @@
       ip = "10.69.0.2";
     };
     worker = {
-      publicKey = "VOHbmF+DU/vYjDF1gDXNpmkBGgxRnCKWnSOrlJXMtwk=";
+      publicKey = "WOK45dyiWOqROeLUdUA5zpqTkXxDnwTiXMMDvx0cCGc=";
       ip = "10.69.0.3";
     };
     phone = {
