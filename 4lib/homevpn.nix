@@ -23,5 +23,9 @@
       publicKey = "nAD9372w6USjUbkZ/Cl1urLaeA1C/zKMBZ18wq2j0A4=";
       ip = "10.69.0.4";
     };
+    runner = {
+      publicKey = "yp42nJUsrCyzYMa5X1nOQrVKLB+qjoQIFk6xV7nS+lg=";
+      ip = "10.69.0.5";
+    };
   };
 }
