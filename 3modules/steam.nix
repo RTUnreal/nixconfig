@@ -125,7 +125,6 @@ in
         };
         environment.systemPackages = [
           nixpkgs-unstable.wayvr
-          nixpkgs-unstable.slimevr
           nixpkgs-unstable.libsurvive
           pkgs.xrgears
           pkgs.corectrl
