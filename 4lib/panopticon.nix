@@ -17,6 +17,10 @@
         publicKey = "NT/jgwccCfcJ9p+1Xmxg11QCU5I8P0Vcpdtos65fExs=";
         ip = "10.70.0.2";
       };
+      devel = {
+        publicKey = "a3W0khjijjXyjXwe6sfQ0TawQzDMLafCPve2topUFA0=";
+        ip = "10.70.0.3";
+      };
     };
   };
   scrapeConfigs =
@@ -28,6 +32,8 @@
     in
     [
       (single "node_safe" "10.70.0.1:9100")
+      (single "node_devel" "10.70.0.3:9100")
+      (single "forgejo" "10.70.0.3:3002")
       (single "pinger" "10.70.0.1:9199")
     ];
 }

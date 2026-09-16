@@ -7,7 +7,6 @@
 let
   cfg = config.services.forgejo;
   DOMAIN = config.networking.fqdn;
-  HTTP_PORT = 3002;
 in
 {
   users.users.git = {
@@ -25,9 +24,10 @@ in
     user = "git";
     database.type = "sqlite3";
     settings = {
-      default.APP_NAME = "${DOMAIN}: My Dumbest Gitea instance";
+      default.APP_NAME = "${DOMAIN}: My Gayest Forgejo instance";
       server = {
-        inherit DOMAIN HTTP_PORT;
+        inherit DOMAIN;
+        HTTP_PORT = 3002;
         ROOT_URL = "https://${DOMAIN}/";
       };
       service = {
@@ -42,6 +42,7 @@ in
       };
       log.LEVEL = "Error";
       webhook.ALLOWED_HOST_LIST = "*.devel.rtinf.net";
+      metrics.ENABLED = true;
     };
   };
   services.anubis = {
@@ -50,7 +51,7 @@ in
     };
     instances = {
       "anubis".settings = {
-        TARGET = "http://localhost:${toString config.services.forgejo.settings.server.HTTP_PORT}";
+        TARGET = "http://127.0.0.1:${toString config.services.forgejo.settings.server.HTTP_PORT}";
         BIND = "/run/anubis/anubis-anubis/anubis.sock";
         METRICS_BIND = "/run/anubis/anubis-anubis/anubis-metrics.sock";
         DIFFICULTY = 4;
@@ -58,7 +59,6 @@ in
         OG_PASSTHROUGH = true;
         SERVE_ROBOTS_TXT = true;
       };
-
     };
   };
   users.users.nginx.extraGroups = [ config.users.groups.anubis.name ];
@@ -66,6 +66,9 @@ in
     locations."/" = {
       proxyPass = "http://unix:${config.services.anubis.instances."anubis".settings.BIND}";
       proxyWebsockets = true;
+    };
+    locations."/metrics" = {
+      return = "302 https://${DOMAIN}/404";
     };
     forceSSL = true;
     enableACME = true;

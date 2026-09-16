@@ -1,4 +1,4 @@
-{ ... }:
+{ config, selflib, ... }:
 {
   imports = [
     # Include the results of the hardware scan.
@@ -8,7 +8,23 @@
     ./../../2configs/devel/cache.nix
     ./../../2configs/rtinf-net.nix
   ];
-  rtinf.base.systemType = "server";
+  rtinf = {
+    base.systemType = "server";
+    dirtickvpn.interfaces = {
+      panopticon = {
+        privateKeyFile = "/var/lib/wireguard/panopticon-pk";
+      };
+    };
+    panopticon = {
+      meta = selflib.panopticon;
+    };
+  };
+
+  networking.firewall.interfaces."panopticon".allowedTCPPorts = [
+    config.services.prometheus.exporters.node.port
+    config.services.forgejo.settings.server.HTTP_PORT
+  ];
+
   # Use the GRUB 2 boot loader.
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
