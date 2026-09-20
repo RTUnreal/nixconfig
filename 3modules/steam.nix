@@ -3,6 +3,7 @@
   pkgs,
   lib,
   nixpkgs-unstable,
+  selfpkgs,
   ...
 }:
 let
@@ -154,7 +155,9 @@ in
                 "config": [
                   "${config.home-manager.users.trr.xdg.dataHome}/Steam/config"
                 ],
-                "external_drivers" : null,
+                "external_drivers": ${
+                  if cfg.enableSlimeVR then "[${selfpkgs.slimevr-openvr-driver}]" else "null"
+                },
                 "jsonid": "vrpathreg",
                 "log": [
                   "${config.home-manager.users.trr.xdg.dataHome}/Steam/logs"
@@ -162,7 +165,7 @@ in
                 "runtime": [
                   "${nixpkgs-unstable.opencomposite}/lib/opencomposite"
                 ],
-                "version" : 1
+                "version": 1
               }
             '';
             "openxr/1/active_runtime.json".source =
