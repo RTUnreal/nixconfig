@@ -115,7 +115,7 @@ in
           enable = true;
           defaultRuntime = true;
           highPriority = true;
-          package = nixpkgs-unstable.monado;
+          package = if cfg.enableSlimeVR then selfpkgs.monado-solarxr else nixpkgs-unstable.monado;
         };
         systemd.user.services."monado".environment = {
           STEAMVR_LH_ENABLE = "1";
@@ -156,7 +156,12 @@ in
                   "${config.home-manager.users.trr.xdg.dataHome}/Steam/config"
                 ],
                 "external_drivers": ${
-                  if cfg.enableSlimeVR then "[\"${selfpkgs.slimevr-openvr-driver}\"]" else "null"
+                  if
+                    false # cfg.enableSlimeVR
+                  then
+                    "[\"${selfpkgs.slimevr-openvr-driver}\"]"
+                  else
+                    "null"
                 },
                 "jsonid": "vrpathreg",
                 "log": [
