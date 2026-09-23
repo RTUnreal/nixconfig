@@ -51,10 +51,6 @@
         nixpkgs.follows = "nixpkgs-unstable";
       };
     };
-    monado-solarxr = {
-      url = "gitlab:rcelyte/monado?host=gitlab.freedesktop.org&ref=solarxr-integration";
-      flake = false;
-    };
   };
 
   outputs =
@@ -169,8 +165,6 @@
 
                 overte-vr = pkgs.callPackage ./5pkgs/overte-vr { };
                 overte-vr-appimage = pkgs.callPackage ./5pkgs/overte-vr-appimage.nix { };
-                slimevr-openvr-driver = pkgs.callPackage ./5pkgs/slimevr-openvr-driver.nix { };
-                monado-solarxr = pkgs.callPackage ./5pkgs/monado-solarxr.nix { src = inputs.monado-solarxr; };
 
                 deploy-local = pkgs.writeShellApplication {
                   name = "deploy-local";
