@@ -48,7 +48,7 @@
     enable = true;
     listenAddresses = [
       {
-        addr = "10.69.0.5";
+        addr = "0.0.0.0";
         port = 22;
       }
     ];
