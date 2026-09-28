@@ -231,7 +231,10 @@
                   { lib, ... }:
                   {
                     clan.core.vars.password-store.passCommand = "passage";
-                    nix.registry.n.flake = nixpkgs;
+                    nix.registry = {
+                      n.flake = inputs.nixpkgs;
+                      nu.flake = inputs.nixpkgs-unstable;
+                    };
                     nixpkgs = {
                       hostPlatform = system;
                       config.allowUnfreePredicate = lib.mkIf (allowedUnfree != [ ]) (
