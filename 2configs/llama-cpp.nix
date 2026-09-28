@@ -1,7 +1,7 @@
 { config, nixpkgs-unstable, ... }: {
   services.llama-cpp = {
     enable = true;
-    package = nixpkgs-unstable.llama-cpp-vulkan;
+    package = nixpkgs-unstable.llama-cpp-rocm;
     host = "0.0.0.0";
     modelsPreset = {
       "Qwen3.6-35B-A3B" = {
