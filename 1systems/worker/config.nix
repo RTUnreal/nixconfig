@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  nixpkgs-unstable,
+  ...
+}:
 {
   imports = [
     ./hardware-configuration.nix
@@ -69,6 +74,10 @@
   networking.firewall.checkReversePath = "loose";
 
   time.timeZone = "Europe/Berlin";
+
+  environment.systemPackages = [
+    nixpkgs-unstable.calibre
+  ];
 
   # The state version is required and should stay at the version you
   # originally installed.
