@@ -17,6 +17,7 @@ in
     mpv = mkEnableOption "mpv";
     virtualization = mkEnableOption "virtualization support";
     wacom = mkEnableOption "wacom support";
+    riscv-nixbuild = mkEnableOption "RISC-V binfmt with nix sandbox";
   };
   config = mkMerge [
     (mkIf cfg.mpv {
@@ -49,5 +50,11 @@ in
       environment.systemPackages = [ pkgs.virt-manager ];
     })
     (mkIf cfg.wacom { services.xserver.wacom.enable = true; })
+    (mkIf cfg.riscv-nixbuild {
+      boot.binfmt = {
+        emulatedSystems = [ "riscv64-linux" ];
+        addEmulatedSystemsToNixSandbox = true;
+      };
+    })
   ];
 }

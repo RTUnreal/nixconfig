@@ -33,6 +33,7 @@
       mpv = true;
       virtualization = true;
       wacom = true;
+      riscv-nixbuild = true;
     };
     dirtickvpn = {
       interfaces = {
@@ -102,11 +103,6 @@
     };
     kdeconnect.enable = true;
     dconf.enable = true;
-  };
-
-  boot.binfmt = {
-    emulatedSystems = [ "riscv64-linux" ];
-    addEmulatedSystemsToNixSandbox = true;
   };
 
   # The state version is required and should stay at the version you

@@ -21,6 +21,7 @@
       bluetooth = true;
       #docker = true;
       wacom = true;
+      riscv-nixbuild = true;
     };
   };
 
@@ -60,11 +61,6 @@
   virtualisation.podman = {
     enable = true;
     dockerCompat = true;
-  };
-
-  boot.binfmt = {
-    emulatedSystems = [ "riscv64-linux" ];
-    addEmulatedSystemsToNixSandbox = true;
   };
 
   services.fwupd.enable = true;
