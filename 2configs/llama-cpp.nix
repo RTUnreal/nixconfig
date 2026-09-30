@@ -18,7 +18,7 @@ let
         tmux kill-session -t $SESSION
       fi
       tmux new-session -d -s $SESSION nvtop \; \
-        split-window -v -t $SESSION journalctl -xeu llama-cpp \; \
+        split-window -v -t $SESSION journalctl -xefu llama-cpp \; \
         split-window -h -t $SESSION.0 htop \; \
         select-pane -t $SESSION.0 \; \
         attach -t $SESSION
