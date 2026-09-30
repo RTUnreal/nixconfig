@@ -1,4 +1,31 @@
-{ config, nixpkgs-unstable, ... }: {
+{
+  config,
+  nixpkgs-unstable,
+  pkgs,
+  ...
+}:
+let
+  llama-monitor = pkgs.writeShellApplication {
+    name = "llama-monitor";
+    runtimeInputs = with pkgs; [
+      tmux
+      htop
+      pkgs.nvtopPackages.amd
+    ];
+    text = ''
+      SESSION="llama-monitor-$$"
+      if tmux has-session -t $SESSION 2>/dev/null; then
+        tmux kill-session -t $SESSION
+      fi
+      tmux new-session -d -s $SESSION nvtop \; \
+        split-window -v -t $SESSION journalctl -xeu llama-cpp \; \
+        split-window -h -t $SESSION.0 htop \; \
+        select-pane -t $SESSION.0 \; \
+        attach -t $SESSION
+    '';
+  };
+in
+{
   services.llama-cpp = {
     enable = true;
     package = nixpkgs-unstable.llama-cpp-rocm;
@@ -52,4 +79,8 @@
     };
   };
   networking.firewall.allowedTCPPorts = [ config.services.llama-cpp.port ];
+
+  environment.systemPackages = [
+    llama-monitor
+  ];
 }
