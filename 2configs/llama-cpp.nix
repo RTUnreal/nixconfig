@@ -30,6 +30,7 @@ in
     enable = true;
     package = nixpkgs-unstable.llama-cpp-rocm;
     host = "0.0.0.0";
+    port = 9931;
     modelsPreset = {
       "Qwen3.6-35B-A3B" = {
         hf-repo = "unsloth/Qwen3.6-35B-A3B-MTP-GGUF";
