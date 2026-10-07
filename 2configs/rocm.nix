@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ nixpkgs-unstable, ... }:
 {
   systemd.tmpfiles.rules =
     let
-      rocmEnv = pkgs.symlinkJoin {
+      rocmEnv = nixpkgs-unstable.symlinkJoin {
         name = "rocm-combined";
-        paths = with pkgs.rocmPackages; [
+        paths = with nixpkgs-unstable.rocmPackages; [
           rocblas
           hipblas
           clr
