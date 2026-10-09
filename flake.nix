@@ -164,7 +164,9 @@
                 };
 
                 overte-vr = pkgs.callPackage ./5pkgs/overte-vr { };
-                overte-vr-appimage = pkgs.callPackage ./5pkgs/overte-vr-appimage.nix { };
+                overte-vr-appimage =
+                  inputs'.nixpkgs-unstable.legacyPackages.callPackage ./5pkgs/overte-vr-appimage.nix
+                    { };
 
                 deploy-local = pkgs.writeShellApplication {
                   name = "deploy-local";

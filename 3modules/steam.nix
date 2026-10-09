@@ -86,6 +86,12 @@ in
         programs = {
           steam = {
             enable = true;
+            package = nixpkgs-unstable.steam.override {
+              extraEnv = {
+                PRESSURE_VESSEL_IMPORT_OPENXR_1_RUNTIMES = 1;
+              };
+              extraLibraries = p: [ ];
+            };
             extraPackages = [
               # So we don't have that ugly cursor when hovering over Steam
               pkgs.kdePackages.breeze
@@ -127,7 +133,7 @@ in
         environment.systemPackages = [
           nixpkgs-unstable.wayvr
           nixpkgs-unstable.libsurvive
-          pkgs.xrgears
+          nixpkgs-unstable.xrgears
           pkgs.corectrl
         ];
         boot.kernelPatches = mkIf cfg.enableKernelPatch [
@@ -161,7 +167,7 @@ in
                   "${config.home-manager.users.trr.xdg.dataHome}/Steam/logs"
                 ],
                 "runtime": [
-                  "${nixpkgs-unstable.opencomposite}/lib/opencomposite"
+                  "${nixpkgs-unstable.xrizer}/lib/xrizer"
                 ],
                 "version": 1
               }
