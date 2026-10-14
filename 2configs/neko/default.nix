@@ -44,17 +44,9 @@
           videoscale !
           video/x-raw,width=1280,height=720,framerate=30/1 !
           vaapih264enc rate-control=cbr bitrate=6144 keyframe-period=30 !
-          h264parse !
-          queue !
-
-          pulsesrc device=audio_output.monitor !
-          audioconvert !
-          audioresample !
-          audio/x-raw,channels=2 !
-          voaacenc bitrate=320000 !
-          aacparse !
-          queue !
-          mux.
+          h264parse config-interval=-1 !
+          video/x-h264,stream-format=byte-stream !
+          appsink name=appsink
         '';
         NEKO_CAPTURE_BROADCAST_PIPELINE = ''
           ximagesrc display-name={display} show-pointer=true use-damage=false !
