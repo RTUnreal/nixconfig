@@ -9,25 +9,104 @@
 let
   inherit (lib)
     mkOption
+    mkEnableOption
     types
     mkIf
     optionalString
+    optionalAttrs
     concatMapStrings
+    concatStringsSep
     nameValuePair
+    filterAttrs
+    mapAttrs
+    mapAttrs'
     ;
 
   cfg = config.rtinf.dirtickvpn;
 
   enable = builtins.length (builtins.attrNames cfg.interfaces) > 0;
 
+  # interfaces managed by NetworkManager vs. the NixOS wireguard module
+  nmInterfaces = filterAttrs (_: i: i.networkManager.enable) cfg.interfaces;
+  kernelInterfaces = filterAttrs (_: i: !i.networkManager.enable) cfg.interfaces;
+
+  hostInfo =
+    wgConf:
+    let
+      meta = wgConf.meta.meta;
+    in
+    {
+      inherit meta;
+      ownCfg = wgConf.meta.hosts.${wgConf.hostName};
+      isIngress = wgConf.hostName == meta.ingress;
+      isEgress = wgConf.hostName == meta.egress;
+    };
+
+  # backend-independent peer list:
+  # [ { publicKey, allowedIPs, endpoint?, persistentKeepalive? } ]
+  peersOf =
+    wgConf:
+    let
+      inherit (hostInfo wgConf) meta isIngress isEgress;
+
+      ingress =
+        peerName: peerCfg:
+        if !meta.isLocal && peerName == meta.egress then
+          { allowedIPs = [ "0.0.0.0/0" ]; }
+        else
+          { allowedIPs = [ "${peerCfg.ip}/32" ]; };
+
+      egress =
+        peerName: _peerCfg:
+        if peerName == meta.ingress then
+          {
+            allowedIPs = [ meta.base ];
+            endpoint = "${meta.ingressHost}:${toString meta.listenPort}";
+            persistentKeepalive = 25;
+          }
+        else
+          null;
+
+      default =
+        peerName: _peerCfg:
+        if peerName == meta.ingress then
+          {
+            allowedIPs = [ meta.base ];
+            endpoint = "${meta.ingressHost}:${toString meta.listenPort}";
+            persistentKeepalive = 25;
+          }
+        else
+          null;
+
+      peer =
+        if isEgress then
+          egress
+        else if isIngress then
+          ingress
+        else
+          default;
+    in
+    builtins.filter (x: x != null) (
+      builtins.attrValues (
+        builtins.mapAttrs (
+          peerName: peerCfg:
+          let
+            specific = if wgConf.hostName == peerName then null else peer peerName peerCfg;
+          in
+          if specific == null then null else { inherit (peerCfg) publicKey; } // specific
+        ) wgConf.meta.hosts
+      )
+    );
+
   wireguardConfig =
     name: wgConf:
     let
-      meta = wgConf.meta.meta;
-      ownCfg = wgConf.meta.hosts.${wgConf.hostName};
-
-      isIngress = wgConf.hostName == meta.ingress;
-      isEgress = wgConf.hostName == meta.egress;
+      inherit (hostInfo wgConf)
+        meta
+        ownCfg
+        isIngress
+        isEgress
+        ;
     in
     {
       ips = [ "${ownCfg.ip}/32" ];
@@ -117,57 +196,56 @@ let
         else
           "";
 
-      peers =
-        let
-          ingress =
-            peerName: peerCfg:
-            if !meta.isLocal && peerName == meta.egress then
-              { allowedIPs = [ "0.0.0.0/0" ]; }
-            else
-              { allowedIPs = [ "${peerCfg.ip}/32" ]; };
-
-          egress =
-            peerName: _peerCfg:
-            if peerName == meta.ingress then
-              {
-                allowedIPs = [ meta.base ];
-                endpoint = "${meta.ingressHost}:${toString meta.listenPort}";
-                persistentKeepalive = 25;
-              }
-            else
-              null;
-
-          default =
-            peerName: _peerCfg:
-            if peerName == meta.ingress then
-              {
-                allowedIPs = [ meta.base ];
-                endpoint = "${meta.ingressHost}:${toString meta.listenPort}";
-                persistentKeepalive = 25;
-              }
-            else
-              null;
-
-          peer =
-            if isEgress then
-              egress
-            else if isIngress then
-              ingress
-            else
-              default;
-        in
-        builtins.filter (x: x != null) (
-          builtins.attrValues (
-            builtins.mapAttrs (
-              peerName: peerCfg:
-              let
-                specific = if wgConf.hostName == peerName then null else peer peerName peerCfg;
-              in
-              if specific == null then null else { inherit (peerCfg) publicKey; } // specific
-            ) wgConf.meta.hosts
-          )
-        );
+      peers = peersOf wgConf;
     };
+
+  # deterministic UUID so the profile keeps its identity across rebuilds
+  mkUuid =
+    name:
+    let
+      h = builtins.hashString "md5" "dirtickvpn-${name}";
+      s = start: len: builtins.substring start len h;
+    in
+    "${s 0 8}-${s 8 4}-${s 12 4}-${s 16 4}-${s 20 12}";
+
+  # NetworkManager connection profile (keyfile format) for ensureProfiles
+  networkManagerProfile =
+    name: wgConf:
+    let
+      inherit (hostInfo wgConf) meta ownCfg;
+    in
+    {
+      connection = {
+        id = name;
+        uuid = mkUuid name;
+        type = "wireguard";
+        interface-name = name;
+        autoconnect = wgConf.networkManager.autoconnect;
+      };
+      wireguard = {
+        # substituted by ensureProfiles from the environment file(s)
+        private-key = "$" + wgConf.networkManager.privateKeyEnvVar;
+        listen-port = meta.listenPort;
+      };
+      ipv4 = {
+        method = "manual";
+        address1 = "${ownCfg.ip}/32";
+      };
+      ipv6.method = "ignore";
+    }
+    // builtins.listToAttrs (
+      map (
+        p:
+        nameValuePair "wireguard-peer.${p.publicKey}" (
+          {
+            # NM wants a trailing semicolon on lists
+            allowed-ips = concatStringsSep ";" p.allowedIPs + ";";
+          }
+          // optionalAttrs (p ? endpoint) { inherit (p) endpoint; }
+          // optionalAttrs (p ? persistentKeepalive) { persistent-keepalive = p.persistentKeepalive; }
+        )
+      ) (peersOf wgConf)
+    );
 in
 {
   options.rtinf.dirtickvpn = {
@@ -236,7 +314,46 @@ in
               default = null;
               description = ''
                 Private key file as generated by {command}`wg genkey`.
+                Not used when `networkManager.enable` is set; see
+                `networkManager.environmentFile` instead.
               '';
+            };
+
+            networkManager = {
+              enable = mkEnableOption ''
+                managing this interface with NetworkManager (via a connection profile
+                in `networking.networkmanager.ensureProfiles`) instead of the NixOS
+                wireguard module. Only supported for spoke hosts (neither ingress nor egress)
+              '';
+
+              autoconnect = mkOption {
+                type = types.bool;
+                default = true;
+                description = "Whether NetworkManager activates the connection automatically.";
+              };
+
+              privateKeyEnvVar = mkOption {
+                type = types.nullOr types.str;
+                default = null;
+                example = "DIRTICKVPN_PRIVATE_KEY";
+                description = ''
+                  Name of the environment variable holding the WireGuard private key.
+                  Must be set when `networkManager.enable` is true.
+                  The profile references it as `$VAR`, and ensureProfiles substitutes it
+                  from {option}`networkManager.environmentFile` at activation time,
+                  which keeps the key out of the world-readable Nix store.
+                '';
+              };
+
+              environmentFile = mkOption {
+                type = types.nullOr types.path;
+                default = null;
+                example = "/run/secrets/dirtickvpn.env";
+                description = ''
+                  File containing `VAR=<private key>` (VAR being `privateKeyEnvVar`).
+                  Added to `networking.networkmanager.ensureProfiles.environmentFiles`.
+                '';
+              };
             };
 
             connectOutside = mkOption {
@@ -304,6 +421,26 @@ in
   };
 
   config = mkIf enable {
+    assertions =
+      (lib.mapAttrsToList (name: i: {
+        assertion =
+          let
+            info = hostInfo i;
+          in
+          !(info.isIngress || info.isEgress);
+        message = "rtinf.dirtickvpn.interfaces.${name}: networkManager.enable is only supported on spoke hosts (neither ingress nor egress), since the netns/veth/NAT setup needs the NixOS wireguard module.";
+      }) nmInterfaces)
+      ++ (lib.mapAttrsToList (name: i: {
+        assertion = i.networkManager.privateKeyEnvVar != null;
+        message = "rtinf.dirtickvpn.interfaces.${name}: networkManager.privateKeyEnvVar must be set when networkManager.enable is true.";
+      }) nmInterfaces)
+      ++ [
+        {
+          assertion = nmInterfaces == { } || config.networking.networkmanager.enable;
+          message = "rtinf.dirtickvpn: networkManager.enable requires networking.networkmanager.enable = true.";
+        }
+      ];
+
     networking = {
       nat =
         mkIf (builtins.any (i: i.meta.meta.egress == i.hostName) (builtins.attrValues cfg.interfaces))
@@ -322,13 +459,19 @@ in
       };
       wireguard = {
         useNetworkd = false;
-        interfaces = builtins.mapAttrs wireguardConfig cfg.interfaces;
+        interfaces = builtins.mapAttrs wireguardConfig kernelInterfaces;
+      };
+      networkmanager.ensureProfiles = mkIf (nmInterfaces != { }) {
+        environmentFiles = builtins.filter (x: x != null) (
+          builtins.map (i: i.networkManager.environmentFile) (builtins.attrValues nmInterfaces)
+        );
+        profiles = mapAttrs networkManagerProfile nmInterfaces;
       };
     };
     systemd.services = mkIf config.systemd.network.enable (
       builtins.listToAttrs (
         builtins.map (name: nameValuePair "wireguard-${name}" { after = [ "systemd-networkd.service" ]; }) (
-          builtins.attrNames cfg.interfaces
+          builtins.attrNames kernelInterfaces
         )
       )
     );
