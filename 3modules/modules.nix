@@ -3,7 +3,6 @@
     ./base.nix
     ./virtualisation.nix
     ./kde.nix
-    ./hyprland.nix
     ./steam.nix
     ./gpu.nix
 

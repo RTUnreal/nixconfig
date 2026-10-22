@@ -23,7 +23,6 @@
       };
     };
     virtualisation.enable = true;
-    hyprland.enable = true;
     magnet = {
       enable = true;
       openFirewall = true;
