@@ -74,9 +74,9 @@
 
   time.timeZone = "Europe/Berlin";
 
-  environment.systemPackages = [
-    nixpkgs-unstable.calibre
-  ];
+  # environment.systemPackages = [
+  #   nixpkgs-unstable.calibre
+  # ];
 
   # The state version is required and should stay at the version you
   # originally installed.
