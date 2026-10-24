@@ -19,7 +19,10 @@
       systemType = "desktop";
       additionalPrograms = true;
     };
-    virtualisation.enable = true;
+    virtualisation = {
+      enable = true;
+      cpuType = "amd";
+    };
     neovim.type = "full";
     gpu.type = "amd";
     kde.enable = true;
