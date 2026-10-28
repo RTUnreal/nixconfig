@@ -40,6 +40,9 @@
     options = [
       "rw"
       "uid=1000"
+      # for when the ssd is taken out for capture card experiments
+      "nofail"
+      "x-systemd.device-timeout=2"
     ];
   };
 
