@@ -56,7 +56,6 @@
   outputs =
     {
       self,
-      nixpkgs,
       nixpkgs-unstable,
       flake-parts,
       ...

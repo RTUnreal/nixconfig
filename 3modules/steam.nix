@@ -3,7 +3,6 @@
   pkgs,
   lib,
   nixpkgs-unstable,
-  selfpkgs,
   ...
 }:
 let
@@ -90,7 +89,7 @@ in
               extraEnv = {
                 PRESSURE_VESSEL_IMPORT_OPENXR_1_RUNTIMES = 1;
               };
-              extraLibraries = p: [ ];
+              extraLibraries = _p: [ ];
             };
             extraPackages = [
               # So we don't have that ugly cursor when hovering over Steam

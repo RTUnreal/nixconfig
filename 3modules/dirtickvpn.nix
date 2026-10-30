@@ -19,7 +19,6 @@ let
     nameValuePair
     filterAttrs
     mapAttrs
-    mapAttrs'
     ;
 
   cfg = config.rtinf.dirtickvpn;
@@ -463,14 +462,14 @@ in
       };
       networkmanager.ensureProfiles = mkIf (nmInterfaces != { }) {
         environmentFiles = builtins.filter (x: x != null) (
-          builtins.map (i: i.networkManager.environmentFile) (builtins.attrValues nmInterfaces)
+          map (i: i.networkManager.environmentFile) (builtins.attrValues nmInterfaces)
         );
         profiles = mapAttrs networkManagerProfile nmInterfaces;
       };
     };
     systemd.services = mkIf config.systemd.network.enable (
       builtins.listToAttrs (
-        builtins.map (name: nameValuePair "wireguard-${name}" { after = [ "systemd-networkd.service" ]; }) (
+        map (name: nameValuePair "wireguard-${name}" { after = [ "systemd-networkd.service" ]; }) (
           builtins.attrNames kernelInterfaces
         )
       )
