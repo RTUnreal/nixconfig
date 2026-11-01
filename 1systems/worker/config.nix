@@ -8,6 +8,7 @@
     ./hardware-configuration.nix
     ./retiolum-cfg.nix
     ../../2configs/rocm.nix
+    ../../2configs/vivado-udev.nix
   ];
   rtinf = {
     base = {
