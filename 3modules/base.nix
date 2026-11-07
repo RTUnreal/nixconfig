@@ -289,6 +289,7 @@ in
           xournalpp
           #texlive.combined.scheme-full
           #texstudio
+          telegram-desktop
           hexchat
           vlc
           nextcloud-client
@@ -298,7 +299,6 @@ in
         inherit (nixpkgs-unstable)
           libreoffice-stable
           # FIXME: use stable again, when fixed
-          telegram-desktop
           anydesk
           rustdesk-flutter
           fluffychat
