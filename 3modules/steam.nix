@@ -21,7 +21,7 @@ let
 
   # copied from: https://www.gamingonlinux.com/forum/topic/5716/
   clear_cache = pkgs.writeShellApplication {
-    name = "steam_clear_shader_caches";
+    name = "steam_clear_caches";
     text = ''
       ### Clean out ~/.cache/mesa_shader_cache(_sf) and radv_builtin shaders
       ### Clean out the mesa_shader_cache(_sf) directories from Steam's compatdata
@@ -36,6 +36,7 @@ let
 
       find "$COMPATDATA" -name 'mesa_shader_cache*' -exec du -sh '{}' \;
       find "$HOME"/.cache -name 'mesa_shader_cache*' -exec du -sh '{}' \;
+      find ~/.local/share/Steam/steamapps/compatdata/ -name '*-WindowsPlayer' -exec du -sh '{}' \;
 
       echo "Look at all the CRUD that is accumulating..."
 
@@ -54,6 +55,41 @@ let
       rm -vf "$HOME"/.cache/radv_builtin_shaders64 || true
       rm -rvf "$HOME"/.cache/mesa_shader_cache* || true
       find "$COMPATDATA" -name 'mesa_shader_cache*' -exec rm -rvf '{}' + || true
+      find ~/.local/share/Steam/steamapps/compatdata/ -name '*-WindowsPlayer' -exec rm -rvf '{}' + || true
+    '';
+  };
+
+  vrchat_wrapper = pkgs.writeShellApplication {
+    name = "vrchat_wrapper";
+    text = ''
+      PREFIX="''${STEAM_COMPAT_DATA_PATH:?Missing Proton prefix path}"
+
+      CONFIG_DIR="$PREFIX/pfx/drive_c/users/steamuser/AppData/LocalLow/VRChat/VRChat"
+      CONFIG_FILE="$CONFIG_DIR/config.json"
+
+      PICTURE_PATH="Z:$HOME/Pictures/VRChat"
+
+      mkdir -p "$CONFIG_DIR"
+      mkdir -p "$HOME/Pictures/VRChat"
+
+      if [[ ! -f "$CONFIG_FILE" ]]; then
+          echo '{}' > "$CONFIG_FILE"
+      fi
+
+      jq --arg path "$PICTURE_PATH" \
+          '
+          .picture_output_folder =
+              (if (.picture_output_folder == null or .picture_output_folder != $path)
+               then $path else .picture_output_folder end)
+          |
+          .picture_output_split_by_date =
+              (if (.picture_output_split_by_date == null)
+               then true else .picture_output_split_by_date end)
+          ' "$CONFIG_FILE" > "$CONFIG_FILE.tmp"
+
+      mv "$CONFIG_FILE.tmp" "$CONFIG_FILE"
+
+      exec "$@"
     '';
   };
 
@@ -106,7 +142,8 @@ in
         };
 
         environment.systemPackages = [
-          ovrasStarter
+          # ovrasStarter
+          vrchat_wrapper
           clear_cache
           delete_vrc_eac
         ];
