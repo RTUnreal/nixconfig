@@ -10,4 +10,6 @@ appimageTools.wrapType2 rec {
     # url = "https://public.overte.org/build/overte/release-candidate/${version}/Overte-${version}-OpenGL-x86_64.AppImage";
     hash = "sha256-zR5hoDUfDt+uEj5zSoOP+VNmJYEdU+sYcvmPnsZbNtI=";
   };
+
+  extraPkgs = pkgs: [ pkgs.libgpg-error ];
 }

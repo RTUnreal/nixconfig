@@ -215,6 +215,9 @@ in
         };
         appimage = {
           enable = true;
+          package = nixpkgs-unstable.appimage-run.override {
+            extraPkgs = pkgs: [ nixpkgs-unstable.libgpg-error ];
+          };
           binfmt = true;
         };
         partition-manager.enable = true;
